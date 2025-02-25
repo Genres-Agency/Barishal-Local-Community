@@ -7,6 +7,7 @@ import LeftSidebar from "./navigation/leftSide/LeftSidebar";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   return (
     <nav className="bg-white shadow-sm">
@@ -17,7 +18,10 @@ const Navbar = () => {
               বরিশাল কমিউনিটি
             </Link>
             <div className="flex items-center gap-2 md:hidden">
-              <button className="p-2 hover:bg-gray-100 rounded-full">
+              <button
+                className="p-2 hover:bg-gray-100 rounded-full"
+                onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
+              >
                 <Search size={20} className="text-gray-600" />
               </button>
               <button
@@ -33,7 +37,11 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="relative w-full md:w-auto hidden md:block">
+          <div
+            className={`relative w-full md:w-auto ${
+              isMobileSearchOpen ? "block" : "hidden md:block"
+            } transition-all duration-300 ease-in-out`}
+          >
             <Search
               className="absolute top-1/2 -translate-y-1/2 left-3 text-gray-400"
               size={20}
