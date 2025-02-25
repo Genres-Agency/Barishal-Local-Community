@@ -2,20 +2,7 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
 import Image from "next/image";
-
-export interface PostProps {
-  author: {
-    name: string;
-    image?: string;
-    role?: string;
-  };
-  content: string;
-  timestamp: string;
-  likes: number;
-  comments: number;
-  shares: number;
-  image?: string;
-}
+import { PostProps } from "@/lib/constant";
 
 const PostCard: React.FC<PostProps> = ({
   author,

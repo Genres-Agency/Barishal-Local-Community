@@ -2,30 +2,21 @@
 
 import React, { useState } from "react";
 import PostCreator from "./PostCreator";
-import PostCard, { PostProps } from "./PostCard";
+import PostCard from "./PostCard";
+import { posts } from "@/lib/constant";
+import FeedNavigation from "./FeedNavigation";
 
 const CommunityFeed = () => {
   const [activeTab, setActiveTab] = useState<"latest" | "popular" | "network">(
     "latest"
   );
 
-  const posts: PostProps[] = [
-    {
-      author: {
-        name: "ইমতিয়াজ হোসেন",
-        image: "/assets/user-1.jpg",
-      },
-      content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
-      timestamp: "২ ঘন্টা আগে",
-      likes: 258,
-      comments: 0,
-      shares: 0,
-      image: "/assets/dog.png",
-    },
-  ];
-
   return (
     <div className="space-y-4">
+      {/* Feed Navigation ---------------- */}
+      <FeedNavigation />
+
+      {/* Tab Navigation ---------------- */}
       <div className="flex gap-6 mb-4 border-b">
         <button
           onClick={() => setActiveTab("latest")}
@@ -58,7 +49,11 @@ const CommunityFeed = () => {
           আমার নেটওয়ার্ক
         </button>
       </div>
+
+      {/* Post Creator Field --------------- */}
       <PostCreator />
+
+      {/* All Posts ------------------ */}
       {posts.map((post, index) => (
         <PostCard key={index} {...post} />
       ))}
