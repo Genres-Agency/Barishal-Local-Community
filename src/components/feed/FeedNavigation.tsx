@@ -8,7 +8,7 @@ const FeedNavigation: React.FC = () => {
       {feedNavigationItems.map((item, index) => (
         <div
           key={index}
-          className={`flex flex-col items-center justify-center w-full ${item.bgColor} ${item.textColor} ${item.hoverBg} transition-all duration-300 py-7 px-2 rounded-lg`}
+          className={`cursor-pointer flex flex-col items-center justify-center w-full ${item.bgColor} ${item.textColor} ${item.hoverBg} transition-all duration-300 py-7 px-2 rounded-lg`}
         >
           <item.icon className="size-7 mb-2" />
           <span className="text-sm font-semibold">{item.text}</span>

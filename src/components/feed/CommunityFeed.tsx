@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import PostCreator from "./PostCreator";
 import PostCard from "./PostCard";
-import { posts } from "@/lib/constant";
+import { posts, feedTabs } from "@/lib/constant";
 import FeedNavigation from "./FeedNavigation";
 
 const CommunityFeed = () => {
@@ -18,36 +18,19 @@ const CommunityFeed = () => {
 
       {/* Tab Navigation ---------------- */}
       <div className="flex gap-6 mb-4 border-b">
-        <button
-          onClick={() => setActiveTab("latest")}
-          className={`pb-4 font-medium ${
-            activeTab === "latest"
-              ? "text-green-600 border-b-2 border-green-600"
-              : "text-gray-500"
-          }`}
-        >
-          সর্বশেষ
-        </button>
-        <button
-          onClick={() => setActiveTab("popular")}
-          className={`pb-4 font-medium ${
-            activeTab === "popular"
-              ? "text-green-600 border-b-2 border-green-600"
-              : "text-gray-500"
-          }`}
-        >
-          জনপ্রিয়
-        </button>
-        <button
-          onClick={() => setActiveTab("network")}
-          className={`pb-4 font-medium ${
-            activeTab === "network"
-              ? "text-green-600 border-b-2 border-green-600"
-              : "text-gray-500"
-          }`}
-        >
-          আমার নেটওয়ার্ক
-        </button>
+        {feedTabs.map((tab) => (
+          <button
+            key={tab.value}
+            onClick={() => setActiveTab(tab.value)}
+            className={`pb-4 font-medium ${
+              activeTab === tab.value
+                ? "text-green-600 border-b-2 border-green-600"
+                : "text-gray-500"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {/* Post Creator Field --------------- */}

@@ -1,3 +1,23 @@
+export interface TabItem {
+  label: string;
+  value: "latest" | "popular" | "network";
+}
+
+export const feedTabs: TabItem[] = [
+  {
+    label: "সর্বশেষ",
+    value: "latest",
+  },
+  {
+    label: "জনপ্রিয়",
+    value: "popular",
+  },
+  {
+    label: "আমার নেটওয়ার্ক",
+    value: "network",
+  },
+];
+
 export interface PostProps {
   author: {
     name: string;
