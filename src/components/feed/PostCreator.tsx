@@ -24,7 +24,7 @@ const PostCreator = () => {
             value={postContent}
             onChange={(e) => setPostContent(e.target.value)}
             placeholder="আপনার মনের কথা শেয়ার করুন..."
-            className="w-full min-h-24 px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+            className="w-full min-h-24 px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 bg-[#f9fafb]"
           />
 
           <div className="flex items-center justify-between gap-2">

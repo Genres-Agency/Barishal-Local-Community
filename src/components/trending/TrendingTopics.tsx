@@ -1,0 +1,52 @@
+import React from "react";
+
+interface TrendingTopic {
+  hashtag: string;
+  postCount: string;
+}
+
+const trendingTopics: TrendingTopic[] = [
+  {
+    hashtag: "#বরিশাল",
+    postCount: "১,২৩৪",
+  },
+  {
+    hashtag: "#জবসার্কুলার",
+    postCount: "৮৯০",
+  },
+  {
+    hashtag: "#শিক্ষা",
+    postCount: "৭৫৬",
+  },
+  {
+    hashtag: "#সাহিত্য",
+    postCount: "৬৪৫",
+  },
+  {
+    hashtag: "#খেলাধুলা",
+    postCount: "৫৩২",
+  },
+];
+
+const TrendingTopics = () => {
+  return (
+    <div className="bg-white rounded-xl p-4 shadow-sm">
+      <h2 className="text-lg font-semibold mb-4">ট্রেন্ডিং টপিকস</h2>
+      <div className="space-y-3">
+        {trendingTopics.map((topic, index) => (
+          <div
+            key={index}
+            className="flex items-center justify-between hover:bg-gray-50 p-2 rounded-lg cursor-pointer transition-colors"
+          >
+            <span className="text-blue-600 font-medium">{topic.hashtag}</span>
+            <span className="text-gray-500 text-sm">
+              {topic.postCount} পোস্ট
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default TrendingTopics;

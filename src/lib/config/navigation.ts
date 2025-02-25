@@ -1,4 +1,13 @@
-import { Briefcase, Calendar, Search, Store } from "lucide-react";
+import {
+  Bell,
+  Briefcase,
+  Calendar,
+  Home,
+  MessageSquare,
+  Search,
+  Settings,
+  Store,
+} from "lucide-react";
 
 export const feedNavigationItems = [
   {
@@ -32,5 +41,28 @@ export const feedNavigationItems = [
     textColor: "text-yellow-600",
     hoverBg: "hover:bg-yellow-100",
     href: "/events",
+  },
+];
+
+export const navigationItemsLeftSite = [
+  {
+    icon: Home,
+    label: "হোম",
+    href: "/",
+  },
+  {
+    icon: MessageSquare,
+    label: "মেসেজেস",
+    href: "/messages",
+  },
+  {
+    icon: Bell,
+    label: "নোটিফিকেশন্স",
+    href: "/notifications",
+  },
+  {
+    icon: Settings,
+    label: "সেটিংস",
+    href: "/settings",
   },
 ];

@@ -35,7 +35,7 @@ export const posts: PostProps[] = [
   {
     author: {
       name: "ইমতিয়াজ হোসেন",
-      image: "/assets/user-1.jpg",
+      image: "/assets/profile.jpg",
     },
     content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
     timestamp: "২ ঘন্টা আগে",
@@ -47,7 +47,7 @@ export const posts: PostProps[] = [
   {
     author: {
       name: "ইমতিয়াজ হোসেন",
-      image: "/assets/user-1.jpg",
+      image: "/assets/profile.jpg",
     },
     content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
     timestamp: "২ ঘন্টা আগে",
