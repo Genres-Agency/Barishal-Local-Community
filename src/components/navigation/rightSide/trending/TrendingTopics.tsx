@@ -1,32 +1,5 @@
+import { trendingTopics } from "@/lib/config/navigation";
 import React from "react";
-
-interface TrendingTopic {
-  hashtag: string;
-  postCount: string;
-}
-
-const trendingTopics: TrendingTopic[] = [
-  {
-    hashtag: "#বরিশাল",
-    postCount: "১,২৩৪",
-  },
-  {
-    hashtag: "#জবসার্কুলার",
-    postCount: "৮৯০",
-  },
-  {
-    hashtag: "#শিক্ষা",
-    postCount: "৭৫৬",
-  },
-  {
-    hashtag: "#সাহিত্য",
-    postCount: "৬৪৫",
-  },
-  {
-    hashtag: "#খেলাধুলা",
-    postCount: "৫৩২",
-  },
-];
 
 const TrendingTopics = () => {
   return (
