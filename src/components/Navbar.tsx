@@ -4,6 +4,13 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Menu, Search, User, X } from "lucide-react";
 import LeftSidebar from "./navigation/leftSide/LeftSidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { navigationItemsLeftSite } from "@/lib/config/navigation";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -57,11 +64,28 @@ const Navbar = () => {
             <button className="px-4 py-2 text-sm text-green-600 font-medium hover:text-green-700 border border-green-600 rounded-md flex items-center gap-2">
               <User size={18} /> সাইন ইন
             </button>
-            <button className="px-4 py-2 text-sm text-white bg-green-600 rounded-md font-medium hover:bg-green-700 flex items-center gap-2">
-              <Menu size={20} /> মেইন মেনু
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="px-4 py-2 text-sm text-white bg-green-600 rounded-md font-medium hover:bg-green-700 flex items-center gap-2">
+                  <Menu size={20} /> মেইন মেনু
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                {navigationItemsLeftSite.map((item, index) => (
+                  <DropdownMenuItem key={index} asChild>
+                    <Link
+                      href={item.href}
+                      className="flex items-center gap-2 cursor-pointer"
+                    >
+                      <item.icon className="w-4 h-4" />
+                      <span>{item.label}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
             <Avatar className="ml-4">
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src="assets/profile.jpg" />
               <AvatarFallback>AT</AvatarFallback>
             </Avatar>
           </div>

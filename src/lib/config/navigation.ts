@@ -7,6 +7,10 @@ import {
   Search,
   Settings,
   Store,
+  Users,
+  HelpCircle,
+  ShoppingBag,
+  Newspaper,
 } from "lucide-react";
 
 export const feedNavigationItems = [
@@ -51,14 +55,39 @@ export const navigationItemsLeftSite = [
     href: "/",
   },
   {
+    icon: Newspaper,
+    label: "ফিড",
+    href: "/feed",
+  },
+  {
+    icon: Users,
+    label: "গ্রুপস",
+    href: "/groups",
+  },
+  {
     icon: MessageSquare,
     label: "মেসেজেস",
     href: "/messages",
   },
   {
+    icon: ShoppingBag,
+    label: "মার্কেটপ্লেস",
+    href: "/marketplace",
+  },
+  {
+    icon: Calendar,
+    label: "ইভেন্টস",
+    href: "/events",
+  },
+  {
     icon: Bell,
     label: "নোটিফিকেশন্স",
     href: "/notifications",
+  },
+  {
+    icon: HelpCircle,
+    label: "সহায়তা",
+    href: "/help",
   },
   {
     icon: Settings,

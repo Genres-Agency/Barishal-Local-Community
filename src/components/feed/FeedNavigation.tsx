@@ -3,14 +3,14 @@ import { feedNavigationItems } from "@/lib/config/navigation";
 
 const FeedNavigation: React.FC = () => {
   return (
-    <nav className="flex justify-between items-center py-5 gap-4">
+    <nav className="grid grid-cols-2 lg:grid-cols-4 lg:py-5 gap-4">
       {feedNavigationItems.map((item, index) => (
         <div
           key={index}
-          className={`cursor-pointer flex flex-col items-center justify-center w-full ${item.bgColor} ${item.textColor} ${item.hoverBg} transition-all duration-300 py-7 px-2 rounded-lg`}
+          className={`cursor-pointer flex flex-col items-center justify-center w-full shadow ${item.bgColor} ${item.textColor} ${item.hoverBg} transition-all duration-300 py-3 lg:py-7 px-2 rounded-lg`}
         >
           {React.createElement(item.icon, {
-            className: `w-7 h-7 mb-2 ${item.textColor}`,
+            className: `w-5 lg:w-7 h-5 lg:h-7 mb-2 ${item.textColor}`,
           })}
           <span className="text-sm font-semibold">{item.text}</span>
         </div>
