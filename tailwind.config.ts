@@ -3,6 +3,20 @@ import animatePlugin from "tailwindcss-animate";
 
 export default {
   darkMode: ["class"],
+  safelist: [
+    "bg-red-50",
+    "bg-green-50",
+    "bg-blue-50",
+    "bg-yellow-50",
+    "text-red-600",
+    "text-green-600",
+    "text-blue-600",
+    "text-yellow-600",
+    "hover:bg-red-100",
+    "hover:bg-green-100",
+    "hover:bg-blue-100",
+    "hover:bg-yellow-100",
+  ],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",

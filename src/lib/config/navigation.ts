@@ -26,7 +26,7 @@ export const feedNavigationItems = [
     icon: Store,
     text: "বাজারের আপডেট",
     bgColor: "bg-green-50",
-    textColor: "text-green-700",
+    textColor: "text-green-600",
     hoverBg: "hover:bg-green-100",
     href: "/market",
   },
