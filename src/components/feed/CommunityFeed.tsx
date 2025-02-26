@@ -16,13 +16,16 @@ const CommunityFeed = () => {
       {/* Feed Navigation ---------------- */}
       <FeedNavigation />
 
+      {/* Post Creator Field --------------- */}
+      <PostCreator />
+
       {/* Tab Navigation ---------------- */}
-      <div className="flex gap-6 mb-4 border-b">
+      <div className="flex gap-6 mb-4 pt-2 border-b">
         {feedTabs.map((tab) => (
           <button
             key={tab.value}
             onClick={() => setActiveTab(tab.value)}
-            className={`pb-4 font-medium ${
+            className={`pb-4 font-bold ${
               activeTab === tab.value
                 ? "text-green-600 border-b-2 border-green-600"
                 : "text-gray-500"
@@ -32,9 +35,6 @@ const CommunityFeed = () => {
           </button>
         ))}
       </div>
-
-      {/* Post Creator Field --------------- */}
-      <PostCreator />
 
       {/* All Posts ------------------ */}
       {posts.map((post, index) => (
