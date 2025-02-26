@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const FeedNavigation: React.FC = () => {
   return (
-    <nav className="grid grid-cols-2 lg:grid-cols-4 lg:py-5 gap-4">
+    <nav className="grid grid-cols-2 lg:grid-cols-4 gap-4">
       {feedNavigationItems.map((item, index) => (
         <Link
           key={index}

@@ -2,7 +2,7 @@ import React from "react";
 
 const CommunityEvent = () => {
   return (
-    <section className="relative h-80 lg:h-[600px] bg-cover bg-center container mx-auto my-2 lg:my-10 bg-[url('/assets/community-event.png')]">
+    <section className="relative h-80 lg:h-[600px] bg-cover bg-center container mx-auto bg-[url('/assets/community-event.png')]">
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70 flex items-end pb-20 px-1 lg:px-10">
         <div className="container mx-auto px-5">
           <div className="text-white max-w-2xl">
