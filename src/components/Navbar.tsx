@@ -109,6 +109,14 @@ const Navbar = () => {
           onClick={(e) => e.stopPropagation()}
         >
           <div className="h-full overflow-y-auto">
+            <div className="p-4 border-b">
+              <Link
+                href="/auth"
+                className="w-full px-4 py-2 text-sm text-green-600 font-medium hover:text-green-700 border border-green-600 rounded-md flex items-center justify-center gap-2"
+              >
+                <User size={18} /> সাইন ইন
+              </Link>
+            </div>
             <LeftSidebar />
           </div>
         </div>

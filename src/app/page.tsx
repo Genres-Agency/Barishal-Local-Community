@@ -18,20 +18,20 @@ export default function Home() {
       </div>
 
       {/* Main Content Container */}
-      <div className="container mx-auto px-4 lg:px-6">
+      <div className="container mx-auto px-4 lg:px-6 mt-16">
         <div className="flex flex-col md:flex-row gap-6 relative">
           {/* Left Sidebar */}
-          <aside className="sticky top-12 h-[calc(100vh-4rem)] w-full md:w-64 lg:w-72 overflow-y-auto hidden md:block">
+          <aside className="sticky top-[4.5rem] h-[calc(100vh-4.5rem)] w-full md:w-64 lg:w-72 overflow-y-auto hidden md:block">
             <LeftSidebar />
           </aside>
 
           {/* Main Feed Section */}
-          <main className="flex-1 py-6 min-h-[calc(100vh-4rem)] w-full">
+          <main className="flex-1 py-6 min-h-[calc(100vh-4.5rem)] w-full">
             <CommunityFeed />
           </main>
 
           {/* Right Sidebar */}
-          <aside className="sticky top-12 h-[calc(100vh-4rem)] w-full lg:w-80 overflow-y-auto overflow-x-hidden hidden lg:block">
+          <aside className="sticky top-[4.5rem] h-[calc(100vh-4.5rem)] w-full lg:w-80 overflow-y-auto overflow-x-hidden hidden lg:block">
             <RightSidebar />
           </aside>
         </div>
