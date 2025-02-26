@@ -17,7 +17,7 @@ const Navbar = () => {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-sm">
+    <nav className="bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-0 md:justify-between">
           <div className="flex items-center w-full md:w-auto justify-between">
@@ -61,9 +61,12 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-2">
-            <button className="px-4 py-2 text-sm text-green-600 font-medium hover:text-green-700 border border-green-600 rounded-md flex items-center gap-2">
+            <Link
+              href="/auth"
+              className="px-4 py-2 text-sm text-green-600 font-medium hover:text-green-700 border border-green-600 rounded-md flex items-center gap-2"
+            >
               <User size={18} /> সাইন ইন
-            </button>
+            </Link>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="px-4 py-2 text-sm text-white bg-green-600 rounded-md font-medium hover:bg-green-700 flex items-center gap-2">
