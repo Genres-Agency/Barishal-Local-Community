@@ -12,7 +12,6 @@ export default function Home() {
       <div className="sticky top-0 z-50">
         <Navbar />
       </div>
-
       {/* Community Event Section */}
       <div className="relative z-40">
         <CommunityEvent />
@@ -32,7 +31,7 @@ export default function Home() {
           </main>
 
           {/* Right Sidebar */}
-          <aside className="sticky top-12 h-[calc(100vh-4rem)] w-full lg:w-80 overflow-y-auto hidden lg:block">
+          <aside className="sticky top-12 h-[calc(100vh-4rem)] w-full lg:w-80 overflow-y-auto overflow-x-hidden hidden lg:block">
             <RightSidebar />
           </aside>
         </div>

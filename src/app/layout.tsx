@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
-import { Noto_Sans_Bengali } from "next/font/google";
+import { Poppins } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const notoSansBengali = Noto_Sans_Bengali({
-  variable: "--font-noto-sans-bengali",
-  subsets: ["bengali", "latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+const arial = localFont({
+  src: "./fonts/arial.ttf",
+  variable: "--font-bangla",
+  display: "swap",
+});
+
+const poppins = Poppins({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-english",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -31,14 +39,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="bn">
-      <body className={`${notoSansBengali.variable} antialiased`}>
-        {children}
-      </body>
+    <html lang="en" className={`${arial.variable} ${poppins.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }
