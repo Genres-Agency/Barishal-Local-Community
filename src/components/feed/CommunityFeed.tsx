@@ -20,12 +20,12 @@ const CommunityFeed = () => {
       <PostCreator />
 
       {/* Tab Navigation ---------------- */}
-      <div className="flex gap-6 mb-4 pt-2 border-b">
+      <div className="flex gap-6 mb-4 pt-2 border-b px-3 sm:px-0">
         {feedTabs.map((tab) => (
           <button
             key={tab.value}
             onClick={() => setActiveTab(tab.value)}
-            className={`pb-4 font-bold ${
+            className={`pb-1 md:pb-4 lg:font-bold ${
               activeTab === tab.value
                 ? "text-green-600 border-b-2 border-green-600"
                 : "text-gray-500"
@@ -37,9 +37,11 @@ const CommunityFeed = () => {
       </div>
 
       {/* All Posts ------------------ */}
-      {posts.map((post, index) => (
-        <PostCard key={index} {...post} />
-      ))}
+      <div className="px-3 sm:px-0">
+        {posts.map((post, index) => (
+          <PostCard key={index} {...post} />
+        ))}
+      </div>
     </div>
   );
 };

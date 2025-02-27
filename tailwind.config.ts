@@ -26,6 +26,9 @@ export default {
   ],
   theme: {
     extend: {
+      container: {
+        padding: "", // if i add padding, the container will be wider than the screen
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
