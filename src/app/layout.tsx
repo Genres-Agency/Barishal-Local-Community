@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 
 const arial = localFont({
   src: "./fonts/arial.ttf",
@@ -46,11 +47,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${arial.variable} ${poppins.variable}`}>
       <body className="bg-gray-50">
-        {/* Sticky Navbar */}
-        <div className="sticky top-0 z-50">
-          <Navbar />
-        </div>
-        {children}
+        <ErrorBoundary>
+          {/* Sticky Navbar */}
+          <div className="sticky top-0 z-50">
+            <Navbar />
+          </div>
+          {children}
+        </ErrorBoundary>
       </body>
     </html>
   );

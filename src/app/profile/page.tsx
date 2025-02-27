@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
+import { Loading } from "@/components/ui/loading";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,14 +13,17 @@ import { mockUserProfile, posts } from "@/lib/config/profile";
 import Posts from "@/components/profile/Posts";
 import Settings from "@/components/profile/Settings";
 
-export default function ProfilePage() {
+function ProfileContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tab = searchParams.get("tab") || "personal";
+  const tab = searchParams.get("tab");
+  const activeTab = tab || "personal";
 
   const handleTabChange = (value: string) => {
-    router.push(`/profile?tab=${value}`);
+    const newUrl = value === "personal" ? "/profile" : `/profile?tab=${value}`;
+    router.push(newUrl);
   };
+
   return (
     <div className="container mx-auto py-8 px-4 mt-16">
       {/* Profile Header */}
@@ -46,8 +50,8 @@ export default function ProfilePage() {
 
       {/* Profile Tabs */}
       <Tabs
-        defaultValue={tab}
-        value={tab}
+        defaultValue="personal"
+        value={activeTab}
         className="space-y-4"
         onValueChange={handleTabChange}
       >
@@ -83,5 +87,19 @@ export default function ProfilePage() {
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="container mx-auto py-8 px-4 mt-16">
+          <Loading size="lg" className="min-h-[60vh]" />
+        </div>
+      }
+    >
+      <ProfileContent />
+    </Suspense>
   );
 }
