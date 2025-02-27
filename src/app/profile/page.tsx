@@ -1,24 +1,64 @@
 "use client";
+
 import React from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Edit2,
-  MapPin,
-  Mail,
-  Phone,
-  Globe,
-  Facebook,
-  Twitter,
-  Linkedin,
-} from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
+import { Edit2, MapPin } from "lucide-react";
+import PersonalInfo from "@/components/profile/PersonalInfo";
+import CommunityActivity from "@/components/profile/CommunityActivity";
+
+interface UserProfile {
+  name: string;
+  location: string;
+  memberSince: string;
+  email: string;
+  phone: string;
+  bio: string;
+  website: string;
+  social: {
+    facebook: string;
+    twitter: string;
+    linkedin: string;
+  };
+  stats: {
+    posts: number;
+    comments: number;
+    events: number;
+  };
+}
+
+const mockUserProfile: UserProfile = {
+  name: "আতাউল্লাহ",
+  location: "বরিশাল, বাংলাদেশ",
+  memberSince: "২০২৩",
+  email: "ataullahm100@gmail.com",
+  phone: "+880 1719-199967",
+  bio: "বরিশাল কমিউনিটির একজন সক্রিয় সদস্য। সফটওয়্যার ডেভেলপার হিসেবে কাজ করি।",
+  website: "https://ataullah.com",
+  social: {
+    facebook: "https://facebook.com/username",
+    twitter: "https://twitter.com/username",
+    linkedin: "https://linkedin.com/in/username",
+  },
+  stats: {
+    posts: 24,
+    comments: 128,
+    events: 8,
+  },
+};
 
 export default function ProfilePage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const tab = searchParams.get("tab") || "personal";
+
+  const handleTabChange = (value: string) => {
+    router.push(`/profile?tab=${value}`);
+  };
   return (
     <div className="container mx-auto py-8 px-4 mt-16">
       {/* Profile Header */}
@@ -42,7 +82,12 @@ export default function ProfilePage() {
       </div>
 
       {/* Profile Tabs */}
-      <Tabs defaultValue="personal" className="space-y-4">
+      <Tabs
+        defaultValue={tab}
+        value={tab}
+        className="space-y-4"
+        onValueChange={handleTabChange}
+      >
         <TabsList className="bg-white p-1 rounded-lg shadow-sm w-full flex flex-wrap justify-start gap-2">
           <TabsTrigger value="personal" className="flex-1 md:flex-none">
             ব্যক্তিগত তথ্য
@@ -59,111 +104,11 @@ export default function ProfilePage() {
         </TabsList>
 
         <TabsContent value="personal">
-          <Card className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div>
-                  <Label>পূর্ণ নাম</Label>
-                  <Input defaultValue="আতাউল্লাহ " />
-                </div>
-                <div>
-                  <Label>ইমেইল</Label>
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-gray-500" />
-                    <Input defaultValue="ataullahm100@gmail.com" />
-                  </div>
-                </div>
-                <div>
-                  <Label>ফোন</Label>
-                  <div className="flex items-center gap-2">
-                    <Phone className="w-4 h-4 text-gray-500" />
-                    <Input defaultValue="+880 1719-199967" />
-                  </div>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div>
-                  <Label>বায়ো</Label>
-                  <Textarea
-                    className="min-h-[100px]"
-                    defaultValue="বরিশাল কমিউনিটির একজন সক্রিয় সদস্য। সফটওয়্যার ডেভেলপার হিসেবে কাজ করি।"
-                  />
-                </div>
-                <div>
-                  <Label>ওয়েবসাইট</Label>
-                  <div className="flex items-center gap-2">
-                    <Globe className="w-4 h-4 text-gray-500" />
-                    <Input defaultValue="https://ataullah.com" />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <Label>সোশ্যাল মিডিয়া</Label>
-                  <div className="flex items-center gap-2">
-                    <Facebook className="w-4 h-4 text-gray-500" />
-                    <Input defaultValue="https://facebook.com/username" />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Twitter className="w-4 h-4 text-gray-500" />
-                    <Input defaultValue="https://twitter.com/username" />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Linkedin className="w-4 h-4 text-gray-500" />
-                    <Input defaultValue="https://linkedin.com/in/username" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Card>
+          <PersonalInfo profile={mockUserProfile} />
         </TabsContent>
 
         <TabsContent value="community">
-          <Card className="p-6">
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-green-50 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-green-700">
-                    মোট পোস্ট
-                  </h3>
-                  <p className="text-3xl font-bold text-green-600">২৪</p>
-                </div>
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-blue-700">
-                    কমেন্ট
-                  </h3>
-                  <p className="text-3xl font-bold text-blue-600">১২৮</p>
-                </div>
-                <div className="bg-purple-50 p-4 rounded-lg">
-                  <h3 className="text-lg font-semibold text-purple-700">
-                    ইভেন্ট অংশগ্রহণ
-                  </h3>
-                  <p className="text-3xl font-bold text-purple-600">৮</p>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold mb-4">
-                  সর্বশেষ অ্যাক্টিভিটি
-                </h3>
-                <div className="space-y-4">
-                  {/* Activity Items */}
-                  <div className="bg-white p-4 rounded-lg border">
-                    <p className="text-sm text-gray-600">২ ঘণ্টা আগে</p>
-                    <p className="mt-1">
-                      &ldquo;বরিশাল টেক মিট ২০২৪&rdquo; ইভেন্টে যোগদান করেছেন
-                    </p>
-                  </div>
-                  <div className="bg-white p-4 rounded-lg border">
-                    <p className="text-sm text-gray-600">৫ ঘণ্টা আগে</p>
-                    <p className="mt-1">একটি নতুন পোস্ট করেছেন</p>
-                  </div>
-                  <div className="bg-white p-4 rounded-lg border">
-                    <p className="text-sm text-gray-600">১ দিন আগে</p>
-                    <p className="mt-1">একটি পোস্টে মন্তব্য করেছেন</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Card>
+          <CommunityActivity stats={mockUserProfile.stats} />
         </TabsContent>
 
         <TabsContent value="posts">
