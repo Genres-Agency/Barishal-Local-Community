@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "@/components/Navbar";
 import LeftSidebar from "@/components/navigation/leftSide/LeftSidebar";
 import CommunityFeed from "@/components/feed/CommunityFeed";
 import CommunityEvent from "@/components/community-event/CommunityEvent";
@@ -7,11 +6,7 @@ import RightSidebar from "@/components/navigation/rightSide/RightSidebar";
 
 export default function Home() {
   return (
-    <div className="bg-gray-50">
-      {/* Sticky Navbar */}
-      <div className="sticky top-0 z-50">
-        <Navbar />
-      </div>
+    <div className="">
       {/* Community Event Section */}
       <div className="relative z-40 mt-16 lg:mt-20">
         <CommunityEvent />

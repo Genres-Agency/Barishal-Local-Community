@@ -2,12 +2,22 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Menu, Search, User, X } from "lucide-react";
+import {
+  LogOut,
+  Menu,
+  MessageSquare,
+  Search,
+  Settings,
+  User,
+  Users,
+  X,
+} from "lucide-react";
 import LeftSidebar from "./navigation/leftSide/LeftSidebar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { navigationItemsLeftSite } from "@/lib/config/navigation";
@@ -87,10 +97,57 @@ const Navbar = () => {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <Avatar className="ml-4">
-              <AvatarImage src="assets/profile.jpg" />
-              <AvatarFallback>AT</AvatarFallback>
-            </Avatar>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="ml-4 cursor-pointer">
+                  <AvatarImage src="assets/profile.jpg" />
+                  <AvatarFallback>AT</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/profile"
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <User className="w-4 h-4" />
+                    <span>প্রোফাইল</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/profile?tab=posts"
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    <span>আমার পোস্ট</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/profile?tab=community"
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <Users className="w-4 h-4" />
+                    <span>কমিউনিটি একটিভিটি</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/profile?tab=settings"
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
+                    <Settings className="w-4 h-4" />
+                    <span>সেটিংস</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem className="flex items-center gap-2 cursor-pointer text-red-600 focus:text-red-600">
+                  <LogOut className="w-4 h-4" />
+                  <span>লগআউট</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
