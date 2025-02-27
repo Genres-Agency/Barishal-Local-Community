@@ -1,21 +1,10 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Edit2,
-  MapPin,
-  Mail,
-  Phone,
-  Globe,
-  Facebook,
-  Twitter,
-  Linkedin,
-} from "lucide-react";
+import { Mail, Phone, Globe, Facebook, Twitter, Linkedin } from "lucide-react";
 
 interface PersonalInfoProps {
   profile: {
@@ -37,7 +26,6 @@ interface PersonalInfoProps {
 export default function PersonalInfo({ profile }: PersonalInfoProps) {
   return (
     <div className="space-y-6">
-
       {/* Personal Information Form */}
       <Card className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -64,10 +52,7 @@ export default function PersonalInfo({ profile }: PersonalInfoProps) {
           <div className="space-y-4">
             <div>
               <Label>বায়ো</Label>
-              <Textarea
-                className="min-h-[100px]"
-                defaultValue={profile.bio}
-              />
+              <Textarea className="min-h-[100px]" defaultValue={profile.bio} />
             </div>
             <div>
               <Label>ওয়েবসাইট</Label>
