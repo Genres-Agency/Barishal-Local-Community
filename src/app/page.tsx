@@ -2,8 +2,9 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import LeftSidebar from "@/components/navigation/leftSide/LeftSidebar";
 import CommunityFeed from "@/components/feed/CommunityFeed";
-import CommunityEvent from "@/components/CommunityEvent";
+import CommunityEvent from "@/components/community-event/CommunityEvent";
 import RightSidebar from "@/components/navigation/rightSide/RightSidebar";
+import { EventSlider } from "@/components/community-event/EventSlider";
 
 export default function Home() {
   return (
@@ -15,6 +16,8 @@ export default function Home() {
       {/* Community Event Section */}
       <div className="relative z-40 mt-16 lg:mt-20">
         <CommunityEvent />
+
+        <EventSlider />
       </div>
 
       {/* Main Content Container */}
