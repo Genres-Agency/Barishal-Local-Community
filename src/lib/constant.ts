@@ -117,3 +117,21 @@ export const posts: PostProps[] = [
     image: "/assets/dog.png",
   },
 ];
+
+type UserInfo = {
+  name: string;
+  image: string;
+  username: string;
+  followers: string;
+  following: string;
+  backgroundImage: string;
+};
+
+export const userInfo: UserInfo = {
+  name: "ইমতিয়াজ হোসেন",
+  image: "/assets/profile.jpg",
+  username: "@imtiazhossain",
+  followers: "১.৩",
+  following: "৩০০",
+  backgroundImage: "/assets/banner.png",
+};

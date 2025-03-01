@@ -1,8 +1,8 @@
-import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { PostProps } from "@/lib/constant";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
 import Image from "next/image";
-import { PostProps } from "@/lib/constant";
+import React from "react";
 
 const PostCard: React.FC<PostProps> = ({
   author,
@@ -16,7 +16,7 @@ const PostCard: React.FC<PostProps> = ({
   <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
     <div className="flex items-start gap-3 mb-4">
       <Avatar>
-        <AvatarImage src={author.image} />
+        <AvatarImage className="object-cover " src={author.image} />
         <AvatarFallback>{author.name[0]}</AvatarFallback>
       </Avatar>
       <div className="flex justify-between w-full">

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { postCreatorActions } from "@/lib/config/post-creator.config";
+import { useState } from "react";
 
 const PostCreator = () => {
   const [postContent, setPostContent] = useState("");
