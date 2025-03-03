@@ -2,15 +2,15 @@ import {
   Bell,
   Briefcase,
   Calendar,
+  HelpCircle,
   Home,
   MessageSquare,
+  Newspaper,
   Search,
   Settings,
+  ShoppingBag,
   Store,
   Users,
-  HelpCircle,
-  ShoppingBag,
-  Newspaper,
 } from "lucide-react";
 
 export const feedNavigationItems = [
@@ -42,8 +42,8 @@ export const feedNavigationItems = [
     icon: Calendar,
     text: "ইভেন্ট",
     bgColor: "bg-yellow-50",
-    textColor: "text-yellow-600",
-    hoverBg: "hover:bg-yellow-100",
+    textColor: "text-purple-600",
+    hoverBg: "hover:bg-purple-100",
     href: "/events",
   },
 ];
