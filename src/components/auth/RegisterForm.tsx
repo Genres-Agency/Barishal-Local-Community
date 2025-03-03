@@ -45,15 +45,12 @@ export default function RegisterForm() {
       const result = await registerUser(data);
       console.log("Registration successful:", result);
       toast.success("Logged in", { id: toastId, duration: 2000 });
-
-      if (result.accessToken) {
-        // Reset input fields after successful registration
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setPassword("");
-        setConfirmPassword("");
-      }
+      // Reset input fields after successful registration
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
     } catch (error: any) {
       console.error("Error:", error.message);
       toast.error("Something went wrong", { id: toastId, duration: 2000 });

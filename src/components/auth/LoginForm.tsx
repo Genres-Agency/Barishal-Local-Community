@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginUser } from "@/lib/authApi";
+// import Cookies from "js-cookie";
 import { Eye, EyeOff, Facebook, Github } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -33,6 +34,7 @@ export default function LoginForm() {
       toast.success("Logged in", { id: toastId, duration: 2000 });
       if (result.accessToken) {
         // Reset input fields after successful login
+
         setEmail("");
         setPassword("");
       }

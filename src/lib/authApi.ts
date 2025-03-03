@@ -15,6 +15,7 @@ export const registerUser = async (data: {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include", // If using cookies or authentication
       body: JSON.stringify(data),
     });
 
@@ -42,6 +43,7 @@ export const loginUser = async (email: string, password: string) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include", // If using cookies or authentication
       body: JSON.stringify({ email, password }),
     });
 
