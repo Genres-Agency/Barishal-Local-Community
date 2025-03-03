@@ -31,11 +31,11 @@ export default function LoginForm() {
       const result = await loginUser(email, password);
       console.log("Login successful:", result);
       toast.success("Logged in", { id: toastId, duration: 2000 });
-      // Reset input fields after successful login
-      setEmail("");
-      setPassword("");
-
-      // TODO: Store authentication token, navigate to dashboard, etc.
+      if (result.accessToken) {
+        // Reset input fields after successful login
+        setEmail("");
+        setPassword("");
+      }
     } catch (error: any) {
       console.error("Error:", error.message);
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
@@ -54,8 +54,9 @@ export default function LoginForm() {
           <div className="space-y-2">
             <Label htmlFor="register-email">ইমেইল</Label>
             <Input
-              id="register-email"
+              id="email"
               type="email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="example@mail.com"
               required
@@ -64,8 +65,10 @@ export default function LoginForm() {
           <div className="space-y-2 relative">
             <Label htmlFor="register-password">পাসওয়ার্ড</Label>
             <Input
-              id="register-password"
+              id="password"
               onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              placeholder="********"
               type={isPasswordVisible ? "text" : "password"} // Toggle the input type
               required
             />

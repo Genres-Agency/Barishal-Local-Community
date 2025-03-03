@@ -9,11 +9,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { registerUser } from "@/lib/authApi";
 import { Eye, EyeOff, Facebook, Github } from "lucide-react"; // Import Eye and EyeOff icons
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function RegisterForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -38,22 +40,23 @@ export default function RegisterForm() {
     }
 
     const data = { firstName, lastName, email, password };
-
+    const toastId = toast.loading("Logging in");
     try {
       const result = await registerUser(data);
       console.log("Registration successful:", result);
+      toast.success("Logged in", { id: toastId, duration: 2000 });
 
-      // Reset input fields after successful registration
-      setFirstName("");
-      setLastName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-
-      // TODO: Handle successful registration (e.g., redirect user, show a success message, etc.)
+      if (result.accessToken) {
+        // Reset input fields after successful registration
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+      }
     } catch (error: any) {
       console.error("Error:", error.message);
-      alert(error.message); // Show error message to the user
+      toast.error("Something went wrong", { id: toastId, duration: 2000 });
     } finally {
       setIsLoading(false);
     }
@@ -73,6 +76,7 @@ export default function RegisterForm() {
               id="firstName"
               onChange={(e) => setFirstName(e.target.value)}
               type="text"
+              placeholder="আপনার প্রথম নাম"
               required
             />
           </div>
@@ -82,6 +86,7 @@ export default function RegisterForm() {
               id="lastName"
               onChange={(e) => setLastName(e.target.value)}
               type="text"
+              placeholder="আপনার দ্বিতীয় নাম"
               required
             />
           </div>
@@ -91,7 +96,7 @@ export default function RegisterForm() {
               id="register-email"
               type="email"
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="example@mail.com"
+              placeholder="আপনার ইমেইল"
               required
             />
           </div>
@@ -100,6 +105,7 @@ export default function RegisterForm() {
             <Input
               id="register-password"
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="********"
               type={isPasswordVisible ? "text" : "password"} // Toggle the input type
               required
             />
@@ -119,6 +125,7 @@ export default function RegisterForm() {
             <Label htmlFor="confirm-password">পাসওয়ার্ড নিশ্চিত করুন</Label>
             <Input
               id="confirm-password"
+              placeholder="********"
               onChange={(e) => setConfirmPassword(e.target.value)}
               type={isConfirmPasswordVisible ? "text" : "password"} // Toggle the input type
               required
