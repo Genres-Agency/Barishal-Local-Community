@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
@@ -12,16 +9,38 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Facebook, Github } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Eye, EyeOff, Facebook, Github } from "lucide-react";
+import { useState } from "react";
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    const data = { email, password };
+    console.log("Login data", data);
     // TODO: Add authentication logic here
+    // Add authentication logic here
+    fetch("http://localhost:3333/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.log("Error:", error.message));
     setIsLoading(false);
+    // After successful login, reset the form fields
+    setEmail("");
+    setPassword("");
   };
 
   return (
@@ -33,17 +52,34 @@ export default function LoginForm() {
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">ইমেইল</Label>
+            <Label htmlFor="register-email">ইমেইল</Label>
             <Input
-              id="email"
+              id="register-email"
               type="email"
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="example@mail.com"
               required
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">পাসওয়ার্ড</Label>
-            <Input id="password" type="password" required />
+          <div className="space-y-2 relative">
+            <Label htmlFor="register-password">পাসওয়ার্ড</Label>
+            <Input
+              id="register-password"
+              onChange={(e) => setPassword(e.target.value)}
+              type={isPasswordVisible ? "text" : "password"} // Toggle the input type
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+              className="absolute right-3 pt-3 top-1/2 transform -translate-y-1/2"
+            >
+              {isPasswordVisible ? (
+                <EyeOff className="w-5 h-5 text-gray-500" />
+              ) : (
+                <Eye className="w-5 h-5 text-gray-500" />
+              )}
+            </button>
           </div>
           <Button variant="link" className="px-0 text-sm">
             পাসওয়ার্ড ভুলে গেছেন?
