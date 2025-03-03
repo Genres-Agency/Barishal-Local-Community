@@ -18,7 +18,7 @@ const PostCreator = () => {
       <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 mb-4">
         <div className="flex gap-2 sm:gap-4">
           <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
-            <AvatarImage src="/assets/profile.jpg" />
+            <AvatarImage className="object-cover" src="/assets/profile.jpg" />
             <AvatarFallback>ME</AvatarFallback>
           </Avatar>
           <div className="flex flex-col w-full gap-3 sm:gap-4">

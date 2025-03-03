@@ -5,11 +5,13 @@ import UserHeader from "@/components/user/UserHeader";
 
 export default function UserPage() {
   return (
-    <div className="relative z-40 mt-16 lg:mt-20">
+    <div className="relative container mx-auto z-40 mt-16 lg:mt-20">
       {/* User Header ----------------- */}
-      <UserHeader />
+      <div className="">
+        <UserHeader />
+      </div>
       {/* Main Content Container */}
-      <div className="container mx-auto ">
+      <div className=" ">
         <div className="flex flex-col md:flex-row gap-6 relative">
           {/* Left Sidebar */}
           <aside className="sticky top-[4.5rem] h-[calc(100vh-4.5rem)] w-full md:w-64 lg:w-72 overflow-y-auto hidden md:block">
