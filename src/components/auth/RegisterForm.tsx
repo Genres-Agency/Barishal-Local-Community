@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { registerUser } from "@/lib/authApi";
 import { Eye, EyeOff, Facebook, Github } from "lucide-react"; // Import Eye and EyeOff icons
 import { useState } from "react";
 
@@ -28,34 +29,34 @@ export default function RegisterForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    const data = { firstName, lastName, email, password };
-    // console.log("Hello=========", data);
+
     // Check if password and confirm password match
     if (password !== confirmPassword) {
-      // Show an alert if the passwords do not match
-      alert("Password and Confirm Password does not match");
+      alert("Password and Confirm Password do not match");
       setIsLoading(false);
       return;
     }
-    // Add authentication logic here
-    fetch("http://localhost:3333/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.log("Error:", error));
 
-    // After successful registration, reset the form fields
-    setIsLoading(false);
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPassword("");
-    setConfirmPassword("");
+    const data = { firstName, lastName, email, password };
+
+    try {
+      const result = await registerUser(data);
+      console.log("Registration successful:", result);
+
+      // Reset input fields after successful registration
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+
+      // TODO: Handle successful registration (e.g., redirect user, show a success message, etc.)
+    } catch (error: any) {
+      console.error("Error:", error.message);
+      alert(error.message); // Show error message to the user
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -67,7 +68,7 @@ export default function RegisterForm() {
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="firstName">F নাম</Label>
+            <Label htmlFor="firstName">প্রথম নাম</Label>
             <Input
               id="firstName"
               onChange={(e) => setFirstName(e.target.value)}
@@ -76,7 +77,7 @@ export default function RegisterForm() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="lastName">S নাম</Label>
+            <Label htmlFor="lastName">দ্বিতীয় নাম</Label>
             <Input
               id="lastName"
               onChange={(e) => setLastName(e.target.value)}

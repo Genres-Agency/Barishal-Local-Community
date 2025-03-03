@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { loginUser } from "@/lib/authApi";
 import { Eye, EyeOff, Facebook, Github } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -20,29 +22,27 @@ export default function LoginForm() {
   const [password, setPassword] = useState<string>("");
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    const data = { email, password };
-    console.log("Login data", data);
-    // TODO: Add authentication logic here
-    // Add authentication logic here
-    fetch("http://localhost:3333/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.log("Error:", error.message));
-    setIsLoading(false);
-    // After successful login, reset the form fields
-    setEmail("");
-    setPassword("");
-  };
 
+    const toastId = toast.loading("Logging in");
+    try {
+      const result = await loginUser(email, password);
+      console.log("Login successful:", result);
+      toast.success("Logged in", { id: toastId, duration: 2000 });
+      // Reset input fields after successful login
+      setEmail("");
+      setPassword("");
+
+      // TODO: Store authentication token, navigate to dashboard, etc.
+    } catch (error: any) {
+      console.error("Error:", error.message);
+      toast.error("Something went wrong", { id: toastId, duration: 2000 });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <Card>
       <CardHeader>
