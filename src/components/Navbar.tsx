@@ -1,9 +1,11 @@
 "use client";
-import React, { useState } from "react";
-import Link from "next/link";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { navigationItemsLeftSite } from "@/lib/config/navigation";
+import { logoutMenuItem, profileMenuItems } from "@/lib/config/profileMenu";
 import { Menu, Search, User, X } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
 import LeftSidebar from "./navigation/leftSide/LeftSidebar";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,8 +13,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { navigationItemsLeftSite } from "@/lib/config/navigation";
-import { profileMenuItems, logoutMenuItem } from "@/lib/config/profileMenu";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

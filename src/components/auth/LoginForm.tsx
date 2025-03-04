@@ -11,7 +11,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { loginUser } from "@/lib/authApi";
+import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { setUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { verifyToken } from "@/utils/verifyToken";
+// import Cookies from "js-cookie";
 import { Eye, EyeOff, Facebook, Github } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -21,21 +25,26 @@ export default function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
+  const [login, { loading }] = useLoginMutation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-
+    const data = { email, password };
     const toastId = toast.loading("Logging in");
     try {
-      const result = await loginUser(email, password);
-      console.log("Login successful:", result);
+      const result = await login(data);
+      console.log("result", result);
+      const user = verifyToken(result?.data?.token) as any;
+      console.log("user", user);
+
+      dispatch(setUser({ user: user, token: result.data.token }));
       toast.success("Logged in", { id: toastId, duration: 2000 });
-      if (result.accessToken) {
-        // Reset input fields after successful login
-        setEmail("");
-        setPassword("");
-      }
+      // Reset input fields after successful login
+      setEmail("");
+      setPassword("");
     } catch (error: any) {
       console.error("Error:", error.message);
       toast.error("Something went wrong", { id: toastId, duration: 2000 });

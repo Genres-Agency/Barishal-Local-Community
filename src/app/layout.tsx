@@ -1,9 +1,11 @@
+import Navbar from "@/components/Navbar";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
+import ReduxProvider from "@/lib/providers/ReduxProviders";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import localFont from "next/font/local";
+import { Toaster } from "sonner";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import { ErrorBoundary } from "@/components/ui/error-boundary";
 
 const arial = localFont({
   src: "./fonts/arial.ttf",
@@ -39,22 +41,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${arial.variable} ${poppins.variable}`}>
-      <body className="bg-gray-50">
-        <ErrorBoundary>
-          {/* Sticky Navbar */}
-          <div className="sticky top-0 z-50">
-            <Navbar />
-          </div>
-          {children}
-        </ErrorBoundary>
-      </body>
-    </html>
+    <ReduxProvider>
+      <html lang="en" className={`${arial.variable} ${poppins.variable}`}>
+        <body className="bg-gray-50">
+          <ErrorBoundary>
+            {/* Sticky Navbar */}
+            <div className="sticky top-0 z-50">
+              <Navbar />
+            </div>
+            {children}
+          </ErrorBoundary>
+          <Toaster />
+        </body>
+      </html>
+    </ReduxProvider>
   );
 }
