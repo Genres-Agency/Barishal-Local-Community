@@ -12,7 +12,10 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { registerUser } from "@/lib/authApi";
+import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { setUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
+import { verifyToken } from "@/utils/verifyToken";
 import { Eye, EyeOff, Facebook, Github } from "lucide-react"; // Import Eye and EyeOff icons
 import { useState } from "react";
 import { toast } from "sonner";
@@ -27,6 +30,9 @@ export default function RegisterForm() {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState<boolean>(false);
+  const dispatch = useAppDispatch();
+
+  const [register, { loading }] = useRegisterMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,8 +48,11 @@ export default function RegisterForm() {
     const data = { firstName, lastName, email, password };
     const toastId = toast.loading("Logging in");
     try {
-      const result = await registerUser(data);
-      console.log("Registration successful:", result);
+      const result = await register(data);
+      console.log("result", result);
+      const user = verifyToken(result?.data?.token) as any;
+
+      dispatch(setUser({ user: user, token: result.data.token }));
       toast.success("Logged in", { id: toastId, duration: 2000 });
       // Reset input fields after successful registration
       setFirstName("");
@@ -71,6 +80,7 @@ export default function RegisterForm() {
             <Label htmlFor="firstName">প্রথম নাম</Label>
             <Input
               id="firstName"
+              value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               type="text"
               placeholder="আপনার প্রথম নাম"
@@ -83,6 +93,7 @@ export default function RegisterForm() {
               id="lastName"
               onChange={(e) => setLastName(e.target.value)}
               type="text"
+              value={lastName}
               placeholder="আপনার দ্বিতীয় নাম"
               required
             />
@@ -90,8 +101,9 @@ export default function RegisterForm() {
           <div className="space-y-2">
             <Label htmlFor="register-email">ইমেইল</Label>
             <Input
-              id="register-email"
+              id="email"
               type="email"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="আপনার ইমেইল"
               required
@@ -100,11 +112,12 @@ export default function RegisterForm() {
           <div className="space-y-2 relative">
             <Label htmlFor="register-password">পাসওয়ার্ড</Label>
             <Input
-              id="register-password"
+              id="password"
               onChange={(e) => setPassword(e.target.value)}
               placeholder="********"
               type={isPasswordVisible ? "text" : "password"} // Toggle the input type
               required
+              value={password}
             />
             <button
               type="button"
@@ -121,7 +134,8 @@ export default function RegisterForm() {
           <div className="space-y-2 relative">
             <Label htmlFor="confirm-password">পাসওয়ার্ড নিশ্চিত করুন</Label>
             <Input
-              id="confirm-password"
+              id="confirmPassword"
+              value={confirmPassword}
               placeholder="********"
               onChange={(e) => setConfirmPassword(e.target.value)}
               type={isConfirmPasswordVisible ? "text" : "password"} // Toggle the input type
