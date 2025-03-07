@@ -2,6 +2,7 @@ import { baseApi } from "../../api/baseApi";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    // register a new user
     register: builder.mutation({
       query: (userInfo) => ({
         url: "/auth/register",
@@ -9,6 +10,8 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo,
       }),
     }),
+
+    // Login a new user
     login: builder.mutation({
       query: (userInfo) => ({
         url: "/auth/login",
@@ -16,6 +19,7 @@ const authApi = baseApi.injectEndpoints({
         body: userInfo,
       }),
     }),
+    //
   }),
 });
 

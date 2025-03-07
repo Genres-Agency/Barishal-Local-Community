@@ -1,6 +1,9 @@
 "use client";
 import { navigationItemsLeftSite } from "@/lib/config/navigation";
 import { logoutMenuItem, profileMenuItems } from "@/lib/config/profileMenu";
+import { getAuthTokens } from "@/lib/getToken";
+import { logout } from "@/redux/features/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import { Menu, Search, User, X } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -17,6 +20,18 @@ import {
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const token = getAuthTokens();
+  console.log("token", token);
+  // let user;
+  // if (token) {
+  //   return (user = verifyToken(token));
+  // }
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <nav className="bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
@@ -110,6 +125,7 @@ const Navbar = () => {
                 ))}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
+                  onClick={handleLogout}
                   className={`flex items-center gap-2 cursor-pointer ${
                     logoutMenuItem.variant === "destructive"
                       ? "text-red-600 focus:text-red-600"
