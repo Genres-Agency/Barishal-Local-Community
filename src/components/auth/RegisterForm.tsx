@@ -13,10 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRegisterMutation } from "@/redux/features/auth/authApi";
-import { setUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { verifyToken } from "@/utils/verifyToken";
 import { Eye, EyeOff, Facebook, Github } from "lucide-react"; // Import Eye and EyeOff icons
+import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -32,7 +32,7 @@ export default function RegisterForm() {
     useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  const [register, { loading }] = useRegisterMutation();
+  const [register] = useRegisterMutation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,7 +40,7 @@ export default function RegisterForm() {
 
     // Check if password and confirm password match
     if (password !== confirmPassword) {
-      alert("Password and Confirm Password do not match");
+      toast.error("Password and Confirm Password do not match");
       setIsLoading(false);
       return;
     }
@@ -49,11 +49,10 @@ export default function RegisterForm() {
     const toastId = toast.loading("Logging in");
     try {
       const result = await register(data);
-      console.log("result", result);
-      const user = verifyToken(result?.data?.token) as any;
-
-      dispatch(setUser({ user: user, token: result.data.token }));
-      toast.success("Logged in", { id: toastId, duration: 2000 });
+      // console.log("result", result);
+      const user = verifyToken(result?.data?.token);
+      console.log("user", user);
+      toast.success("Register in", { id: toastId, duration: 2000 });
       // Reset input fields after successful registration
       setFirstName("");
       setLastName("");
@@ -61,8 +60,14 @@ export default function RegisterForm() {
       setPassword("");
       setConfirmPassword("");
     } catch (error: any) {
-      console.error("Error:", error.message);
+      // console.error("Error:", error.message);
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
+      // Reset input fields after successful registration
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
     } finally {
       setIsLoading(false);
     }
@@ -169,10 +174,12 @@ export default function RegisterForm() {
             </div>
           </div>
           <div className="flex gap-4 w-full">
-            <Button variant="outline" className="w-full" type="button">
-              <Facebook className="mr-2 h-4 w-4" />
-              Facebook
-            </Button>
+            <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/auth/google`}>
+              <Button variant="outline" className="w-full" type="button">
+                <Facebook className="mr-2 h-4 w-4" />
+                Google
+              </Button>
+            </Link>
             <Button variant="outline" className="w-full" type="button">
               <Github className="mr-2 h-4 w-4" />
               Github

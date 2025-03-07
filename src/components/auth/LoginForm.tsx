@@ -12,11 +12,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
-import { setUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { verifyToken } from "@/utils/verifyToken";
 // import Cookies from "js-cookie";
 import { Eye, EyeOff, Facebook, Github } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -27,7 +27,7 @@ export default function LoginForm() {
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  const [login, { loading }] = useLoginMutation();
+  const [login] = useLoginMutation();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,22 +36,24 @@ export default function LoginForm() {
     const toastId = toast.loading("Logging in");
     try {
       const result = await login(data);
-      console.log("result", result);
-      const user = verifyToken(result?.data?.token) as any;
+      // console.log("result", result);
+      const user = verifyToken(result?.data?.token);
       console.log("user", user);
-
-      dispatch(setUser({ user: user, token: result.data.token }));
       toast.success("Logged in", { id: toastId, duration: 2000 });
       // Reset input fields after successful login
       setEmail("");
       setPassword("");
     } catch (error: any) {
-      console.error("Error:", error.message);
+      // console.error("Error:", error.message);
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
+      // Reset input fields after successful login
+      setEmail("");
+      setPassword("");
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
     <Card>
       <CardHeader>
@@ -110,10 +112,12 @@ export default function LoginForm() {
             </div>
           </div>
           <div className="flex gap-4 w-full">
-            <Button variant="outline" className="w-full" type="button">
-              <Facebook className="mr-2 h-4 w-4" />
-              Facebook
-            </Button>
+            <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/auth/google`}>
+              <Button variant="outline" className="w-full" type="button">
+                <Facebook className="mr-2 h-4 w-4" />
+                Google
+              </Button>
+            </Link>
             <Button variant="outline" className="w-full" type="button">
               <Github className="mr-2 h-4 w-4" />
               Github
