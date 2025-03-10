@@ -12,19 +12,21 @@ import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-  // baseUrl: "http://localhost:5000/api/v1",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
+    // console.log("token", token);
+
     headers.set("Content-Type", "application/json");
     if (token) {
-      headers.set("authorization", `${token}`);
+      headers.set("authorization", `Bearer ${token}`);
     }
 
     return headers;
   },
   responseHandler: async (response) => {
     const text = await response.text();
+    // console.log("text", text);
     try {
       return JSON.parse(text); // Try to parse as JSON
     } catch (e) {
@@ -50,6 +52,15 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     toast.error(result?.error?.data?.message);
   }
   if (result?.error?.status === 401) {
+    // Skip refresh token attempt for /users/me if not logged in
+    if (args.url === "/users/me") {
+      return result;
+    }
+
+    // Skip refresh token attempt for /auth/refresh endpoint
+    if (args.url === "/auth/refresh") {
+      return result;
+    }
     //* Send Refresh
     console.log("Sending refresh token");
 

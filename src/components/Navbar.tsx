@@ -1,8 +1,9 @@
 "use client";
 import { navigationItemsLeftSite } from "@/lib/config/navigation";
 import { logoutMenuItem, profileMenuItems } from "@/lib/config/profileMenu";
-import { getAuthTokens } from "@/lib/getToken";
+
 import { logout } from "@/redux/features/auth/authSlice";
+import { useGetUserQuery } from "@/redux/features/user/user.api";
 import { useAppDispatch } from "@/redux/hooks";
 import { Menu, Search, User, X } from "lucide-react";
 import Link from "next/link";
@@ -21,13 +22,19 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const { data: user, isLoading } = useGetUserQuery(undefined);
+  console.log("data", user);
+  // const [logout] = usel
 
-  const token = getAuthTokens();
-  console.log("token", token);
+  // const token = getAuthTokens();
+  // console.log("token", token);
   // let user;
   // if (token) {
   //   return (user = verifyToken(token));
   // }
+  if (isLoading) {
+    return <h2>Is Loading..</h2>;
+  }
 
   const handleLogout = () => {
     dispatch(logout());
@@ -78,12 +85,14 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-2">
-            <Link
-              href="/auth"
-              className="px-4 py-2 text-sm text-green-600 font-medium hover:text-green-700 border border-green-600 rounded-md flex items-center gap-2"
-            >
-              <User size={18} /> সাইন ইন
-            </Link>
+            {!user && (
+              <Link
+                href="/auth"
+                className="px-4 py-2 text-sm text-green-600 font-medium hover:text-green-700 border border-green-600 rounded-md flex items-center gap-2"
+              >
+                <User size={18} /> সাইন ইন
+              </Link>
+            )}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="px-4 py-2 text-sm text-white bg-green-600 rounded-md font-medium hover:bg-green-700 flex items-center gap-2">
@@ -104,39 +113,41 @@ const Navbar = () => {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Avatar className="ml-4 cursor-pointer">
-                  <AvatarImage src="assets/profile.jpg" />
-                  <AvatarFallback>AT</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                {profileMenuItems.map((item, index) => (
-                  <DropdownMenuItem key={index} asChild>
-                    <Link
-                      href={item.href}
-                      className="flex items-center gap-2 cursor-pointer"
-                    >
-                      <item.icon className="w-4 h-4" />
-                      <span>{item.label}</span>
-                    </Link>
+            {user && (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Avatar className="ml-4 cursor-pointer">
+                    <AvatarImage src="assets/profile.jpg" />
+                    <AvatarFallback>AT</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  {profileMenuItems.map((item, index) => (
+                    <DropdownMenuItem key={index} asChild>
+                      <Link
+                        href={item.href}
+                        className="flex items-center gap-2 cursor-pointer"
+                      >
+                        <item.icon className="w-4 h-4" />
+                        <span>{item.label}</span>
+                      </Link>
+                    </DropdownMenuItem>
+                  ))}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className={`flex items-center gap-2 cursor-pointer ${
+                      logoutMenuItem.variant === "destructive"
+                        ? "text-red-600 focus:text-red-600"
+                        : ""
+                    }`}
+                  >
+                    <logoutMenuItem.icon className="w-4 h-4" />
+                    <span>{logoutMenuItem.label}</span>
                   </DropdownMenuItem>
-                ))}
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={handleLogout}
-                  className={`flex items-center gap-2 cursor-pointer ${
-                    logoutMenuItem.variant === "destructive"
-                      ? "text-red-600 focus:text-red-600"
-                      : ""
-                  }`}
-                >
-                  <logoutMenuItem.icon className="w-4 h-4" />
-                  <span>{logoutMenuItem.label}</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </div>
         </div>
       </div>

@@ -47,9 +47,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ReduxProvider>
-      <html lang="en" className={`${arial.variable} ${poppins.variable}`}>
-        <body className="bg-gray-50">
+    <html lang="en" className={`${arial.variable} ${poppins.variable}`}>
+      <body className="bg-gray-50">
+        <ReduxProvider>
           <ErrorBoundary>
             {/* Sticky Navbar */}
             <div className="sticky top-0 z-50">
@@ -58,8 +58,8 @@ export default async function RootLayout({
             {children}
           </ErrorBoundary>
           <Toaster />
-        </body>
-      </html>
-    </ReduxProvider>
+        </ReduxProvider>
+      </body>
+    </html>
   );
 }
