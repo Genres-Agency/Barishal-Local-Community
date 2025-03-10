@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import PostCreator from "./PostCreator";
-import PostCard from "./PostCard";
-import { posts, feedTabs } from "@/lib/constant";
+import { feedTabs, posts } from "@/lib/constant";
+import { useState } from "react";
 import FeedNavigation from "./FeedNavigation";
+import PostCard from "./PostCard";
+import PostCreator from "./PostCreator";
 
 const CommunityFeed = () => {
   const [activeTab, setActiveTab] = useState<"latest" | "popular" | "network">(

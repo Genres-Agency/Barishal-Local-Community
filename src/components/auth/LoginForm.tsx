@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useLoginMutation } from "@/redux/features/auth/authApi";
+import { setUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { verifyToken } from "@/utils/verifyToken";
 // import Cookies from "js-cookie";
@@ -39,6 +40,7 @@ export default function LoginForm() {
       // console.log("result", result);
       const user = verifyToken(result?.data?.token);
       console.log("user", user);
+      dispatch(setUser({ user: user, token: result?.data?.token }));
       toast.success("Logged in", { id: toastId, duration: 2000 });
       // Reset input fields after successful login
       setEmail("");
