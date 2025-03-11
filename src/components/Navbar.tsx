@@ -2,11 +2,12 @@
 import { navigationItemsLeftSite } from "@/lib/config/navigation";
 import { logoutMenuItem, profileMenuItems } from "@/lib/config/profileMenu";
 
-import { logout } from "@/redux/features/auth/authSlice";
-import { useGetUserQuery } from "@/redux/features/user/user.api";
-import { useAppDispatch } from "@/redux/hooks";
+import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Menu, Search, User, X } from "lucide-react";
 import Link from "next/link";
+
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LeftSidebar from "./navigation/leftSide/LeftSidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -22,22 +23,13 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const dispatch = useAppDispatch();
-  const { data: user, isLoading } = useGetUserQuery(undefined);
-  console.log("data", user);
-  // const [logout] = usel
-
-  // const token = getAuthTokens();
-  // console.log("token", token);
-  // let user;
-  // if (token) {
-  //   return (user = verifyToken(token));
-  // }
-  if (isLoading) {
-    return <h2>Is Loading..</h2>;
-  }
+  const userData = useAppSelector(selectCurrentUser);
+  const router = useRouter();
+  // console.log("user Data", userData);
 
   const handleLogout = () => {
     dispatch(logout());
+    router.push("/auth");
   };
 
   return (
@@ -85,7 +77,7 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-2">
-            {!user && (
+            {!userData?.userId && (
               <Link
                 href="/auth"
                 className="px-4 py-2 text-sm text-green-600 font-medium hover:text-green-700 border border-green-600 rounded-md flex items-center gap-2"
@@ -113,7 +105,7 @@ const Navbar = () => {
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
-            {user && (
+            {userData?.userId && (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="ml-4 cursor-pointer">
