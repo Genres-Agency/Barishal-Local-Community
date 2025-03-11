@@ -13,10 +13,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useRegisterMutation } from "@/redux/features/auth/authApi";
+import { setUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { verifyToken } from "@/utils/verifyToken";
 import { Eye, EyeOff, Facebook, Github } from "lucide-react"; // Import Eye and EyeOff icons
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -31,6 +33,7 @@ export default function RegisterForm() {
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const navigate = useRouter();
 
   const [register] = useRegisterMutation();
 
@@ -52,6 +55,10 @@ export default function RegisterForm() {
       // console.log("result", result);
       const user = verifyToken(result?.data?.token);
       console.log("user", user);
+      dispatch(setUser({ user: user, token: result?.data?.token }));
+      if (user) {
+        navigate.push("/profile");
+      }
       toast.success("Register in", { id: toastId, duration: 2000 });
       // Reset input fields after successful registration
       setFirstName("");

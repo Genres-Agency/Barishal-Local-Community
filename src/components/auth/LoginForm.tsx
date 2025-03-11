@@ -18,6 +18,7 @@ import { verifyToken } from "@/utils/verifyToken";
 // import Cookies from "js-cookie";
 import { Eye, EyeOff, Facebook, Github } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -27,6 +28,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState<string>("");
   const [isPasswordVisible, setIsPasswordVisible] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const navigate = useRouter();
 
   const [login] = useLoginMutation();
 
@@ -37,16 +39,17 @@ export default function LoginForm() {
     const toastId = toast.loading("Logging in");
     try {
       const result = await login(data);
-      // console.log("result", result);
       const user = verifyToken(result?.data?.token);
-      console.log("user", user);
       dispatch(setUser({ user: user, token: result?.data?.token }));
+      if (user) {
+        navigate.push("/profile");
+      }
+
       toast.success("Logged in", { id: toastId, duration: 2000 });
       // Reset input fields after successful login
       setEmail("");
       setPassword("");
     } catch (error: any) {
-      // console.error("Error:", error.message);
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
       // Reset input fields after successful login
       setEmail("");
