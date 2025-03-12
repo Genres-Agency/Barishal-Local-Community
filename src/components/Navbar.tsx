@@ -25,7 +25,7 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
   const userData = useAppSelector(selectCurrentUser);
   const router = useRouter();
-  // console.log("user Data", userData);
+  console.log("user Data", userData);
 
   const handleLogout = () => {
     dispatch(logout());
