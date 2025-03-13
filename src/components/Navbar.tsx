@@ -6,11 +6,13 @@ import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Menu, Search, User, X } from "lucide-react";
 import Link from "next/link";
-
+// import {useGetUserQuery} from '@/redux/features/user/userApi'
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LeftSidebar from "./navigation/leftSide/LeftSidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+
+import { useGetUserQuery } from "@/redux/features/auth/authApi";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,8 +26,13 @@ const Navbar = () => {
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const dispatch = useAppDispatch();
   const userData = useAppSelector(selectCurrentUser);
+  const { data: user } = useGetUserQuery(undefined, {
+    // Skip the query if we don't have a token
+    skip: !userData?.userId,
+  });
   const router = useRouter();
   console.log("user Data", userData);
+  console.log("user", user);
 
   const handleLogout = () => {
     dispatch(logout());

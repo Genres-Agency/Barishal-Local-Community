@@ -42,6 +42,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 > = async (args, api, extraOptions): Promise<any> => {
   let result = (await baseQuery(args, api, extraOptions)) as any;
 
+  console.log("result", result);
   if (result?.error?.status === 400) {
     toast.error(result?.error?.data?.message);
   }
@@ -61,6 +62,12 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     if (args.url === "/auth/refresh") {
       return result;
     }
+
+    // Check if there's a token before attempting refresh
+    const token = (api.getState() as RootState).auth.token;
+    if (!token) {
+      return result;
+    }
     //* Send Refresh
     console.log("Sending refresh token");
 
@@ -73,6 +80,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     );
 
     const data = await res.json();
+    // console.log("data==>", data);
 
     if (data?.data?.accessToken) {
       const user = (api.getState() as RootState).auth.user;
