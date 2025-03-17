@@ -1,8 +1,37 @@
-import { TQueryParam, TResponseRedux } from "@/types/global";
+import { TQueryParam } from "@/types/global";
 import { baseApi } from "../../api/baseApi";
+
+type TCategorory = {
+  title: string;
+};
 
 const postApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    // getAllCategory: builder.query({
+    //   query: (args) => {
+    //     const params = new URLSearchParams();
+
+    //     if (args) {
+    //       args.forEach((item: TQueryParam) => {
+    //         params.append(item.name, item.value as string);
+    //       });
+    //     }
+
+    //     return {
+    //       url: "/category",
+    //       method: "GET",
+    //       params: params,
+    //     };
+    //   },
+    //   transformResponse: (response: TResponseRedux<TCategorory[]>) => {
+    //     return {
+    //       data: response.data,
+    //       meta: response.meta,
+    //     };
+    //   },
+    //   providesTags: ["Category"],
+    // }),
+
     getAllCategory: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
@@ -19,13 +48,6 @@ const postApi = baseApi.injectEndpoints({
           params: params,
         };
       },
-      transformResponse: (response: TResponseRedux<TCategorory[]>) => {
-        return {
-          data: response.data,
-          meta: response.meta,
-        };
-      },
-      providesTags: ["Category"],
     }),
 
     // Create a new Category
