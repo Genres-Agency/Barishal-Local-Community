@@ -7,31 +7,79 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { postCreatorActions } from "@/lib/config/post-creator.config";
+import { useGetAllCategoryQuery } from "@/redux/features/category/category";
+import { useAddPostMutation } from "@/redux/features/post/post.api";
+import { Image, X } from "lucide-react";
 import { useState } from "react";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
-const PostCreator = () => {
+const PostCreator: React.FC = () => {
   const [postContent, setPostContent] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("general");
+  const [selectedCategory, setSelectedCategory] = useState("reports");
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [addPost] = useAddPostMutation();
 
   // Four categories
-  const categories = [
-    { id: "general", name: "সাধারণ" },
-    { id: "question", name: "প্রশ্ন" },
-    { id: "discussion", name: "আলোচনা" },
-    { id: "announcement", name: "ঘোষণা" },
-  ];
+  // const categories = [
+  //   { id: "general", name: "সাধারণ" },
+  //   { id: "question", name: "প্রশ্ন" },
+  //   { id: "discussion", name: "আলোচনা" },
+  //   { id: "announcement", name: "ঘোষণা" },
+  // ];
 
-  const handlePostSubmit = () => {
-    if (!postContent.trim()) return;
-    // TODO: Implement post submission logic
-    console.log("Post content:", postContent);
-    console.log("Selected category:", selectedCategory);
+  const { data: categories } = useGetAllCategoryQuery(undefined);
+  // console.log("categories", categories);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+
+    if (selectedFile) {
+      setFile(selectedFile);
+      if (preview) {
+        URL.revokeObjectURL(preview);
+      }
+      setPreview(URL.createObjectURL(selectedFile)); // Preview the image
+    }
+  };
+
+  const handlePostSubmit = async () => {
+    if (!postContent.trim() && !file) return;
+
+    // Create the post data
+
+    const postData = {
+      content: postContent,
+      categoryId: selectedCategory,
+      image: file,
+      hashTag: "#programming",
+    };
+
+    console.log("post data", postData);
+
+    const formData = new FormData();
+    if (file) {
+      formData.append("image", file);
+      console.log("File uploaded:", file);
+    }
+    // Append text fields directly (NO JSON.stringify)
+    formData.append("content", postContent);
+    formData.append("categoryId", selectedCategory);
+    formData.append("hashTag", "#programming");
+    // formData.append("data", JSON.stringify(postData));
+    // Create Post
+    await addPost(formData);
+
     setPostContent("");
-    setSelectedCategory("general");
+    setSelectedCategory("");
+    if (preview) {
+      URL.revokeObjectURL(preview);
+    }
+    setFile(null);
+    setPreview(null);
     setIsModalOpen(false);
   };
 
@@ -51,28 +99,14 @@ const PostCreator = () => {
             >
               আপনার মনের কথা শেয়ার করুন...
             </div>
-
-            <div className="flex flex-wrap items-center gap-1">
-              {postCreatorActions.map((action) => (
-                <button
-                  key={action.id}
-                  className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full flex items-center gap-1 sm:gap-2 text-xs sm:text-sm font-medium"
-                  title={action.tooltip}
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  <action.icon size={18} className="text-gray-500" />
-                  {action.label}
-                </button>
-              ))}
-            </div>
           </div>
         </div>
       </div>
 
       {/* Post Creation Modal - Facebook style */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="sm:max-w-[500px] p-0 overflow-hidden">
-          <DialogHeader className="p-4 border-b">
+        <DialogContent className="sm:max-w-[500px] p-0 overflow-auto max-h-[90vh]">
+          <DialogHeader className="p-4 border-b sticky top-0 bg-white z-10">
             <DialogTitle className="text-center text-lg font-semibold">
               পোস্ট তৈরি করুন
             </DialogTitle>
@@ -99,22 +133,50 @@ const PostCreator = () => {
               className="w-full min-h-[150px] border-0 text-lg focus:outline-none resize-none"
               autoFocus
             />
-            <div className="border-t p-3">
-              <div className="flex items-center justify-between p-2 border rounded-md">
-                <span className="font-medium">আপনার পোস্টে যোগ করুন</span>
-                <div className="flex gap-2">
-                  {postCreatorActions.map((action) => (
-                    <button
-                      key={action.id}
-                      className="p-2 hover:bg-gray-100 rounded-full"
-                      title={action.tooltip}
-                    >
-                      <action.icon size={20} className="text-gray-500" />
-                    </button>
-                  ))}
-                </div>
+
+            {/* Display image preview if available */}
+            {preview && (
+              <div className="mt-4 relative">
+                <img
+                  src={preview}
+                  alt="Selected image"
+                  className="w-full max-h-60 object-contain rounded-md"
+                />
+                <button
+                  onClick={() => {
+                    if (preview) {
+                      URL.revokeObjectURL(preview);
+                    }
+                    setFile(null);
+                    setPreview(null);
+                  }}
+                  className="absolute top-2 right-2 bg-black bg-opacity-50 rounded-full p-1"
+                >
+                  <X size={16} className="text-white" />
+                </button>
+              </div>
+            )}
+
+            {/* Image upload section */}
+            <div className="border-t p-3 mt-4">
+              <div className="flex items-center gap-2">
+                <label
+                  htmlFor="image-upload"
+                  className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md cursor-pointer"
+                >
+                  <Image size={20} className="text-gray-500" />
+                  <span className="font-medium">ছবি যোগ করুন</span>
+                </label>
+                <Input
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className={preview ? "hidden" : ""}
+                />
               </div>
             </div>
+
             {/* Category Radio Options */}
             <div className="mt-4 border-t pt-4">
               <p className="font-medium mb-2">
@@ -125,14 +187,14 @@ const PostCreator = () => {
                 onValueChange={setSelectedCategory}
                 className="flex flex-wrap gap-4"
               >
-                {categories.map((category) => (
+                {categories?.map((category: any) => (
                   <div
                     key={category.id}
                     className="flex items-center space-x-2"
                   >
                     <RadioGroupItem value={category.id} id={category.id} />
                     <Label htmlFor={category.id} className="cursor-pointer">
-                      {category.name}
+                      {category.title}
                     </Label>
                   </div>
                 ))}
@@ -140,10 +202,10 @@ const PostCreator = () => {
             </div>
           </div>
 
-          <div className="p-3">
+          <div className="p-3 sticky bottom-0 bg-white border-t">
             <Button
               onClick={handlePostSubmit}
-              disabled={!postContent.trim()}
+              disabled={!postContent.trim() && !file}
               className="w-full bg-green-600 hover:bg-green-700 py-5 text-white rounded-md font-medium"
             >
               পরবর্তী

@@ -1,4 +1,4 @@
-import { posts } from "@/lib/constant";
+import { posts } from "@/lib/config/profile";
 import PostCard from "../feed/PostCard";
 import PostCreator from "../feed/PostCreator";
 

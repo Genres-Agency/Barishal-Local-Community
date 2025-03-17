@@ -1,6 +1,7 @@
 "use client";
 
-import { feedTabs, posts } from "@/lib/constant";
+import { feedTabs } from "@/lib/constant";
+import { useGetAllPostQuery } from "@/redux/features/post/post.api";
 import { useState } from "react";
 import FeedNavigation from "./FeedNavigation";
 import PostCard from "./PostCard";
@@ -11,6 +12,8 @@ const CommunityFeed = () => {
     "latest"
   );
 
+  const { data: postData } = useGetAllPostQuery(undefined);
+  console.log("postData", postData);
   return (
     <div className="space-y-4">
       {/* Feed Navigation ---------------- */}
@@ -38,7 +41,7 @@ const CommunityFeed = () => {
 
       {/* All Posts ------------------ */}
       <div className="px-3 sm:px-0">
-        {posts.map((post, index) => (
+        {postData?.map((post: any, index: any) => (
           <PostCard key={index} {...post} />
         ))}
       </div>

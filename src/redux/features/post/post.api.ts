@@ -1,4 +1,4 @@
-import { TQueryParam, TResponseRedux } from "@/types/global";
+import { TQueryParam } from "@/types/global";
 import { baseApi } from "../../api/baseApi";
 
 const postApi = baseApi.injectEndpoints({
@@ -19,12 +19,13 @@ const postApi = baseApi.injectEndpoints({
           params: params,
         };
       },
-      transformResponse: (response: TResponseRedux<TPost[]>) => {
-        return {
-          data: response.data,
-          meta: response.meta,
-        };
-      },
+      //  transformResponse: (response: TResponseRedux<TPost[]>) => {
+      // transformResponse: (response: any) => {
+      //   return {
+      //     data: response.data,
+      //     meta: response.meta,
+      //   };
+      // },
       providesTags: ["Post"],
     }),
     // Get Single post

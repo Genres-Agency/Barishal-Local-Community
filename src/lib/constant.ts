@@ -19,104 +19,104 @@ export const feedTabs: TabItem[] = [
 ];
 
 export interface PostProps {
-  author: {
-    name: string;
-    image?: string;
-    role?: string;
-  };
+  id: number;
+  authorId: number;
+  categoryId: number;
+  hashTagId: number;
   content: string;
-  timestamp: string;
-  likes: number;
-  comments: number;
-  shares: number;
-  image?: string;
+  photo: string;
+  createdAt: string;
+  updatedAt: string;
+  likes?: number;
+  comments?: number;
+  shares?: number;
 }
-export const posts: PostProps[] = [
-  {
-    author: {
-      name: "ইমতিয়াজ হোসেন",
-      image: "/assets/profile.jpg",
-    },
-    content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
-    timestamp: "২ ঘন্টা আগে",
-    likes: 258,
-    comments: 0,
-    shares: 0,
-    image: "/assets/dog.png",
-  },
-  {
-    author: {
-      name: "ইমতিয়াজ হোসেন",
-      image: "/assets/profile.jpg",
-    },
-    content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
-    timestamp: "২ ঘন্টা আগে",
-    likes: 258,
-    comments: 0,
-    shares: 0,
-    image: "/assets/dog.png",
-  },
-  {
-    author: {
-      name: "ইমতিয়াজ হোসেন",
-      image: "/assets/profile.jpg",
-    },
-    content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
-    timestamp: "২ ঘন্টা আগে",
-    likes: 258,
-    comments: 0,
-    shares: 0,
-    image: "/assets/dog.png",
-  },
-  {
-    author: {
-      name: "ইমতিয়াজ হোসেন",
-      image: "/assets/profile.jpg",
-    },
-    content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
-    timestamp: "২ ঘন্টা আগে",
-    likes: 258,
-    comments: 0,
-    shares: 0,
-    image: "/assets/dog.png",
-  },
-  {
-    author: {
-      name: "ইমতিয়াজ হোসেন",
-      image: "/assets/profile.jpg",
-    },
-    content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
-    timestamp: "২ ঘন্টা আগে",
-    likes: 258,
-    comments: 0,
-    shares: 0,
-    image: "/assets/dog.png",
-  },
-  {
-    author: {
-      name: "ইমতিয়াজ হোসেন",
-      image: "/assets/profile.jpg",
-    },
-    content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
-    timestamp: "২ ঘন্টা আগে",
-    likes: 258,
-    comments: 0,
-    shares: 0,
-    image: "/assets/dog.png",
-  },
-  {
-    author: {
-      name: "ইমতিয়াজ হোসেন",
-      image: "/assets/profile.jpg",
-    },
-    content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
-    timestamp: "২ ঘন্টা আগে",
-    likes: 258,
-    comments: 0,
-    shares: 0,
-    image: "/assets/dog.png",
-  },
-];
+// export const posts: PostProps[] = [
+//   {
+//     author: {
+//       name: "ইমতিয়াজ হোসেন",
+//       image: "/assets/profile.jpg",
+//     },
+//     content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
+//     timestamp: "২ ঘন্টা আগে",
+//     likes: 258,
+//     comments: 0,
+//     shares: 0,
+//     photo: "/assets/dog.png",
+//   },
+//   {
+//     author: {
+//       name: "ইমতিয়াজ হোসেন",
+//       image: "/assets/profile.jpg",
+//     },
+//     content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
+//     timestamp: "২ ঘন্টা আগে",
+//     likes: 258,
+//     comments: 0,
+//     shares: 0,
+//     photo: "/assets/dog.png",
+//   },
+//   {
+//     author: {
+//       name: "ইমতিয়াজ হোসেন",
+//       image: "/assets/profile.jpg",
+//     },
+//     content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
+//     timestamp: "২ ঘন্টা আগে",
+//     likes: 258,
+//     comments: 0,
+//     shares: 0,
+//     photo: "/assets/dog.png",
+//   },
+//   {
+//     author: {
+//       name: "ইমতিয়াজ হোসেন",
+//       image: "/assets/profile.jpg",
+//     },
+//     content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
+//     timestamp: "২ ঘন্টা আগে",
+//     likes: 258,
+//     comments: 0,
+//     shares: 0,
+//     photo: "/assets/dog.png",
+//   },
+//   {
+//     author: {
+//       name: "ইমতিয়াজ হোসেন",
+//       image: "/assets/profile.jpg",
+//     },
+//     content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
+//     timestamp: "২ ঘন্টা আগে",
+//     likes: 258,
+//     comments: 0,
+//     shares: 0,
+//     photo: "/assets/dog.png",
+//   },
+//   {
+//     author: {
+//       name: "ইমতিয়াজ হোসেন",
+//       image: "/assets/profile.jpg",
+//     },
+//     content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
+//     timestamp: "২ ঘন্টা আগে",
+//     likes: 258,
+//     comments: 0,
+//     shares: 0,
+//     photo: "/assets/dog.png",
+//   },
+//   {
+//     author: {
+//       name: "ইমতিয়াজ হোসেন",
+//       image: "/assets/profile.jpg",
+//     },
+//     content: "আজকে আমার দেখা একটি জিনিস শেয়ার করতে চাই।",
+//     timestamp: "২ ঘন্টা আগে",
+//     likes: 258,
+//     comments: 0,
+//     shares: 0,
+//     photo: "/assets/dog.png",
+//   },
+// ];
 
 type UserInfo = {
   name: string;
