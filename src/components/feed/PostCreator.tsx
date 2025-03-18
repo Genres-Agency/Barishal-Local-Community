@@ -23,15 +23,8 @@ const PostCreator: React.FC = () => {
   const [preview, setPreview] = useState<string | null>(null);
   const [addPost] = useAddPostMutation();
 
-  // Four categories
-  // const categories = [
-  //   { id: "general", name: "সাধারণ" },
-  //   { id: "question", name: "প্রশ্ন" },
-  //   { id: "discussion", name: "আলোচনা" },
-  //   { id: "announcement", name: "ঘোষণা" },
-  // ];
-
   const { data: categories } = useGetAllCategoryQuery(undefined);
+
   // console.log("categories", categories);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
