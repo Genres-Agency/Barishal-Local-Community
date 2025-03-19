@@ -80,7 +80,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     );
 
     const data = await res.json();
-    // console.log("data==>", data);
+    console.log("data==>", data);
 
     if (data?.data?.accessToken) {
       const user = (api.getState() as RootState).auth.user;
@@ -104,6 +104,6 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ["Admin", "User", "Post", "Category"],
+  tagTypes: ["Admin", "User", "Post", "Category", "Hashtag"],
   endpoints: () => ({}),
 });

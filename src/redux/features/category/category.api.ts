@@ -5,7 +5,7 @@ type TCategorory = {
   title: string;
 };
 
-const postApi = baseApi.injectEndpoints({
+const categoriesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // getAllCategory: builder.query({
     //   query: (args) => {
@@ -48,6 +48,7 @@ const postApi = baseApi.injectEndpoints({
           params: params,
         };
       },
+      providesTags: ["Category"],
     }),
 
     // Create a new Category
@@ -87,4 +88,4 @@ export const {
   useDeleteCategoryMutation,
   useGetAllCategoryQuery,
   useUpdateCategoryMutation,
-} = postApi;
+} = categoriesApi;

@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useGetAllCategoryQuery } from "@/redux/features/category/category";
+import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
 import { useAddPostMutation } from "@/redux/features/post/post.api";
 import { Image, X } from "lucide-react";
 import { useState } from "react";

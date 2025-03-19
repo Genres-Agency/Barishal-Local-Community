@@ -1,17 +1,21 @@
 import { PostProps } from "@/lib/constant";
 import { useGetAuthorQuery } from "@/redux/features/auth/authApi";
 import { Heart, MessageCircle, Share2 } from "lucide-react";
+import moment from "moment";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export default function PostCard({ content, photo, authorId }: PostProps) {
   const { data: author } = useGetAuthorQuery(authorId);
   console.log("author", author);
-  // let role;
-  // if (author.role === "SUPER_ADMIN" || author.role === "ADMIN") {
-  //   role = "Modarator";
-  // }
-  const date = new Date(author?.updatedAt);
+
+  let role;
+  if (author?.role === "SUPER_ADMIN") {
+    role = "Admin";
+  } else if (author?.role === "ADMIN") {
+    role = "Modarator";
+  }
+
   return (
     <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
       <div className="flex items-start gap-3 mb-4">
@@ -24,13 +28,15 @@ export default function PostCard({ content, photo, authorId }: PostProps) {
         </Avatar>
         <div className="flex justify-between w-full">
           <div className="flex flex-col">
-            <h3 className="font-semibold text-gray-900">{author?.firstName}</h3>
+            <h3 className="font-semibold text-gray-900">
+              {`${author?.firstName} ${author?.lastName}`}{" "}
+            </h3>
             <div className="flex items-center gap-2">
               {author?.role && (
-                <span className="text-sm text-gray-500">{"Modarator"}</span>
+                <span className="text-sm text-gray-500">{role}</span>
               )}
               <span className="text-sm text-gray-500">
-                {date.toLocaleString("en-US")}
+                {moment(author?.createdAt).format("MMM ddd, yyyy, h:mm:ss a")}
               </span>
             </div>
           </div>
