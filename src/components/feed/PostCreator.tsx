@@ -25,8 +25,6 @@ const PostCreator: React.FC = () => {
 
   const { data: categories } = useGetAllCategoryQuery(undefined);
 
-  // console.log("categories", categories);
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
 
@@ -42,38 +40,60 @@ const PostCreator: React.FC = () => {
   const handlePostSubmit = async () => {
     if (!postContent.trim() && !file) return;
 
-    // Create the post data
+    try {
+      const data = new FormData();
 
-    const postData = {
-      content: postContent,
-      categoryId: selectedCategory,
-      image: file,
-      hashTag: "#programming",
-    };
+      // Add data to FormData
+      data.append("content", postContent);
+      data.append("categoryId", selectedCategory);
+      data.append("hashTag", "#programming");
 
-    console.log("post data", postData);
+      if (file) {
+        data.append("image", file);
+      }
 
-    const formData = new FormData();
-    if (file) {
-      formData.append("image", file);
-      console.log("File uploaded:", file);
+      // Log what we're sending
+      console.log("Sending post data:");
+      for (let [key, value] of data.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+
+      // Call the API and capture the response
+      const result = await addPost(data);
+      console.log("API Response:", result);
+
+      // RTK Query returns an object with either 'data' or 'error'
+      if ("data" in result) {
+        console.log("Post created successfully:", result.data);
+
+        // Reset form state
+        setPostContent("");
+        setSelectedCategory("reports");
+        if (preview) {
+          URL.revokeObjectURL(preview);
+        }
+        setFile(null);
+        setPreview(null);
+        setIsModalOpen(false);
+      } else if ("error" in result) {
+        // More detailed error logging
+        console.error("API Error Response:", result.error);
+
+        // Fix the type issue by using a type guard
+        let errorMessage = "Failed to create post";
+
+        // Use a safer approach to check for error data
+        const errorData = result.error as any;
+        if (errorData && typeof errorData === "object" && "data" in errorData) {
+          errorMessage += `: ${JSON.stringify(errorData.data)}`;
+        }
+
+        console.log(errorMessage);
+      }
+    } catch (error) {
+      console.error("Exception during post creation:", error);
+      alert("An unexpected error occurred. Please try again later.");
     }
-    // Append text fields directly (NO JSON.stringify)
-    formData.append("content", postContent);
-    formData.append("categoryId", selectedCategory);
-    formData.append("hashTag", "#programming");
-    // formData.append("data", JSON.stringify(postData));
-    // Create Post
-    await addPost(formData);
-
-    setPostContent("");
-    setSelectedCategory("");
-    if (preview) {
-      URL.revokeObjectURL(preview);
-    }
-    setFile(null);
-    setPreview(null);
-    setIsModalOpen(false);
   };
 
   return (

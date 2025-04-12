@@ -1,22 +1,66 @@
 import { PostProps } from "@/lib/constant";
 import { useGetAuthorQuery } from "@/redux/features/auth/authApi";
-import { Heart, MessageCircle, Share2, Send, Copy, Facebook, Twitter, Linkedin, Link } from "lucide-react";
+import { useGetSingleCommentQuery } from "@/redux/features/comment/comment.api";
+import {
+  useGetSingleLikeQuery,
+  useToggleLikeMutation,
+} from "@/redux/features/likes/like.api";
+import {
+  Copy,
+  Facebook,
+  Heart,
+  Linkedin,
+  MessageCircle,
+  Send,
+  Share2,
+  Twitter,
+} from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-export default function PostCard({ content, photo, authorId }: PostProps) {
+export default function PostCard({
+  content,
+  photo,
+  authorId,
+  _count,
+  id,
+}: PostProps) {
   const { data: author } = useGetAuthorQuery(authorId);
+  const { data: comment } = useGetSingleCommentQuery(id);
   const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [commentText, setCommentText] = useState("");
-  const [comments, setComments] = useState<{ text: string; author: string; avatar?: string }[]>([
-    { text: "Great post!", author: "John Doe", avatar: "/assets/profile.JPG" },
-    { text: "I agree with this", author: "Jane Smith" }
-  ]);
+  const [comments, setComments] = useState(comment?.comments);
 
+  console.log("comment", comment);
+
+  const [toggleLike, { isLoading }] = useToggleLikeMutation();
+  const { data: likes, refetch } = useGetSingleLikeQuery(id);
+  // console.log("likes", likes);
+
+  // Fix the handleLike function to ensure id is properly converted to a number
+  const handleLike = async () => {
+    try {
+      console.log("post id is before like ==>", id);
+
+      await toggleLike({ postId: id });
+      // console.log("post after like id is ==>>>>>>>", id);
+      refetch(); // refresh likes count
+      // Update the local state to reflect the change
+      setIsLiked(!isLiked);
+    } catch (err) {
+      // console.error("Failed to toggle like", err);
+    }
+  };
+
+  // Remove the unused handleLikeClick function since you're using handleLike
+  // const handleLikeClick = () => {
+  //   setIsLiked(!isLiked);
+  //   // Here you would typically call an API to update the like status
+  // };
   let role;
   if (author?.role === "SUPER_ADMIN") {
     role = "Admin";
@@ -46,8 +90,8 @@ export default function PostCard({ content, photo, authorId }: PostProps) {
         {
           text: commentText,
           author: "You",
-          avatar: "/assets/profile.JPG"
-        }
+          avatar: "/assets/profile.JPG",
+        },
       ]);
       setCommentText("");
       // Here you would typically call an API to save the comment
@@ -57,24 +101,40 @@ export default function PostCard({ content, photo, authorId }: PostProps) {
   const handleShare = (platform: string) => {
     // Create a shareable URL for this post
     const postUrl = `${window.location.origin}/post/${authorId}`;
-    
+
     switch (platform) {
-      case 'copy':
-        navigator.clipboard.writeText(postUrl)
-          .then(() => alert('Link copied to clipboard!'))
-          .catch(err => console.error('Failed to copy link: ', err));
+      case "copy":
+        navigator.clipboard
+          .writeText(postUrl)
+          .then(() => alert("Link copied to clipboard!"))
+          .catch((err) => console.error("Failed to copy link: ", err));
         break;
-      case 'facebook':
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`, '_blank');
+      case "facebook":
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+            postUrl
+          )}`,
+          "_blank"
+        );
         break;
-      case 'twitter':
-        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(postUrl)}&text=${encodeURIComponent(content?.substring(0, 100) || '')}`, '_blank');
+      case "twitter":
+        window.open(
+          `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+            postUrl
+          )}&text=${encodeURIComponent(content?.substring(0, 100) || "")}`,
+          "_blank"
+        );
         break;
-      case 'linkedin':
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(postUrl)}`, '_blank');
+      case "linkedin":
+        window.open(
+          `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+            postUrl
+          )}`,
+          "_blank"
+        );
         break;
     }
-    
+
     setShowShareOptions(false);
   };
 
@@ -125,21 +185,24 @@ export default function PostCard({ content, photo, authorId }: PostProps) {
           className={`flex items-center gap-2 ${
             isLiked ? "text-red-500" : "hover:text-red-500"
           }`}
-          onClick={handleLikeClick}
+          onClick={handleLike}
         >
           <Heart size={20} fill={isLiked ? "currentColor" : "none"} />
-          <span>{"23"}</span>
+          <span>{likes?.count || 0}</span>
         </button>
-        <button 
+        <button
           className={`flex items-center gap-2 ${
             showComments ? "text-blue-500" : "hover:text-blue-500"
           }`}
           onClick={handleCommentClick}
         >
-          <MessageCircle size={20} fill={showComments ? "currentColor" : "none"} />
-          <span>{comments.length}</span>
+          <MessageCircle
+            size={20}
+            fill={showComments ? "currentColor" : "none"}
+          />
+          <span>{_count.comments}</span>
         </button>
-        <button 
+        <button
           className={`flex items-center gap-2 ${
             showShareOptions ? "text-green-500" : "hover:text-green-500"
           }`}
@@ -155,8 +218,8 @@ export default function PostCard({ content, photo, authorId }: PostProps) {
         <div className="mt-4 pt-4 border-t">
           <h4 className="font-medium mb-3">শেয়ার করুন</h4>
           <div className="flex flex-wrap gap-4">
-            <button 
-              onClick={() => handleShare('copy')}
+            <button
+              onClick={() => handleShare("copy")}
               className="flex flex-col items-center gap-1 hover:text-green-500"
             >
               <div className="bg-gray-100 p-3 rounded-full">
@@ -164,8 +227,8 @@ export default function PostCard({ content, photo, authorId }: PostProps) {
               </div>
               <span className="text-xs">লিংক কপি</span>
             </button>
-            <button 
-              onClick={() => handleShare('facebook')}
+            <button
+              onClick={() => handleShare("facebook")}
               className="flex flex-col items-center gap-1 hover:text-blue-600"
             >
               <div className="bg-gray-100 p-3 rounded-full">
@@ -173,8 +236,8 @@ export default function PostCard({ content, photo, authorId }: PostProps) {
               </div>
               <span className="text-xs">ফেসবুক</span>
             </button>
-            <button 
-              onClick={() => handleShare('twitter')}
+            <button
+              onClick={() => handleShare("twitter")}
               className="flex flex-col items-center gap-1 hover:text-blue-400"
             >
               <div className="bg-gray-100 p-3 rounded-full">
@@ -182,8 +245,8 @@ export default function PostCard({ content, photo, authorId }: PostProps) {
               </div>
               <span className="text-xs">টুইটার</span>
             </button>
-            <button 
-              onClick={() => handleShare('linkedin')}
+            <button
+              onClick={() => handleShare("linkedin")}
               className="flex flex-col items-center gap-1 hover:text-blue-700"
             >
               <div className="bg-gray-100 p-3 rounded-full">
@@ -199,33 +262,34 @@ export default function PostCard({ content, photo, authorId }: PostProps) {
       {showComments && (
         <div className="mt-4 pt-4 border-t">
           <h4 className="font-medium mb-3">মন্তব্য</h4>
-          
+
           {/* Comment list */}
           <div className="space-y-3 mb-4">
-            {comments.map((comment, index) => (
-              <div key={index} className="flex gap-2">
+            {comment?.comments?.map((comment) => (
+              <div key={comment.id} className="flex gap-2">
                 <Avatar className="w-8 h-8">
                   <AvatarImage
                     className="object-cover"
-                    src={comment.avatar || "/assets/profile.JPG"}
+                    src={"/assets/profile.JPG"}
                   />
-                  <AvatarFallback>{comment.author[0]}</AvatarFallback>
+                  <AvatarFallback>U</AvatarFallback>
                 </Avatar>
                 <div className="bg-gray-100 p-2 rounded-lg flex-1">
-                  <p className="font-medium text-sm">{comment.author}</p>
-                  <p className="text-sm">{comment.text}</p>
+                  <div className="flex justify-between items-start">
+                    <p className="text-sm">{comment.content}</p>
+                    <span className="text-xs text-gray-500">
+                      {moment(comment.createdAt).fromNow()}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-          
+
           {/* Add comment input */}
           <div className="flex gap-2 items-center">
             <Avatar className="w-8 h-8">
-              <AvatarImage
-                className="object-cover"
-                src="/assets/profile.JPG"
-              />
+              <AvatarImage className="object-cover" src="/assets/profile.JPG" />
               <AvatarFallback>ME</AvatarFallback>
             </Avatar>
             <div className="flex-1 flex gap-2 bg-gray-100 rounded-full px-3 py-1">
@@ -236,12 +300,12 @@ export default function PostCard({ content, photo, authorId }: PostProps) {
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
+                  if (e.key === "Enter") {
                     handleAddComment();
                   }
                 }}
               />
-              <button 
+              <button
                 onClick={handleAddComment}
                 className="text-blue-500"
                 disabled={!commentText.trim()}

@@ -30,6 +30,10 @@ export interface PostProps {
   likes?: number;
   comments?: number;
   shares?: number;
+  _count: {
+    likes: number;
+    comments: number;
+  };
 }
 // export const posts: PostProps[] = [
 //   {
