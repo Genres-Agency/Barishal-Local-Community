@@ -3,7 +3,7 @@ import { useGetAllHashtagQuery } from "@/redux/features/hashtag/hashtag.api";
 
 const TrendingTopics = () => {
   const { data: trends } = useGetAllHashtagQuery(undefined);
-  console.log("trends", trends);
+  // console.log("trends", trends);
   return (
     <div className="bg-white rounded-xl p-4 shadow-sm">
       <h2 className="text-lg font-semibold mb-4">ট্রেন্ডিং টপিকস</h2>

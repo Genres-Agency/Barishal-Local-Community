@@ -2,13 +2,20 @@ import Navbar from "@/components/Navbar";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import ReduxProvider from "@/lib/providers/ReduxProviders";
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins, Tiro_Bangla } from "next/font/google";
 import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import "./globals.css";
 
 const arial = localFont({
   src: "./fonts/arial.ttf",
+  variable: "--font-bangla",
+  display: "swap",
+});
+
+const tiro_bangla = Tiro_Bangla({
+  weight: "400",
+  subsets: ["latin"],
   variable: "--font-bangla",
   display: "swap",
 });
@@ -47,7 +54,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${arial.variable} ${poppins.variable}`}>
+    <html lang="en" className={`${tiro_bangla.variable} ${poppins.variable}`}>
       <body className="bg-gray-50">
         <ReduxProvider>
           <ErrorBoundary>
