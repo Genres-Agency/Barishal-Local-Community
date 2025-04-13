@@ -1,6 +1,9 @@
 import { PostProps } from "@/lib/constant";
 import { useGetAuthorQuery } from "@/redux/features/auth/authApi";
-import { useGetSingleCommentQuery } from "@/redux/features/comment/comment.api";
+import {
+  useAddCommentMutation,
+  useGetSingleCommentQuery,
+} from "@/redux/features/comment/comment.api";
 import {
   useGetSingleLikeQuery,
   useToggleLikeMutation,
@@ -39,6 +42,9 @@ export default function PostCard({
 
   const [toggleLike, { isLoading }] = useToggleLikeMutation();
   const { data: likes, refetch } = useGetSingleLikeQuery(id);
+
+  // Add comment
+  const [addComment, { isLoading: isCommentLoading }] = useAddCommentMutation();
   // console.log("likes", likes);
 
   // Fix the handleLike function to ensure id is properly converted to a number
@@ -83,7 +89,7 @@ export default function PostCard({
     if (showComments) setShowComments(false);
   };
 
-  const handleAddComment = () => {
+  const handleAddComment = async () => {
     if (commentText.trim()) {
       setComments([
         ...comments,
@@ -93,9 +99,12 @@ export default function PostCard({
           avatar: "/assets/profile.JPG",
         },
       ]);
-      setCommentText("");
+
       // Here you would typically call an API to save the comment
     }
+    console.log("commentText", commentText);
+    await addComment({ postId: id, content: commentText });
+    setCommentText("");
   };
 
   const handleShare = (platform: string) => {
