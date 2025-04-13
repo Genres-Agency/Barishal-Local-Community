@@ -36,7 +36,7 @@ export default function PostCard({
   const [showComments, setShowComments] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [commentText, setCommentText] = useState("");
-  const [comments, setComments] = useState(comment?.comments);
+  const [comments, setComments] = useState(comment?.comments || []);
 
   console.log("comment", comment);
 
@@ -90,21 +90,23 @@ export default function PostCard({
   };
 
   const handleAddComment = async () => {
-    if (commentText.trim()) {
+    if (!commentText.trim()) return;
+
+    try {
+      await addComment({ postId: id, content: commentText });
+      const updatedComments = Array.isArray(comments) ? comments : [];
       setComments([
-        ...comments,
+        ...updatedComments,
         {
-          text: commentText,
-          author: "You",
-          avatar: "/assets/profile.JPG",
+          id: Date.now(), // Temporary ID for new comment
+          content: commentText,
+          createdAt: new Date().toISOString(),
         },
       ]);
-
-      // Here you would typically call an API to save the comment
+      setCommentText("");
+    } catch (error) {
+      console.error("Failed to add comment:", error);
     }
-    console.log("commentText", commentText);
-    await addComment({ postId: id, content: commentText });
-    setCommentText("");
   };
 
   const handleShare = (platform: string) => {
@@ -209,7 +211,7 @@ export default function PostCard({
             size={20}
             fill={showComments ? "currentColor" : "none"}
           />
-          <span>{_count.comments}</span>
+          <span>{comment?.count}</span>
         </button>
         <button
           className={`flex items-center gap-2 ${
