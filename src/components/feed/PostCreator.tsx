@@ -10,8 +10,9 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
 import { useAddPostMutation } from "@/redux/features/post/post.api";
-import { Image, X } from "lucide-react";
-import { useState } from "react";
+import { Image, Loader2, X } from "lucide-react";
+import { useState,useEffect } from "react";
+import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
@@ -21,7 +22,7 @@ const PostCreator: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("reports");
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [addPost] = useAddPostMutation();
+  const [addPost, { isLoading }] = useAddPostMutation();
 
   const { data: categories } = useGetAllCategoryQuery(undefined);
 
@@ -37,34 +38,48 @@ const PostCreator: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (categories?.length && !selectedCategory) {
+      setSelectedCategory(categories[0].id); // or name, depending on API
+    }
+  }, [categories]);
   const handlePostSubmit = async () => {
-    if (!postContent.trim() && !file) return;
+    // if (!postContent.trim() && !file) return;
 
     try {
+      console.log({postContent, selectedCategory, file})
       const data = new FormData();
 
-      // Add data to FormData
+      // Add data to FormData matching backend DTO
       data.append("content", postContent);
       data.append("categoryId", selectedCategory);
       data.append("hashTag", "#programming");
 
+
+      const postData = {
+        content: postContent,
+        categoryId: selectedCategory,
+        hashTag: "#programming",
+        image: file,
+      };
+      
+
       if (file) {
         data.append("image", file);
+        console.log("File added to FormData",file);
       }
 
-      // Log what we're sending
-      console.log("Sending post data:");
-      for (let [key, value] of data.entries()) {
-        console.log(`${key}: ${value}`);
-      }
+      // // Log what we're sending
+      // console.log("Sending post data:");
+      // for (let [key, value] of data.entries()) {
+      //   console.log(`${key}: ${value}`);
+      // }
 
       // Call the API and capture the response
-      const result = await addPost(data);
-      console.log("API Response:", result);
+      const result = await addPost(postData);
 
-      // RTK Query returns an object with either 'data' or 'error'
       if ("data" in result) {
-        console.log("Post created successfully:", result.data);
+        toast.success("Your post has been created successfully.");
 
         // Reset form state
         setPostContent("");
@@ -75,21 +90,7 @@ const PostCreator: React.FC = () => {
         setFile(null);
         setPreview(null);
         setIsModalOpen(false);
-      } else if ("error" in result) {
-        // More detailed error logging
-        console.error("API Error Response:", result.error);
-
-        // Fix the type issue by using a type guard
-        let errorMessage = "Failed to create post";
-
-        // Use a safer approach to check for error data
-        const errorData = result.error as any;
-        if (errorData && typeof errorData === "object" && "data" in errorData) {
-          errorMessage += `: ${JSON.stringify(errorData.data)}`;
-        }
-
-        console.log(errorMessage);
-      }
+      } 
     } catch (error) {
       console.error("Exception during post creation:", error);
       alert("An unexpected error occurred. Please try again later.");
@@ -218,10 +219,11 @@ const PostCreator: React.FC = () => {
           <div className="p-3 sticky bottom-0 bg-white border-t">
             <Button
               onClick={handlePostSubmit}
-              disabled={!postContent.trim() && !file}
-              className="w-full bg-green-600 hover:bg-green-700 py-5 text-white rounded-md font-medium"
+              disabled={(!postContent.trim() && !file) || isLoading}
+              className="w-full bg-green-600 hover:bg-green-700 py-5 text-white rounded-md font-medium flex items-center justify-center gap-2"
             >
-              পরবর্তী
+              {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+              {isLoading ? "পোস্ট করা হচ্ছে..." : "পরবর্তী"}
             </Button>
           </div>
         </DialogContent>
