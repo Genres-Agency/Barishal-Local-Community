@@ -43,7 +43,7 @@ const postApi = baseApi.injectEndpoints({
         url: "/posts",
         method: "POST",
         body: data,
-        formData: true,
+        
       }),
       invalidatesTags: ["Post"],
     }),

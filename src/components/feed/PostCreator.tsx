@@ -43,59 +43,45 @@ const PostCreator: React.FC = () => {
       setSelectedCategory(categories[0].id); // or name, depending on API
     }
   }, [categories]);
-  const handlePostSubmit = async () => {
-    // if (!postContent.trim() && !file) return;
+        const handlePostSubmit = async () => {
+          // if (!postContent.trim() && !file) return;
 
-    try {
-      console.log({postContent, selectedCategory, file})
-      const data = new FormData();
+          try {
+            console.log({postContent, selectedCategory, file})
+            const formData = new FormData();
 
-      // Add data to FormData matching backend DTO
-      data.append("content", postContent);
-      data.append("categoryId", selectedCategory);
-      data.append("hashTag", "#programming");
+            // Add data to FormData matching backend DTO
+            formData.append("content", postContent);
+            formData.append("categoryId", selectedCategory);
+            formData.append("hashTag", "#programming");
 
+            if (file) {
+              formData.append("image", file);
+              console.log("File added to FormData",file);
+            }
 
-      const postData = {
-        content: postContent,
-        categoryId: selectedCategory,
-        hashTag: "#programming",
-        image: file,
-      };
-      
+            
+            // Call the API and capture the response
+            const result = await addPost(formData);
 
-      if (file) {
-        data.append("image", file);
-        console.log("File added to FormData",file);
-      }
+            if ("data" in result) {
+              toast.success("Your post has been created successfully.");
 
-      // // Log what we're sending
-      // console.log("Sending post data:");
-      // for (let [key, value] of data.entries()) {
-      //   console.log(`${key}: ${value}`);
-      // }
-
-      // Call the API and capture the response
-      const result = await addPost(postData);
-
-      if ("data" in result) {
-        toast.success("Your post has been created successfully.");
-
-        // Reset form state
-        setPostContent("");
-        setSelectedCategory("reports");
-        if (preview) {
-          URL.revokeObjectURL(preview);
-        }
-        setFile(null);
-        setPreview(null);
-        setIsModalOpen(false);
-      } 
-    } catch (error) {
-      console.error("Exception during post creation:", error);
-      alert("An unexpected error occurred. Please try again later.");
-    }
-  };
+              // Reset form state
+              setPostContent("");
+              setSelectedCategory("reports");
+              if (preview) {
+                URL.revokeObjectURL(preview);
+              }
+              setFile(null);
+              setPreview(null);
+              setIsModalOpen(false);
+            } 
+          } catch (error) {
+            console.error("Exception during post creation:", error);
+            alert("An unexpected error occurred. Please try again later.");
+          }
+        };
 
   return (
     <div className="px-3 sm:px-0">
