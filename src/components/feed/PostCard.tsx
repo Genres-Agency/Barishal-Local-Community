@@ -38,7 +38,7 @@ export default function PostCard({
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(comment?.comments || []);
 
-  console.log("comment", comment);
+  // console.log("comment", comment);
 
   const [toggleLike, { isLoading }] = useToggleLikeMutation();
   const { data: likes, refetch } = useGetSingleLikeQuery(id);
@@ -276,25 +276,31 @@ export default function PostCard({
 
           {/* Comment list */}
           <div className="space-y-3 mb-4">
-            {comment?.comments?.map((comment) => (
-              <div key={comment.id} className="flex gap-2">
-                <Avatar className="w-8 h-8">
-                  <AvatarImage
-                    className="object-cover"
-                    src={"/assets/profile.JPG"}
-                  />
-                  <AvatarFallback>U</AvatarFallback>
-                </Avatar>
-                <div className="bg-gray-100 p-2 rounded-lg flex-1">
-                  <div className="flex justify-between items-start">
-                    <p className="text-sm">{comment.content}</p>
-                    <span className="text-xs text-gray-500">
-                      {moment(comment.createdAt).fromNow()}
-                    </span>
+            {comment?.comments?.map(
+              (comment: {
+                id: string | number;
+                content: string;
+                createdAt: string;
+              }) => (
+                <div key={comment.id} className="flex gap-2">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage
+                      className="object-cover"
+                      src={"/assets/profile.JPG"}
+                    />
+                    <AvatarFallback>U</AvatarFallback>
+                  </Avatar>
+                  <div className="bg-gray-100 p-2 rounded-lg flex-1">
+                    <div className="flex justify-between items-start">
+                      <p className="text-sm">{comment.content}</p>
+                      <span className="text-xs text-gray-500">
+                        {moment(comment.createdAt).fromNow()}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            )}
           </div>
 
           {/* Add comment input */}

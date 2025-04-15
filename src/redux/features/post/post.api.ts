@@ -43,11 +43,7 @@ const postApi = baseApi.injectEndpoints({
         url: "/posts",
         method: "POST",
         body: data,
-        // Don't manually set Content-Type when using FormData
-        // The browser will set it with the correct boundary
         formData: true,
-        // Include credentials if your API requires authentication
-        credentials: "include",
       }),
       invalidatesTags: ["Post"],
     }),
