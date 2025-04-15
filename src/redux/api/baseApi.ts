@@ -15,7 +15,7 @@ const baseQuery = fetchBaseQuery({
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
-    // console.log("token", token);
+    console.log("token", token);
 
     headers.set("Content-Type", "application/json");
     if (token) {
@@ -26,7 +26,8 @@ const baseQuery = fetchBaseQuery({
   },
   responseHandler: async (response) => {
     const text = await response.text();
-    // console.log("text", text);
+    console.log("text", text);
+
     try {
       return JSON.parse(text); // Try to parse as JSON
     } catch (e) {

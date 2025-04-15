@@ -4,11 +4,15 @@ const commentApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Create a new comment
     addComment: builder.mutation({
-      query: ({ postId, data }) => ({
-        url: `/comments/${postId}`,
-        method: "POST",
-        body: data,
-      }),
+      query: ({ postId, content }) => (
+        console.log("postId", postId),
+        console.log("content", content),
+        {
+          url: `/comments/${postId}`,
+          method: "POST",
+          body: { content },
+        }
+      ),
       invalidatesTags: ["Comment"],
     }),
     // Get Single post

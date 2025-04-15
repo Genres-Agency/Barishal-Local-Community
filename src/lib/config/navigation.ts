@@ -1,16 +1,12 @@
 import {
-  Bell,
+  BellRing,
   Briefcase,
   Calendar,
-  HelpCircle,
   Home,
   MessageSquare,
-  Newspaper,
   Search,
   Settings,
-  ShoppingBag,
   Store,
-  Users,
 } from "lucide-react";
 
 export const feedNavigationItems = [
@@ -54,41 +50,41 @@ export const navigationItemsLeftSite = [
     label: "হোম",
     href: "/",
   },
-  {
-    icon: Newspaper,
-    label: "ফিড",
-    href: "/feed",
-  },
-  {
-    icon: Users,
-    label: "গ্রুপস",
-    href: "/groups",
-  },
+  // {
+  //   icon: Newspaper,
+  //   label: "ফিড",
+  //   href: "/feed",
+  // },
+  // {
+  //   icon: Users,
+  //   label: "গ্রুপস",
+  //   href: "/groups",
+  // },
   {
     icon: MessageSquare,
     label: "মেসেজেস",
     href: "/messages",
   },
+  // {
+  //   icon: ShoppingBag,
+  //   label: "মার্কেটপ্লেস",
+  //   href: "/marketplace",
+  // },
+  // {
+  //   icon: Calendar,
+  //   label: "ইভেন্টস",
+  //   href: "/events",
+  // },
   {
-    icon: ShoppingBag,
-    label: "মার্কেটপ্লেস",
-    href: "/marketplace",
-  },
-  {
-    icon: Calendar,
-    label: "ইভেন্টস",
-    href: "/events",
-  },
-  {
-    icon: Bell,
+    icon: BellRing,
     label: "নোটিফিকেশন্স",
     href: "/notifications",
   },
-  {
-    icon: HelpCircle,
-    label: "সহায়তা",
-    href: "/help",
-  },
+  // {
+  //   icon: HelpCircle,
+  //   label: "সহায়তা",
+  //   href: "/help",
+  // },
   {
     icon: Settings,
     label: "সেটিংস",

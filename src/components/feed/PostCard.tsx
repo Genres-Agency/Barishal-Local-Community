@@ -1,6 +1,9 @@
 import { PostProps } from "@/lib/constant";
 import { useGetAuthorQuery } from "@/redux/features/auth/authApi";
-import { useGetSingleCommentQuery } from "@/redux/features/comment/comment.api";
+import {
+  useAddCommentMutation,
+  useGetSingleCommentQuery,
+} from "@/redux/features/comment/comment.api";
 import {
   useGetSingleLikeQuery,
   useToggleLikeMutation,
@@ -33,12 +36,15 @@ export default function PostCard({
   const [showComments, setShowComments] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [commentText, setCommentText] = useState("");
-  const [comments, setComments] = useState(comment?.comments);
+  const [comments, setComments] = useState(comment?.comments || []);
 
   console.log("comment", comment);
 
   const [toggleLike, { isLoading }] = useToggleLikeMutation();
   const { data: likes, refetch } = useGetSingleLikeQuery(id);
+
+  // Add comment
+  const [addComment, { isLoading: isCommentLoading }] = useAddCommentMutation();
   // console.log("likes", likes);
 
   // Fix the handleLike function to ensure id is properly converted to a number
@@ -83,18 +89,23 @@ export default function PostCard({
     if (showComments) setShowComments(false);
   };
 
-  const handleAddComment = () => {
-    if (commentText.trim()) {
+  const handleAddComment = async () => {
+    if (!commentText.trim()) return;
+
+    try {
+      await addComment({ postId: id, content: commentText });
+      const updatedComments = Array.isArray(comments) ? comments : [];
       setComments([
-        ...comments,
+        ...updatedComments,
         {
-          text: commentText,
-          author: "You",
-          avatar: "/assets/profile.JPG",
+          id: Date.now(), // Temporary ID for new comment
+          content: commentText,
+          createdAt: new Date().toISOString(),
         },
       ]);
       setCommentText("");
-      // Here you would typically call an API to save the comment
+    } catch (error) {
+      console.error("Failed to add comment:", error);
     }
   };
 
@@ -200,7 +211,7 @@ export default function PostCard({
             size={20}
             fill={showComments ? "currentColor" : "none"}
           />
-          <span>{_count.comments}</span>
+          <span>{comment?.count}</span>
         </button>
         <button
           className={`flex items-center gap-2 ${
