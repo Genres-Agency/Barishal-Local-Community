@@ -14,7 +14,7 @@ const CommunityFeed = () => {
 
   const { data: postData } = useGetAllPostQuery(undefined);
 
-  console.log("postData", postData);
+  // console.log("postData", postData);
   return (
     <div className="space-y-4">
       {/* Feed Navigation ---------------- */}

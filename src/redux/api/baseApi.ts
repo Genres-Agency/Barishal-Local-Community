@@ -1,3 +1,4 @@
+
 import {
   BaseQueryApi,
   BaseQueryFn,
@@ -11,28 +12,17 @@ import { logout, setUser } from "../features/auth/authSlice";
 import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
+  baseUrl: `${process.env.NEXT_PUBLIC_BASE_URL}`,
+  // baseUrl: "http://localhost:5000/api/v1",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
-    // console.log("token", token);
 
-    headers.set("Content-Type", "application/json");
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
     }
 
     return headers;
-  },
-  responseHandler: async (response) => {
-    const text = await response.text();
-    console.log("text", text);
-
-    try {
-      return JSON.parse(text); // Try to parse as JSON
-    } catch (e) {
-      return { token: text }; // Return as plain text if JSON parsing fails
-    }
   },
 });
 
@@ -43,7 +33,6 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 > = async (args, api, extraOptions): Promise<any> => {
   let result = (await baseQuery(args, api, extraOptions)) as any;
 
-  console.log("result", result);
   if (result?.error?.status === 400) {
     toast.error(result?.error?.data?.message);
   }
@@ -54,48 +43,42 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     toast.error(result?.error?.data?.message);
   }
   if (result?.error?.status === 401) {
-    // Skip refresh token attempt for /users/me if not logged in
-    if (args.url === "/users/me") {
-      return result;
-    }
-
-    // Skip refresh token attempt for /auth/refresh endpoint
-    if (args.url === "/auth/refresh") {
-      return result;
-    }
-
-    // Check if there's a token before attempting refresh
-    const token = (api.getState() as RootState).auth.token;
-    if (!token) {
-      return result;
-    }
     //* Send Refresh
     console.log("Sending refresh token");
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/auth/refresh`,
-      {
-        method: "POST",
-        credentials: "include",
-      }
-    );
-
-    const data = await res.json();
-    console.log("data==>", data);
-
-    if (data?.data?.accessToken) {
-      const user = (api.getState() as RootState).auth.user;
-
-      api.dispatch(
-        setUser({
-          user,
-          token: data.data.accessToken,
-        })
+    try {
+      const res = await fetch(
+        "http://localhost:3333/api/auth/refresh",
+        {
+          method: "POST",
+          credentials: "include",
+          // headers: {
+          //   "Content-Type": "application/json",
+          // },
+        }
       );
-
-      result = await baseQuery(args, api, extraOptions);
-    } else {
-      api.dispatch(logout());
+  
+      const data = await res.json();
+      console.log('data: ', data);
+      console.log('accessToken: ', data?.accessToken);
+  
+  
+      if (data?.accessToken) {
+        const user = (api.getState() as RootState).auth.user;
+  
+        api.dispatch(
+          setUser({
+            user,
+            token: data.accessToken,
+          })
+        );
+  
+        result = await baseQuery(args, api, extraOptions);
+      } else {
+        api.dispatch(logout());
+      }
+    } catch (error) {
+      console.log('refresh Token failed error: ', error);
     }
   }
 
@@ -108,3 +91,4 @@ export const baseApi = createApi({
   tagTypes: ["Admin", "User", "Post", "Category", "Hashtag", "Like", "Comment"],
   endpoints: () => ({}),
 });
+

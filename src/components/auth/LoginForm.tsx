@@ -39,8 +39,10 @@ export default function LoginForm() {
     const toastId = toast.loading("Logging in");
     try {
       const result = await login(data);
-      const user = verifyToken(result?.data?.token);
-      dispatch(setUser({ user: user, token: result?.data?.token }));
+      console.log('result access token', result);
+      console.log('result', result?.data?.accessToken)
+      const user = verifyToken(result?.data?.accessToken);
+      dispatch(setUser({ user: user, token: result?.data?.accessToken }));
       if (user) {
         navigate.push("/profile");
       }
