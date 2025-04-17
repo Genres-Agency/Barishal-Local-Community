@@ -31,8 +31,8 @@ const Navbar = () => {
     skip: !userData?.userId,
   });
   const router = useRouter();
-  console.log("user Data", userData);
-  console.log("user", user);
+  // console.log("user Data", userData);
+  // console.log("user", user);
 
   const handleLogout = () => {
     dispatch(logout());
