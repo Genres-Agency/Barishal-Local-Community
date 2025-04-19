@@ -72,7 +72,12 @@ export default function PostCard({
     role = "Admin";
   } else if (author?.role === "ADMIN") {
     role = "Modarator";
+
+  } else if (author?.role === "USER") {
+    role = "User";
   }
+
+  console.log("Author", author)
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
@@ -165,11 +170,13 @@ export default function PostCard({
               {`${author?.firstName} ${author?.lastName}`}{" "}
             </h3>
             <div className="flex items-center gap-2">
-              {author?.role && (
+            
                 <span className="text-sm text-gray-500">{role}</span>
-              )}
+              
               <span className="text-sm text-gray-500">
-                {moment(author?.createdAt).format("MMM ddd, yyyy, h:mm:ss a")}
+                {moment(author?.createdAt).format("dddd, MMMM Do YYYY")}
+
+                {/* {moment(comment.createdAt).fromNow()} */}
               </span>
             </div>
           </div>
