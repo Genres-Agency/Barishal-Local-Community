@@ -116,8 +116,8 @@ const Navbar = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="ml-4 cursor-pointer">
-                    <AvatarImage src="assets/profile.jpg" />
-                    <AvatarFallback>AT</AvatarFallback>
+                    <AvatarImage src="assets/user.png" />
+                    <AvatarFallback>USER</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">

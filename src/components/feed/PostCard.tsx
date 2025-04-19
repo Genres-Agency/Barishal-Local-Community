@@ -155,7 +155,7 @@ export default function PostCard({
         <Avatar>
           <AvatarImage
             className="object-cover "
-            src={author?.avatar ? author?.avatar : "/assets/profile.JPG"}
+            src={author?.avatar ? author?.avatar : "/assets/user.png"}
           />
           <AvatarFallback>{author?.firstName}</AvatarFallback>
         </Avatar>
@@ -286,7 +286,7 @@ export default function PostCard({
                   <Avatar className="w-8 h-8">
                     <AvatarImage
                       className="object-cover"
-                      src={"/assets/profile.JPG"}
+                      src={"/assets/user.png"}
                     />
                     <AvatarFallback>U</AvatarFallback>
                   </Avatar>
