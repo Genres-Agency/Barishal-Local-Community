@@ -120,7 +120,7 @@ const PostCreator: React.FC = () => {
               <Avatar className="w-10 h-10">
                 <AvatarImage
                   className="object-cover"
-                  src="/assets/profile.jpg"
+                  src="/assets/user.png"
                 />
                 <AvatarFallback>ME</AvatarFallback>
               </Avatar>

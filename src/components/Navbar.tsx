@@ -20,10 +20,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useLogoutMutation } from "@/redux/features/auth/authApi";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [signOut] = useLogoutMutation()
   const dispatch = useAppDispatch();
   const userData = useAppSelector(selectCurrentUser);
   const { data: user } = useGetUserQuery(undefined, {
@@ -36,6 +38,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    signOut()
     router.push("/auth");
   };
 
