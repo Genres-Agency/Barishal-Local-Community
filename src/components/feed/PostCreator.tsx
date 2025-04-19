@@ -15,6 +15,7 @@ import { useState,useEffect } from "react";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import {useGetUserQuery} from '@/redux/features/auth/authApi'
 
 const PostCreator: React.FC = () => {
   const [postContent, setPostContent] = useState("");
@@ -25,6 +26,8 @@ const PostCreator: React.FC = () => {
   const [addPost, { isLoading }] = useAddPostMutation();
 
   const { data: categories } = useGetAllCategoryQuery(undefined);
+  const {data:userData} = useGetUserQuery()
+  console.log('userData',userData)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -88,7 +91,7 @@ const PostCreator: React.FC = () => {
       <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 mb-4">
         <div className="flex gap-2 sm:gap-4">
           <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
-            <AvatarImage className="object-cover" src="/assets/profile.jpg" />
+            <AvatarImage className="object-cover" src="/assets/user.png" />
             <AvatarFallback>ME</AvatarFallback>
           </Avatar>
           <div className="flex flex-col w-full gap-3 sm:gap-4">
@@ -122,7 +125,7 @@ const PostCreator: React.FC = () => {
                 <AvatarFallback>ME</AvatarFallback>
               </Avatar>
               <div>
-                <p className="font-medium">আশিক রহমান</p>
+                <p className="font-medium">{userData?.firstName} {userData?.lastName}</p>
               </div>
             </div>
 

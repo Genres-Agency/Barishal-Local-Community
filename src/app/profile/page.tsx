@@ -1,6 +1,7 @@
 "use client";
 
 import React, { Suspense } from "react";
+import moment from "moment";
 import { Loading } from "@/components/ui/loading";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,12 +13,21 @@ import CommunityActivity from "@/components/profile/CommunityActivity";
 import { mockUserProfile, posts } from "@/lib/config/profile";
 import Posts from "@/components/profile/Posts";
 import Settings from "@/components/profile/Settings";
+import { useGetAuthorQuery,useGetUserQuery } from "@/redux/features/auth/authApi";
 
 function ProfileContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
   const activeTab = tab || "personal";
+  const {data:user} = useGetUserQuery()
+  console.log('user', user)
+  const {data:userData, isLoading} = useGetAuthorQuery(user?.id)
+
+  if(isLoading) {
+    return <Loading size="lg" className="min-h-[60vh]" />         
+  }
+  console.log('userData', userData)
 
   const handleTabChange = (value: string) => {
     const newUrl = value === "personal" ? "/profile" : `/profile?tab=${value}`;
@@ -30,16 +40,16 @@ function ProfileContent() {
       <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
         <div className="flex flex-col md:flex-row items-center gap-6">
           <Avatar className="w-24 h-24">
-            <AvatarImage src="/assets/profile.jpg" />
+            <AvatarImage src="/assets/user.png" />
             <AvatarFallback>{mockUserProfile.name.slice(0, 2)}</AvatarFallback>
           </Avatar>
           <div className="flex-1 text-center md:text-left">
-            <h1 className="text-2xl font-bold">{mockUserProfile.name}</h1>
+            <h1 className="text-2xl font-bold">{userData?.firstName}</h1>
             <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-2">
               <MapPin className="w-4 h-4" /> {mockUserProfile.location}
             </p>
             <p className="text-gray-600 mt-2">
-              কমিউনিটি মেম্বার সিনস {mockUserProfile.memberSince}
+              কমিউনিটি মেম্বার সিনস {moment(userData?.createdAt).fromNow()}
             </p>
           </div>
           <Button className="bg-green-600 hover:bg-green-700">
@@ -71,7 +81,7 @@ function ProfileContent() {
         </TabsList>
 
         <TabsContent value="personal">
-          <PersonalInfo profile={mockUserProfile} />
+          <PersonalInfo profile={userData} />
         </TabsContent>
 
         <TabsContent value="community">
@@ -99,7 +109,7 @@ export default function ProfilePage() {
         </div>
       }
     >
-      <ProfileContent />
+      <ProfileContent  />
     </Suspense>
   );
 }

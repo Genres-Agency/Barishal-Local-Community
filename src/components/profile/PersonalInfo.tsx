@@ -23,7 +23,9 @@ interface PersonalInfoProps {
   };
 }
 
-export default function PersonalInfo({ profile }: PersonalInfoProps) {
+export default function PersonalInfo({ profile }) {
+
+  console.log('profile', profile)
   return (
     <div className="space-y-6">
       {/* Personal Information Form */}
@@ -32,13 +34,13 @@ export default function PersonalInfo({ profile }: PersonalInfoProps) {
           <div className="space-y-4">
             <div>
               <Label>পূর্ণ নাম</Label>
-              <Input defaultValue={profile.name} />
+              <Input defaultValue={profile?.firstName}  />
             </div>
             <div>
               <Label>ইমেইল</Label>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-gray-500" />
-                <Input defaultValue={profile.email} />
+                <Input defaultValue={profile?.email} />
               </div>
             </div>
             <div>
@@ -52,28 +54,28 @@ export default function PersonalInfo({ profile }: PersonalInfoProps) {
           <div className="space-y-4">
             <div>
               <Label>বায়ো</Label>
-              <Textarea className="min-h-[100px]" defaultValue={profile.bio} />
+              <Textarea className="min-h-[100px]" defaultValue={profile?.bio} />
             </div>
             <div>
               <Label>ওয়েবসাইট</Label>
               <div className="flex items-center gap-2">
                 <Globe className="w-4 h-4 text-gray-500" />
-                <Input defaultValue={profile.website} />
+                <Input defaultValue={profile?.website } />
               </div>
             </div>
             <div className="space-y-2">
               <Label>সোশ্যাল মিডিয়া</Label>
               <div className="flex items-center gap-2">
                 <Facebook className="w-4 h-4 text-gray-500" />
-                <Input defaultValue={profile.social.facebook} />
+                <Input defaultValue={profile?.social?.facebook} />
               </div>
               <div className="flex items-center gap-2">
                 <Twitter className="w-4 h-4 text-gray-500" />
-                <Input defaultValue={profile.social.twitter} />
+                <Input defaultValue={profile?.social?.twitter} />
               </div>
               <div className="flex items-center gap-2">
                 <Linkedin className="w-4 h-4 text-gray-500" />
-                <Input defaultValue={profile.social.linkedin} />
+                <Input defaultValue={profile?.social?.linkedin} />
               </div>
             </div>
           </div>
