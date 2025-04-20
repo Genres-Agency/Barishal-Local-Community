@@ -1,17 +1,21 @@
 "use client";
 
 import { feedTabs } from "@/lib/constant";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useGetAllPostQuery } from "@/redux/features/post/post.api";
+import { useAppSelector } from "@/redux/hooks";
 import { useState } from "react";
 import FeedNavigation from "./FeedNavigation";
 import PostCard from "./PostCard";
 import PostCreator from "./PostCreator";
 
 const CommunityFeed = () => {
+  const user = useAppSelector(selectCurrentUser);
   const [activeTab, setActiveTab] = useState<"latest" | "popular" | "network">(
     "latest"
   );
 
+  console.log("user.id", user?.userId);
   const { data: postData } = useGetAllPostQuery(undefined);
 
   // console.log("postData", postData);
@@ -19,9 +23,8 @@ const CommunityFeed = () => {
     <div className="space-y-4">
       {/* Feed Navigation ---------------- */}
       <FeedNavigation />
-
       {/* Post Creator Field --------------- */}
-      <PostCreator />
+      {user?.userId && <PostCreator />}
 
       {/* Tab Navigation ---------------- */}
       <div className="flex gap-6 mb-4 pt-2 border-b px-3 sm:px-0">
