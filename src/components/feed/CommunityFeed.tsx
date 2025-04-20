@@ -5,6 +5,8 @@ import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useGetAllPostQuery } from "@/redux/features/post/post.api";
 import { useAppSelector } from "@/redux/hooks";
 import { useState } from "react";
+
+import EventCreator from "./EventCreator";
 import FeedNavigation from "./FeedNavigation";
 import PostCard from "./PostCard";
 import PostCreator from "./PostCreator";
@@ -24,7 +26,12 @@ const CommunityFeed = () => {
       {/* Feed Navigation ---------------- */}
       <FeedNavigation />
       {/* Post Creator Field --------------- */}
-      {user?.userId && <PostCreator />}
+      {user?.userId && (
+        <>
+          <PostCreator />
+          <EventCreator />
+        </>
+      )}
 
       {/* Tab Navigation ---------------- */}
       <div className="flex gap-6 mb-4 pt-2 border-b px-3 sm:px-0">
