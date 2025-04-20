@@ -1,5 +1,10 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 import { PostProps } from "@/lib/constant";
 import { useGetAuthorQuery } from "@/redux/features/auth/authApi";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import {
   useAddCommentMutation,
   useGetSingleCommentQuery,
@@ -8,6 +13,7 @@ import {
   useGetSingleLikeQuery,
   useToggleLikeMutation,
 } from "@/redux/features/likes/like.api";
+import { useAppSelector } from "@/redux/hooks";
 import {
   Copy,
   Facebook,
@@ -37,9 +43,11 @@ export default function PostCard({
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(comment?.comments || []);
+  const router = useRouter();
 
   // console.log("comment", comment);
 
+  const user = useAppSelector(selectCurrentUser);
   const [toggleLike, { isLoading }] = useToggleLikeMutation();
   const { data: likes, refetch } = useGetSingleLikeQuery(id);
 
@@ -47,9 +55,13 @@ export default function PostCard({
   const [addComment, { isLoading: isCommentLoading }] = useAddCommentMutation();
   // console.log("likes", likes);
 
+  console.log("user ==>", user);
   // Fix the handleLike function to ensure id is properly converted to a number
   const handleLike = async () => {
     try {
+      if (!user) {
+        return router.push("/auth");
+      }
       console.log("post id is before like ==>", id);
 
       await toggleLike({ postId: id });
@@ -72,12 +84,11 @@ export default function PostCard({
     role = "Admin";
   } else if (author?.role === "ADMIN") {
     role = "Modarator";
-
   } else if (author?.role === "USER") {
     role = "User";
   }
 
-  console.log("Author", author)
+  console.log("Author", author);
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
@@ -98,6 +109,9 @@ export default function PostCard({
     if (!commentText.trim()) return;
 
     try {
+      if (!user) {
+        return router.push("/auth");
+      }
       await addComment({ postId: id, content: commentText });
       const updatedComments = Array.isArray(comments) ? comments : [];
       setComments([
@@ -170,9 +184,8 @@ export default function PostCard({
               {`${author?.firstName} ${author?.lastName}`}{" "}
             </h3>
             <div className="flex items-center gap-2">
-            
-                <span className="text-sm text-gray-500">{role}</span>
-              
+              <span className="text-sm text-gray-500">{role}</span>
+
               <span className="text-sm text-gray-500">
                 {moment(author?.createdAt).format("dddd, MMMM Do YYYY")}
 
