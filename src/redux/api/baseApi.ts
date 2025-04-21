@@ -1,4 +1,3 @@
-
 import {
   BaseQueryApi,
   BaseQueryFn,
@@ -47,38 +46,34 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     console.log("Sending refresh token");
 
     try {
-      const res = await fetch(
-        "http://localhost:3333/api/auth/refresh",
-        {
-          method: "POST",
-          credentials: "include",
-          // headers: {
-          //   "Content-Type": "application/json",
-          // },
-        }
-      );
-  
+      const res = await fetch("http://localhost:3333/api/auth/refresh", {
+        method: "POST",
+        credentials: "include",
+        // headers: {
+        //   "Content-Type": "application/json",
+        // },
+      });
+
       const data = await res.json();
-      console.log('data: ', data);
-      console.log('accessToken: ', data?.accessToken);
-  
-  
+      console.log("data: ", data);
+      console.log("accessToken: ", data?.accessToken);
+
       if (data?.accessToken) {
         const user = (api.getState() as RootState).auth.user;
-  
+
         api.dispatch(
           setUser({
             user,
             token: data.accessToken,
           })
         );
-  
+
         result = await baseQuery(args, api, extraOptions);
       } else {
         api.dispatch(logout());
       }
     } catch (error) {
-      console.log('refresh Token failed error: ', error);
+      console.log("refresh Token failed error: ", error);
     }
   }
 
@@ -88,7 +83,15 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: baseQueryWithRefreshToken,
-  tagTypes: ["Admin", "User", "Post", "Category", "Hashtag", "Like", "Comment"],
+  tagTypes: [
+    "Admin",
+    "User",
+    "Post",
+    "Category",
+    "Hashtag",
+    "Like",
+    "Comment",
+    "Event",
+  ],
   endpoints: () => ({}),
 });
-
