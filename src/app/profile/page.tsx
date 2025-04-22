@@ -1,33 +1,37 @@
 "use client";
 
-import React, { Suspense } from "react";
-import moment from "moment";
-import { Loading } from "@/components/ui/loading";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CommunityActivity from "@/components/profile/CommunityActivity";
+import PersonalInfo from "@/components/profile/PersonalInfo";
+import Posts from "@/components/profile/Posts";
+import ProfileEditModal from "@/components/profile/ProfileEditModal";
+import Settings from "@/components/profile/Settings";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Edit2, MapPin } from "lucide-react";
-import PersonalInfo from "@/components/profile/PersonalInfo";
-import CommunityActivity from "@/components/profile/CommunityActivity";
+import { Loading } from "@/components/ui/loading";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { mockUserProfile, posts } from "@/lib/config/profile";
-import Posts from "@/components/profile/Posts";
-import Settings from "@/components/profile/Settings";
-import { useGetAuthorQuery,useGetUserQuery } from "@/redux/features/auth/authApi";
+import {
+  useGetAuthorQuery,
+  useGetUserQuery,
+} from "@/redux/features/auth/authApi";
+import { Edit2, MapPin } from "lucide-react";
+import moment from "moment";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
 
 function ProfileContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
   const activeTab = tab || "personal";
-  const {data:user} = useGetUserQuery()
-  console.log('user', user)
-  const {data:userData, isLoading} = useGetAuthorQuery(user?.id)
+  const { data: user } = useGetUserQuery(undefined);
+  const { data: userData, isLoading } = useGetAuthorQuery(user?.id);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  if(isLoading) {
-    return <Loading size="lg" className="min-h-[60vh]" />         
+  if (isLoading) {
+    return <Loading size="lg" className="min-h-[60vh]" />;
   }
-  console.log('userData', userData)
+  console.log("userData", userData);
 
   const handleTabChange = (value: string) => {
     const newUrl = value === "personal" ? "/profile" : `/profile?tab=${value}`;
@@ -40,7 +44,9 @@ function ProfileContent() {
       <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
         <div className="flex flex-col md:flex-row items-center gap-6">
           <Avatar className="w-24 h-24">
-            <AvatarImage src="/assets/user.png" />
+            <AvatarImage
+              src={userData.avatar ? userData.avatar : "/assets/user.png"}
+            />
             <AvatarFallback>{mockUserProfile.name.slice(0, 2)}</AvatarFallback>
           </Avatar>
           <div className="flex-1 text-center md:text-left">
@@ -52,7 +58,10 @@ function ProfileContent() {
               কমিউনিটি মেম্বার সিনস {moment(userData?.createdAt).fromNow()}
             </p>
           </div>
-          <Button className="bg-green-600 hover:bg-green-700">
+          <Button
+            className="bg-green-600 hover:bg-green-700"
+            onClick={() => setIsEditModalOpen(true)}
+          >
             <Edit2 className="w-4 h-4 mr-2" /> প্রোফাইল এডিট
           </Button>
         </div>
@@ -96,6 +105,11 @@ function ProfileContent() {
           <Settings />
         </TabsContent>
       </Tabs>
+      <ProfileEditModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        profile={userData}
+      />
     </div>
   );
 }
@@ -109,7 +123,7 @@ export default function ProfilePage() {
         </div>
       }
     >
-      <ProfileContent  />
+      <ProfileContent />
     </Suspense>
   );
 }

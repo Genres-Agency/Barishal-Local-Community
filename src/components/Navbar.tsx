@@ -12,7 +12,10 @@ import { useState } from "react";
 import LeftSidebar from "./navigation/leftSide/LeftSidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
-import { useGetUserQuery } from "@/redux/features/auth/authApi";
+import {
+  useGetUserQuery,
+  useLogoutMutation,
+} from "@/redux/features/auth/authApi";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,12 +23,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useLogoutMutation } from "@/redux/features/auth/authApi";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  const [signOut] = useLogoutMutation()
+  const [signOut] = useLogoutMutation();
   const dispatch = useAppDispatch();
   const userData = useAppSelector(selectCurrentUser);
   const { data: user } = useGetUserQuery(undefined, {
@@ -38,9 +40,13 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout());
-    signOut()
-    router.push("/auth");
+    signOut({})
+      .unwrap()
+      .then(() => router.push("/auth"))
+      .catch((err) => console.error("Logout failed:", err));
   };
+
+  console.log("user", user);
 
   return (
     <nav className="bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
@@ -119,7 +125,7 @@ const Navbar = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="ml-4 cursor-pointer">
-                    <AvatarImage src="assets/user.png" />
+                    <AvatarImage src={user?.avatar || "/assets/user.png"} />
                     <AvatarFallback>USER</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>

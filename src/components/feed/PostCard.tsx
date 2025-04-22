@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { PostProps } from "@/lib/constant";
 import { useGetAuthorQuery } from "@/redux/features/auth/authApi";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useGetSingleCategoryQuery } from "@/redux/features/category/category.api";
 import {
   useAddCommentMutation,
   useGetSingleCommentQuery,
@@ -35,9 +36,11 @@ export default function PostCard({
   authorId,
   _count,
   id,
+  categoryId,
 }: PostProps) {
   const { data: author } = useGetAuthorQuery(authorId);
   const { data: comment } = useGetSingleCommentQuery(id);
+  const { data: category } = useGetSingleCategoryQuery(categoryId);
   const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
@@ -45,7 +48,7 @@ export default function PostCard({
   const [comments, setComments] = useState(comment?.comments || []);
   const router = useRouter();
 
-  // console.log("comment", comment);
+  console.log("categpory", category);
 
   const user = useAppSelector(selectCurrentUser);
   const [toggleLike, { isLoading }] = useToggleLikeMutation();
@@ -195,7 +198,7 @@ export default function PostCard({
           </div>
 
           <button className="mt-2 h-7 px-3 rounded-md bg-[#ffeaea] text-[#af1e1e] text-xs font-bold">
-            রিপোর্ট এন্ড লস্ট
+            {category?.title}
           </button>
         </div>
       </div>
