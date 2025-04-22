@@ -8,14 +8,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useGetUserQuery } from "@/redux/features/auth/authApi";
 import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
 import { useAddPostMutation } from "@/redux/features/post/post.api";
 import { Image, Loader2, X } from "lucide-react";
-import { useState,useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import {useGetUserQuery} from '@/redux/features/auth/authApi'
 
 const PostCreator: React.FC = () => {
   const [postContent, setPostContent] = useState("");
@@ -26,8 +26,8 @@ const PostCreator: React.FC = () => {
   const [addPost, { isLoading }] = useAddPostMutation();
 
   const { data: categories } = useGetAllCategoryQuery(undefined);
-  const {data:userData} = useGetUserQuery()
-  console.log('userData',userData)
+  const { data: userData } = useGetUserQuery(undefined);
+  console.log("userData", userData);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -46,52 +46,54 @@ const PostCreator: React.FC = () => {
       setSelectedCategory(categories[0].id); // or name, depending on API
     }
   }, [categories]);
-        const handlePostSubmit = async () => {
-          // if (!postContent.trim() && !file) return;
+  const handlePostSubmit = async () => {
+    // if (!postContent.trim() && !file) return;
 
-          try {
-            console.log({postContent, selectedCategory, file})
-            const formData = new FormData();
+    try {
+      console.log({ postContent, selectedCategory, file });
+      const formData = new FormData();
 
-            // Add data to FormData matching backend DTO
-            formData.append("content", postContent);
-            formData.append("categoryId", selectedCategory);
-            formData.append("hashTag", "#programming");
+      // Add data to FormData matching backend DTO
+      formData.append("content", postContent);
+      formData.append("categoryId", selectedCategory);
+      formData.append("hashTag", "#programming");
 
-            if (file) {
-              formData.append("image", file);
-              console.log("File added to FormData",file);
-            }
+      if (file) {
+        formData.append("image", file);
+        console.log("File added to FormData", file);
+      }
 
-            
-            // Call the API and capture the response
-            const result = await addPost(formData);
+      // Call the API and capture the response
+      const result = await addPost(formData);
 
-            if ("data" in result) {
-              toast.success("Your post has been created successfully.");
+      if ("data" in result) {
+        toast.success("Your post has been created successfully.");
 
-              // Reset form state
-              setPostContent("");
-              setSelectedCategory("reports");
-              if (preview) {
-                URL.revokeObjectURL(preview);
-              }
-              setFile(null);
-              setPreview(null);
-              setIsModalOpen(false);
-            } 
-          } catch (error) {
-            console.error("Exception during post creation:", error);
-            alert("An unexpected error occurred. Please try again later.");
-          }
-        };
+        // Reset form state
+        setPostContent("");
+        setSelectedCategory("reports");
+        if (preview) {
+          URL.revokeObjectURL(preview);
+        }
+        setFile(null);
+        setPreview(null);
+        setIsModalOpen(false);
+      }
+    } catch (error) {
+      console.error("Exception during post creation:", error);
+      alert("An unexpected error occurred. Please try again later.");
+    }
+  };
 
   return (
     <div className="px-3 sm:px-0">
       <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 mb-4">
         <div className="flex gap-2 sm:gap-4">
           <Avatar className="w-8 h-8 sm:w-10 sm:h-10">
-            <AvatarImage className="object-cover" src="/assets/user.png" />
+            <AvatarImage
+              className="object-cover"
+              src={userData?.avatar || "/assets/user.png"}
+            />
             <AvatarFallback>ME</AvatarFallback>
           </Avatar>
           <div className="flex flex-col w-full gap-3 sm:gap-4">
@@ -120,12 +122,14 @@ const PostCreator: React.FC = () => {
               <Avatar className="w-10 h-10">
                 <AvatarImage
                   className="object-cover"
-                  src="/assets/user.png"
+                  src={userData?.avatar || "/assets/user.png"}
                 />
                 <AvatarFallback>ME</AvatarFallback>
               </Avatar>
               <div>
-                <p className="font-medium">{userData?.firstName} {userData?.lastName}</p>
+                <p className="font-medium">
+                  {userData?.firstName} {userData?.lastName}
+                </p>
               </div>
             </div>
 

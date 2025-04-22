@@ -7,31 +7,6 @@ type TCategorory = {
 
 const categoriesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    // getAllCategory: builder.query({
-    //   query: (args) => {
-    //     const params = new URLSearchParams();
-
-    //     if (args) {
-    //       args.forEach((item: TQueryParam) => {
-    //         params.append(item.name, item.value as string);
-    //       });
-    //     }
-
-    //     return {
-    //       url: "/category",
-    //       method: "GET",
-    //       params: params,
-    //     };
-    //   },
-    //   transformResponse: (response: TResponseRedux<TCategorory[]>) => {
-    //     return {
-    //       data: response.data,
-    //       meta: response.meta,
-    //     };
-    //   },
-    //   providesTags: ["Category"],
-    // }),
-
     getAllCategory: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
@@ -80,6 +55,14 @@ const categoriesApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Category"],
     }),
+    // Get single category
+    getSingleCategory: builder.query({
+      query: (id) => ({
+        url: `/category/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Category"],
+    }),
   }),
 });
 
@@ -88,4 +71,5 @@ export const {
   useDeleteCategoryMutation,
   useGetAllCategoryQuery,
   useUpdateCategoryMutation,
+  useGetSingleCategoryQuery,
 } = categoriesApi;
