@@ -4,13 +4,11 @@ import { baseApi } from "../../api/baseApi";
 const postApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllPost: builder.query({
-      query: (args) => {
+      query: (categoryId?: number) => {
         const params = new URLSearchParams();
-
-        if (args) {
-          args.forEach((item: TQueryParam) => {
-            params.append(item.name, item.value as string);
-          });
+        
+        if (categoryId) {
+          params.append('categoryId', categoryId.toString());
         }
 
         return {
