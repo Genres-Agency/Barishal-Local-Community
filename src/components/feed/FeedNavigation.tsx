@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
 import { Search, Calendar, Briefcase, Store } from "lucide-react";
 import { getCategoryStyle } from "@/lib/config/navigation";
@@ -22,9 +21,8 @@ const FeedNavigation: React.FC<FeedNavigationProps> = ({ onCategorySelect }) => 
       {categories?.map((category: any, index: number) => {
         const style = getCategoryStyle(category.slug);
         return (
-          <Link
+          <p
             key={index}
-            href="#"
             onClick={() => onCategorySelect(category.id)}
             className={`cursor-pointer flex flex-col items-center justify-center w-full shadow ${style.bgColor} ${style.textColor} ${style.hoverBg} transition-all duration-300 py-3 lg:py-7 px-2 rounded-lg`}
           >
@@ -32,7 +30,7 @@ const FeedNavigation: React.FC<FeedNavigationProps> = ({ onCategorySelect }) => 
               className: `w-5 lg:w-7 h-5 lg:h-7 mb-2 ${style.textColor}`,
             })}
             <span className="text-sm font-semibold">{style.text}</span>
-          </Link>
+          </p>
         );
       })}
     </nav>
