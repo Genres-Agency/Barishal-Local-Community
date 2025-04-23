@@ -18,13 +18,19 @@ const CommunityFeed = () => {
   );
 
   console.log("user.id", user?.userId);
-  const { data: postData } = useGetAllPostQuery(undefined);
+
+  const [selectedCategory, setSelectedCategory] = useState<number | undefined>();
+  const { data: postData } = useGetAllPostQuery(selectedCategory);
+
+  const handleCategorySelect = (categoryId: number) => {
+    setSelectedCategory(categoryId === selectedCategory ? undefined : categoryId);
+  };
 
   // console.log("postData", postData);
   return (
     <div className="space-y-4">
       {/* Feed Navigation ---------------- */}
-      <FeedNavigation />
+      <FeedNavigation onCategorySelect={handleCategorySelect} />
       {/* Post Creator Field --------------- */}
       {user?.userId && (
         <>

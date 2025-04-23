@@ -8,6 +8,7 @@ import {
   Settings,
   Store,
 } from "lucide-react";
+import { CategoryStyle } from "@lib/types/global";
 
 export const feedNavigationItems = [
   {
@@ -19,7 +20,7 @@ export const feedNavigationItems = [
     href: "/reports",
   },
   {
-    icon: Store,
+    icon: Store, 
     text: "বাজারের আপডেট",
     bgColor: "bg-green-50",
     textColor: "text-green-600",
@@ -147,3 +148,55 @@ export const trendingTopics: TrendingTopic[] = [
     postCount: "৫৩২",
   },
 ];
+
+
+
+export const getCategoryStyle = (slug: string): CategoryStyle => {
+  switch (slug) {
+    case 'reports':
+      return {
+        icon: Search,
+        text: "রিপোর্ট ও তথ্য",
+        bgColor: "bg-red-50",
+        textColor: "text-red-600",
+        hoverBg: "hover:bg-red-100",
+        href: "/reports",
+      };
+    case 'events':
+      return {
+        icon: Calendar,
+        text: "ইভেন্ট",
+        bgColor: "bg-yellow-50",
+        textColor: "text-purple-600",
+        hoverBg: "hover:bg-purple-100",
+        href: "/events",
+      };
+    case 'jobs':
+      return {
+        icon: Briefcase,
+        text: "চাকরির পোস্ট",
+        bgColor: "bg-blue-50",
+        textColor: "text-blue-600",
+        hoverBg: "hover:bg-blue-100",
+        href: "/jobs",
+      };
+    case 'merkets':
+      return {
+        icon: Store,
+        text: "বাজারের আপডেট",
+        bgColor: "bg-green-50",
+        textColor: "text-green-600",
+        hoverBg: "hover:bg-green-100",
+        href: "/merkets",
+      };
+    default:
+      return {
+        icon: Search,
+        text: "অন্যান্য",
+        bgColor: "bg-gray-50",
+        textColor: "text-gray-600",
+        hoverBg: "hover:bg-gray-100",
+        href: "/",
+      };
+  }
+};

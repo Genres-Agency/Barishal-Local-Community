@@ -30,3 +30,13 @@ export type TQueryParam = {
   name: string;
   value: boolean | React.Key;
 };
+
+
+export interface CategoryStyle {
+  icon: any;
+  text: string;
+  bgColor: string;
+  textColor: string;
+  hoverBg: string;
+  href: string;
+}

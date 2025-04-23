@@ -1,8 +1,11 @@
-import React from "react";
-import Link from "next/link";
+"use client";
+
 import { navigationItemsLeftSite } from "@/lib/config/navigation";
+import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
+import Link from "next/link";
 
 const NavigationMenu = () => {
+  
   return (
     <div className="bg-white rounded-lg p-4 space-y-4">
       {navigationItemsLeftSite.map((item, index) => (
