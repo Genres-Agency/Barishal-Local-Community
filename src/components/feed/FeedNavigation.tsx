@@ -23,7 +23,7 @@ const FeedNavigation: React.FC<FeedNavigationProps> = ({ onCategorySelect }) => 
         return (
           <p
             key={index}
-            onClick={() => onCategorySelect(category.id)}
+            onClick={() => onCategorySelect(category?.id)}
             className={`cursor-pointer flex flex-col items-center justify-center w-full shadow ${style.bgColor} ${style.textColor} ${style.hoverBg} transition-all duration-300 py-3 lg:py-7 px-2 rounded-lg`}
           >
             {React.createElement(style.icon, {

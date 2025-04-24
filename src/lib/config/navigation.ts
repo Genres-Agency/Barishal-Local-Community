@@ -180,14 +180,14 @@ export const getCategoryStyle = (slug: string): CategoryStyle => {
         hoverBg: "hover:bg-blue-100",
         href: "/jobs",
       };
-    case 'merkets':
+    case 'markets':
       return {
         icon: Store,
         text: "বাজারের আপডেট",
         bgColor: "bg-green-50",
         textColor: "text-green-600",
         hoverBg: "hover:bg-green-100",
-        href: "/merkets",
+        href: "/markets",
       };
     default:
       return {

@@ -45,14 +45,14 @@ function ProfileContent() {
         <div className="flex flex-col md:flex-row items-center gap-6">
           <Avatar className="w-24 h-24">
             <AvatarImage
-              src={userData.avatar ? userData.avatar : "/assets/user.png"}
+              src={userData?.avatar ? userData?.avatar : "/assets/user.png"}
             />
             <AvatarFallback>{mockUserProfile.name.slice(0, 2)}</AvatarFallback>
           </Avatar>
           <div className="flex-1 text-center md:text-left">
-            <h1 className="text-2xl font-bold">{userData?.firstName}</h1>
+            <h1 className="text-2xl font-bold">{`${userData?.firstName}  ${userData?.lastName}`}</h1>
             <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-2">
-              <MapPin className="w-4 h-4" /> {mockUserProfile.location}
+              <MapPin className="w-4 h-4" /> {mockUserProfile?.location}
             </p>
             <p className="text-gray-600 mt-2">
               কমিউনিটি মেম্বার সিনস {moment(userData?.createdAt).fromNow()}
