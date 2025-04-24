@@ -25,6 +25,7 @@ interface PersonalInfoProps {
 
 export default function PersonalInfo({ profile }) {
 
+
   console.log('profile', profile)
   return (
     <div className="space-y-6">
@@ -34,7 +35,7 @@ export default function PersonalInfo({ profile }) {
           <div className="space-y-4">
             <div>
               <Label>পূর্ণ নাম</Label>
-              <Input defaultValue={profile?.firstName}  />
+              <Input defaultValue={`${profile?.firstName}  ${profile?.lastName}` }   />
             </div>
             <div>
               <Label>ইমেইল</Label>
@@ -47,7 +48,7 @@ export default function PersonalInfo({ profile }) {
               <Label>ফোন</Label>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-gray-500" />
-                <Input defaultValue={profile.phone} />
+                <Input defaultValue={profile?.phone} />
               </div>
             </div>
           </div>

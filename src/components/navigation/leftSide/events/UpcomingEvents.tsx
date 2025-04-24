@@ -15,7 +15,7 @@ const UpcomingEvents = () => {
       <h2 className="text-lg font-semibold border-b pb-2">আপকামিং ইভেন্টস</h2>
       <div className="space-y-4">
         {events?.slice(0, 2).map((event) => (
-          <div key={event._id} className="flex items-start space-x-3">
+          <div key={event.id} className="flex items-start space-x-3">
             <Image
               src={event.image || "/assets/community-event.png"}
               alt={event.title}
@@ -26,7 +26,7 @@ const UpcomingEvents = () => {
             <div>
               <h3 className="font-medium">{event.title}</h3>
               <p className="text-sm text-gray-500">
-                {moment(event.date).format("MMMM D, YYYY [at] h:mm A")}
+                {moment(event.time).format("MMMM D, YYYY [at] h:mm A")}
               </p>
               <p className="text-sm text-gray-600 mt-1">{event.location}</p>
             </div>

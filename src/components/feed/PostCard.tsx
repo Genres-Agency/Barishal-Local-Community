@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { PostProps } from "@/lib/constant";
-import { useGetAuthorQuery } from "@/redux/features/auth/authApi";
+import { useGetAuthorQuery,useGetUserQuery } from "@/redux/features/auth/authApi";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useGetSingleCategoryQuery } from "@/redux/features/category/category.api";
 import {
@@ -38,9 +38,11 @@ export default function PostCard({
   id,
   categoryId,
 }: PostProps) {
+  const currentUser = useAppSelector(selectCurrentUser);
   const { data: author } = useGetAuthorQuery(authorId);
   const { data: comment } = useGetSingleCommentQuery(id);
   const { data: category } = useGetSingleCategoryQuery(categoryId);
+  const {data:user} = useGetUserQuery()
   const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
@@ -50,7 +52,7 @@ export default function PostCard({
 
   console.log("categpory", category);
 
-  const user = useAppSelector(selectCurrentUser);
+  
   const [toggleLike, { isLoading }] = useToggleLikeMutation();
   const { data: likes, refetch } = useGetSingleLikeQuery(id);
 
@@ -62,7 +64,7 @@ export default function PostCard({
   // Fix the handleLike function to ensure id is properly converted to a number
   const handleLike = async () => {
     try {
-      if (!user) {
+      if (!currentUser) {
         return router.push("/auth");
       }
       console.log("post id is before like ==>", id);
@@ -92,6 +94,7 @@ export default function PostCard({
   }
 
   console.log("Author", author);
+  console.log('user from post card', user)
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
@@ -112,7 +115,7 @@ export default function PostCard({
     if (!commentText.trim()) return;
 
     try {
-      if (!user) {
+      if (!currentUser) {
         return router.push("/auth");
       }
       await addComment({ postId: id, content: commentText });
@@ -309,13 +312,13 @@ export default function PostCard({
                   <Avatar className="w-8 h-8">
                     <AvatarImage
                       className="object-cover"
-                      src={"/assets/user.png"}
+                      src={user? user?.avatar : "/assets/user.png"}
                     />
                     <AvatarFallback>U</AvatarFallback>
                   </Avatar>
                   <div className="bg-gray-100 p-2 rounded-lg flex-1">
                     <div className="flex justify-between items-start">
-                      <p className="text-sm">{comment.content}</p>
+                      <p className="text-sm">{comment?.content}</p>
                       <span className="text-xs text-gray-500">
                         {moment(comment.createdAt).fromNow()}
                       </span>
@@ -329,7 +332,7 @@ export default function PostCard({
           {/* Add comment input */}
           <div className="flex gap-2 items-center">
             <Avatar className="w-8 h-8">
-              <AvatarImage className="object-cover" src="/assets/profile.JPG" />
+              <AvatarImage className="object-cover" src={user?.avatar? user?.avatar: "/assets/user.png"} />
               <AvatarFallback>ME</AvatarFallback>
             </Avatar>
             <div className="flex-1 flex gap-2 bg-gray-100 rounded-full px-3 py-1">
