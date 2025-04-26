@@ -18,9 +18,9 @@ export interface IUserDetail {
 const userDetailApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Get User Detail
-    getUserDetail: builder.query<IUserDetail, string>({
-      query: (userId) => ({
-        url: `/users/${userId}/detail`,
+    getUserDetail: builder.query({
+      query: () => ({
+        url: `/user-detail`,
         method: "GET",
       }),
       providesTags: ["User"],

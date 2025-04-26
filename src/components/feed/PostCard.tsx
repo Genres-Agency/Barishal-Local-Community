@@ -3,7 +3,10 @@
 import { useRouter } from "next/navigation";
 
 import { PostProps } from "@/lib/constant";
-import { useGetAuthorQuery,useGetUserQuery } from "@/redux/features/auth/authApi";
+import {
+  useGetAuthorQuery,
+  useGetUserQuery,
+} from "@/redux/features/auth/authApi";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useGetSingleCategoryQuery } from "@/redux/features/category/category.api";
 import {
@@ -42,7 +45,7 @@ export default function PostCard({
   const { data: author } = useGetAuthorQuery(authorId);
   const { data: comment } = useGetSingleCommentQuery(id);
   const { data: category } = useGetSingleCategoryQuery(categoryId);
-  const {data:user} = useGetUserQuery()
+  const { data: user } = useGetUserQuery(undefined);
   const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
@@ -52,7 +55,6 @@ export default function PostCard({
 
   console.log("categpory", category);
 
-  
   const [toggleLike, { isLoading }] = useToggleLikeMutation();
   const { data: likes, refetch } = useGetSingleLikeQuery(id);
 
@@ -94,7 +96,7 @@ export default function PostCard({
   }
 
   console.log("Author", author);
-  console.log('user from post card', user)
+  console.log("user from post card", user);
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);
@@ -193,7 +195,7 @@ export default function PostCard({
               <span className="text-sm text-gray-500">{role}</span>
 
               <span className="text-sm text-gray-500">
-                {moment(author?.createdAt).format("dddd, MMMM Do YYYY")}
+                {moment(author?.createdAt).fromNow()}
 
                 {/* {moment(comment.createdAt).fromNow()} */}
               </span>
@@ -312,7 +314,7 @@ export default function PostCard({
                   <Avatar className="w-8 h-8">
                     <AvatarImage
                       className="object-cover"
-                      src={user? user?.avatar : "/assets/user.png"}
+                      src={user ? user?.avatar : "/assets/user.png"}
                     />
                     <AvatarFallback>U</AvatarFallback>
                   </Avatar>
@@ -332,7 +334,10 @@ export default function PostCard({
           {/* Add comment input */}
           <div className="flex gap-2 items-center">
             <Avatar className="w-8 h-8">
-              <AvatarImage className="object-cover" src={user?.avatar? user?.avatar: "/assets/user.png"} />
+              <AvatarImage
+                className="object-cover"
+                src={user?.avatar ? user?.avatar : "/assets/user.png"}
+              />
               <AvatarFallback>ME</AvatarFallback>
             </Avatar>
             <div className="flex-1 flex gap-2 bg-gray-100 rounded-full px-3 py-1">

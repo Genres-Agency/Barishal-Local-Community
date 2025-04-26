@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, Globe, Facebook, Twitter, Linkedin } from "lucide-react";
+import { Facebook, Globe, Linkedin, Mail, Phone, Twitter } from "lucide-react";
 
 interface PersonalInfoProps {
   profile: {
@@ -24,9 +24,7 @@ interface PersonalInfoProps {
 }
 
 export default function PersonalInfo({ profile }) {
-
-
-  console.log('profile', profile)
+  console.log("profile", profile);
   return (
     <div className="space-y-6">
       {/* Personal Information Form */}
@@ -35,13 +33,15 @@ export default function PersonalInfo({ profile }) {
           <div className="space-y-4">
             <div>
               <Label>পূর্ণ নাম</Label>
-              <Input defaultValue={`${profile?.firstName}  ${profile?.lastName}` }   />
+              <Input
+                defaultValue={`${profile?.user?.firstName}  ${profile?.user?.lastName}`}
+              />
             </div>
             <div>
               <Label>ইমেইল</Label>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-gray-500" />
-                <Input defaultValue={profile?.email} />
+                <Input defaultValue={profile?.user?.email} />
               </div>
             </div>
             <div>
@@ -61,22 +61,22 @@ export default function PersonalInfo({ profile }) {
               <Label>ওয়েবসাইট</Label>
               <div className="flex items-center gap-2">
                 <Globe className="w-4 h-4 text-gray-500" />
-                <Input defaultValue={profile?.website } />
+                <Input defaultValue={profile?.website} />
               </div>
             </div>
             <div className="space-y-2">
               <Label>সোশ্যাল মিডিয়া</Label>
               <div className="flex items-center gap-2">
                 <Facebook className="w-4 h-4 text-gray-500" />
-                <Input defaultValue={profile?.social?.facebook} />
+                <Input defaultValue={profile?.facebook} />
               </div>
               <div className="flex items-center gap-2">
                 <Twitter className="w-4 h-4 text-gray-500" />
-                <Input defaultValue={profile?.social?.twitter} />
+                <Input defaultValue={profile?.x} />
               </div>
               <div className="flex items-center gap-2">
                 <Linkedin className="w-4 h-4 text-gray-500" />
-                <Input defaultValue={profile?.social?.linkedin} />
+                <Input defaultValue={profile?.linkedin} />
               </div>
             </div>
           </div>
