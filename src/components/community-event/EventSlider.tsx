@@ -1,6 +1,6 @@
 "use client";
-import * as React from "react";
 import Autoplay from "embla-carousel-autoplay";
+import * as React from "react";
 
 import {
   Carousel,
@@ -11,6 +11,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { events } from "@/lib/config/hero-event-slider";
+import { useGetAllEventsQuery } from "@/redux/features/events/events.api";
 
 export function EventSlider() {
   const plugin = React.useRef(
@@ -18,6 +19,8 @@ export function EventSlider() {
   );
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
+  const { data: eventsData, isLoading } = useGetAllEventsQuery(undefined);
+  // console.log("eventsData", eventsData);
 
   React.useEffect(() => {
     if (!api) return;
@@ -39,7 +42,7 @@ export function EventSlider() {
   );
 
   return (
-    <div className="relative h-80 lg:h-[600px] container mx-auto">
+    <div className="relative h-80 lg:h-[400px] container mx-auto">
       <Carousel
         plugins={[plugin.current]}
         className="w-full h-full"
@@ -52,23 +55,23 @@ export function EventSlider() {
         }}
       >
         <CarouselContent>
-          {events.map((event, index) => (
+          {eventsData?.map((event, index) => (
             <CarouselItem key={index}>
               <section
-                style={{ backgroundImage: `url(${event.image})` }}
-                className="relative h-80 lg:h-[600px] bg-cover bg-center bg-no-repeat"
+                style={{ backgroundImage: `url(${event?.image})` }}
+                className="relative h-80 lg:h-[400px] bg-cover bg-center bg-no-repeat"
               >
                 <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70 flex items-end pb-20 px-1 lg:px-10">
                   <div className="container mx-auto px-5">
                     <div className="text-white max-w-2xl">
                       <span className="inline-block bg-red-600 text-white px-4 py-2 rounded text-xs md:text-sm mb-5">
-                        {event.tag}
+                        {event?.status}
                       </span>
                       <h1 className="text-2xl lg:text-5xl font-bold mb-5">
-                        {event.title}
+                        {event?.title}
                       </h1>
                       <p className="text-base lg:text-lg leading-relaxed">
-                        {event.description}
+                        {event?.description}
                       </p>
                     </div>
                   </div>
