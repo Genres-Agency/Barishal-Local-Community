@@ -1,14 +1,15 @@
 import { baseApi } from "../../api/baseApi";
 
 export type IEvent = {
-  _id: string;
+  id: string;
   title: string;
-  date: string;
+  time: string;
   location: string;
+  status: string;
   image: string;
   description?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type ICreateEvent = {
