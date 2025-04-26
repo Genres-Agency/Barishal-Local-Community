@@ -1,4 +1,3 @@
-import { TQueryParam } from "@/types/global";
 import { baseApi } from "../../api/baseApi";
 
 const postApi = baseApi.injectEndpoints({
@@ -6,9 +5,9 @@ const postApi = baseApi.injectEndpoints({
     getAllPost: builder.query({
       query: (categoryId?: number) => {
         const params = new URLSearchParams();
-        
+
         if (categoryId) {
-          params.append('categoryId', categoryId.toString());
+          params.append("categoryId", categoryId.toString());
         }
 
         return {
@@ -41,9 +40,8 @@ const postApi = baseApi.injectEndpoints({
         url: "/posts",
         method: "POST",
         body: data,
-        
       }),
-      invalidatesTags: ["Post"],
+      invalidatesTags: ["Post", "Hashtag"],
     }),
 
     // Update exesting post

@@ -28,19 +28,19 @@ export default function ProfileEditModal({
 }: ProfileEditModalProps) {
   const [updateUserDetail, { isLoading }] = useUpdateUserDetailMutation();
   const [formData, setFormData] = useState({
-    firstName: profile?.firstName || "",
-    lastName: profile?.lastName || "",
+    firstName: profile?.user?.firstName || "",
+    lastName: profile?.user?.lastName || "",
     location: profile?.location || "",
     bio: profile?.bio || "",
     phone: profile?.phone || "",
     website: profile?.website || "",
     facebook: profile?.facebook || "",
-    twitter: profile?.twitter || "",
+    x: profile?.x || "",
     linkedin: profile?.linkedin || "",
     image: null as File | null,
   });
 
-  console.log("profile", profile);
+  // console.log("profile", profile);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -58,9 +58,9 @@ export default function ProfileEditModal({
     });
 
     try {
-      console.log("submit data ==> ", submitData, "id==>", profile.id);
+      console.log("submit data ==> ", submitData, "id==>", profile?.user?.id);
       await updateUserDetail({
-        userId: profile.id,
+        userId: profile?.user?.id,
         formData: submitData,
       }).unwrap();
 
@@ -88,12 +88,12 @@ export default function ProfileEditModal({
                   src={
                     formData.image
                       ? URL.createObjectURL(formData.image)
-                      : profile?.avatar || "/assets/user.png"
+                      : profile?.user?.avatar || "/assets/user.png"
                   }
                   alt="Profile"
                 />
                 <AvatarFallback>
-                  {profile?.firstName?.slice(0, 2)}
+                  {profile?.user?.firstName?.slice(0, 2)}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
@@ -196,9 +196,9 @@ export default function ProfileEditModal({
                 <Label htmlFor="twitter">এক্স (টুইটার)</Label>
                 <Input
                   id="twitter"
-                  value={formData.twitter}
+                  value={formData.x}
                   onChange={(e) =>
-                    setFormData({ ...formData, twitter: e.target.value })
+                    setFormData({ ...formData, x: e.target.value })
                   }
                   placeholder="https://twitter.com/username"
                 />

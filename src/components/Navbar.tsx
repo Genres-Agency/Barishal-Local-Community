@@ -3,10 +3,10 @@ import { navigationItemsLeftSite } from "@/lib/config/navigation";
 import { logoutMenuItem, profileMenuItems } from "@/lib/config/profileMenu";
 
 import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { Menu, Search, User, X } from "lucide-react";
+import { ChevronDown, Menu, Search, User, X } from "lucide-react";
 import Link from "next/link";
-// import {useGetUserQuery} from '@/redux/features/user/userApi'
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import LeftSidebar from "./navigation/leftSide/LeftSidebar";
@@ -27,16 +27,17 @@ import {
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [signOut] = useLogoutMutation();
   const dispatch = useAppDispatch();
   const userData = useAppSelector(selectCurrentUser);
   const { data: user } = useGetUserQuery(undefined, {
-    // Skip the query if we don't have a token
     skip: !userData?.userId,
   });
+  const { data: categories } = useGetAllCategoryQuery([]);
   const router = useRouter();
-  // console.log("user Data", userData);
-  // console.log("user", user);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -46,7 +47,24 @@ const Navbar = () => {
       .catch((err) => console.error("Logout failed:", err));
   };
 
-  console.log("user", user);
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Implement search logic here
+    console.log(
+      "Searching for:",
+      searchQuery,
+      "in category:",
+      selectedCategory
+    );
+  };
+
+  const handleSearchFocus = () => {
+    setShowSearchDropdown(true);
+  };
+
+  const handleSearchBlur = () => {
+    setTimeout(() => setShowSearchDropdown(false), 200);
+  };
 
   return (
     <nav className="bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
@@ -81,15 +99,64 @@ const Navbar = () => {
               isMobileSearchOpen ? "block" : "hidden md:block"
             } transition-all duration-300 ease-in-out`}
           >
-            <Search
-              className="absolute top-1/2 -translate-y-1/2 left-3 text-gray-400"
-              size={20}
-            />
-            <input
-              type="search"
-              placeholder="কমিউনিটিতে অনুসন্ধান করুন"
-              className="w-full md:w-[532px] pl-10 px-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-            />
+            <form
+              onSubmit={handleSearch}
+              className="relative flex items-center"
+            >
+              <div className="relative">
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="h-full px-4 py-2.5 text-sm border focus:outline-none focus:ring-2 focus:ring-green-500 appearance-none pr-8 bg-gray-50 border-r-0 rounded-l-lg"
+                >
+                  <option value="">সব ক্যাটাগরি</option>
+                  {categories?.map((category: any) => (
+                    <option key={category.id} value={category.id}>
+                      {category.title}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400"
+                  size={16}
+                />
+              </div>
+              <div className="relative flex-grow">
+                <input
+                  type="search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onFocus={handleSearchFocus}
+                  onBlur={handleSearchBlur}
+                  placeholder="কমিউনিটিতে অনুসন্ধান করুন"
+                  className="w-full md:w-[400px] px-4 py-2.5 border text-sm focus:outline-none focus:ring-2 focus:ring-green-500 border-x-0"
+                />
+                {showSearchDropdown && searchQuery && (
+                  <div className="absolute w-full bg-white border rounded-lg mt-1 shadow-lg z-50">
+                    <div className="p-2">
+                      <p className="text-sm text-gray-500 mb-2">সাজেশন</p>
+                      <div className="space-y-1">
+                        <p className="text-sm hover:bg-gray-100 p-2 rounded cursor-pointer">
+                          সাজেশন ১
+                        </p>
+                        <p className="text-sm hover:bg-gray-100 p-2 rounded cursor-pointer">
+                          সাজেশন ২
+                        </p>
+                        <p className="text-sm hover:bg-gray-100 p-2 rounded cursor-pointer">
+                          সাজেশন ৩
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <button
+                type="submit"
+                className="px-6 py-2.5 text-sm text-white bg-green-600 rounded-r-lg font-medium hover:bg-green-700 transition-colors border border-green-600"
+              >
+                {"অনুসন্ধান"}
+              </button>
+            </form>
           </div>
 
           <div className="hidden md:flex items-center space-x-2">

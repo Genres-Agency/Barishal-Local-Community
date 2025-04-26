@@ -10,10 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/ui/loading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { mockUserProfile, posts } from "@/lib/config/profile";
-import {
-  useGetAuthorQuery,
-  useGetUserQuery,
-} from "@/redux/features/auth/authApi";
+import { useGetUserDetailQuery } from "@/redux/features/user/userDetail.api";
 import { Edit2, MapPin } from "lucide-react";
 import moment from "moment";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -24,14 +21,17 @@ function ProfileContent() {
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
   const activeTab = tab || "personal";
-  const { data: user } = useGetUserQuery(undefined);
-  const { data: userData, isLoading } = useGetAuthorQuery(user?.id);
+
+  // const { data: userData, isLoading } = useGetAuthorQuery(user?.id);
+  const { data: userDetails, isLoading: isLoadingDetails } =
+    useGetUserDetailQuery(undefined);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  if (isLoading) {
+  if (isLoadingDetails) {
     return <Loading size="lg" className="min-h-[60vh]" />;
   }
-  console.log("userData", userData);
+  // console.log("userData", userData);
+  // console.log("userDetails", userDetails);
 
   const handleTabChange = (value: string) => {
     const newUrl = value === "personal" ? "/profile" : `/profile?tab=${value}`;
@@ -45,17 +45,21 @@ function ProfileContent() {
         <div className="flex flex-col md:flex-row items-center gap-6">
           <Avatar className="w-24 h-24">
             <AvatarImage
-              src={userData?.avatar ? userData?.avatar : "/assets/user.png"}
+              src={
+                userDetails?.user?.avatar
+                  ? userDetails?.user?.avatar
+                  : "/assets/user.png"
+              }
             />
             <AvatarFallback>{mockUserProfile.name.slice(0, 2)}</AvatarFallback>
           </Avatar>
           <div className="flex-1 text-center md:text-left">
-            <h1 className="text-2xl font-bold">{`${userData?.firstName}  ${userData?.lastName}`}</h1>
+            <h1 className="text-2xl font-bold">{`${userDetails?.user?.firstName}  ${userDetails?.user?.lastName}`}</h1>
             <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-2">
               <MapPin className="w-4 h-4" /> {mockUserProfile?.location}
             </p>
             <p className="text-gray-600 mt-2">
-              কমিউনিটি মেম্বার সিনস {moment(userData?.createdAt).fromNow()}
+              কমিউনিটি মেম্বার সিনস {moment(userDetails?.createdAt).fromNow()}
             </p>
           </div>
           <Button
@@ -90,7 +94,7 @@ function ProfileContent() {
         </TabsList>
 
         <TabsContent value="personal">
-          <PersonalInfo profile={userData} />
+          <PersonalInfo profile={userDetails} />
         </TabsContent>
 
         <TabsContent value="community">
@@ -108,7 +112,7 @@ function ProfileContent() {
       <ProfileEditModal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
-        profile={userData}
+        profile={userDetails}
       />
     </div>
   );
