@@ -187,12 +187,30 @@ const Navbar = () => {
                 {showSearchDropdown && searchResults.length > 0 && (
                   <div className="absolute w-full bg-white border rounded-lg mt-1 shadow-lg z-50">
                     {searchResults.map((post) => (
-                      <div
+                      <Link
                         key={post.id}
-                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                        href={`/post/${post.id}`}
+                        className="block p-3 hover:bg-gray-100 border-b last:border-b-0"
+                        onClick={() => setShowSearchDropdown(false)}
                       >
-                        {post.content}
-                      </div>
+                        <h4 className="font-medium text-gray-900 mb-1">
+                          {post.title}
+                        </h4>
+                        <p className="text-sm text-gray-600 line-clamp-2">
+                          {post.content}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
+                          <span>
+                            {new Date(post.createdAt).toLocaleDateString()}
+                          </span>
+                          {post.category && (
+                            <>
+                              <span>•</span>
+                              <span>{post.category.title}</span>
+                            </>
+                          )}
+                        </div>
+                      </Link>
                     ))}
                   </div>
                 )}

@@ -207,7 +207,9 @@ export default function PostCard({
           </button>
         </div>
       </div>
-      <p className="text-gray-700 mb-4">{content}</p>
+      <p className="text-gray-700  prose prose-lg max-w-none mb-6 whitespace-pre-wrap">
+        {content}
+      </p>
       {photo && (
         <div className="mb-4">
           <Image
