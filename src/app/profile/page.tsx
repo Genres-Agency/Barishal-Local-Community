@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/ui/loading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { mockUserProfile, posts } from "@/lib/config/profile";
+import { useGetUserQuery } from "@/redux/features/auth/authApi";
 import { useGetUserDetailQuery } from "@/redux/features/user/userDetail.api";
 import { Edit2, MapPin } from "lucide-react";
 import moment from "moment";
@@ -21,8 +22,10 @@ function ProfileContent() {
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
   const activeTab = tab || "personal";
+  const { data: user } = useGetUserQuery(undefined);
 
-  // const { data: userData, isLoading } = useGetAuthorQuery(user?.id);
+  console.log("User ==>", user);
+
   const { data: userDetails, isLoading: isLoadingDetails } =
     useGetUserDetailQuery(undefined);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -30,7 +33,7 @@ function ProfileContent() {
   if (isLoadingDetails) {
     return <Loading size="lg" className="min-h-[60vh]" />;
   }
-  // console.log("userData", userData);
+
   // console.log("userDetails", userDetails);
 
   const handleTabChange = (value: string) => {
@@ -45,16 +48,12 @@ function ProfileContent() {
         <div className="flex flex-col md:flex-row items-center gap-6">
           <Avatar className="w-24 h-24">
             <AvatarImage
-              src={
-                userDetails?.user?.avatar
-                  ? userDetails?.user?.avatar
-                  : "/assets/user.png"
-              }
+              src={user?.avatar ? user?.avatar : "/assets/user.png"}
             />
             <AvatarFallback>{mockUserProfile.name.slice(0, 2)}</AvatarFallback>
           </Avatar>
           <div className="flex-1 text-center md:text-left">
-            <h1 className="text-2xl font-bold">{`${userDetails?.user?.firstName}  ${userDetails?.user?.lastName}`}</h1>
+            <h1 className="text-2xl font-bold">{`${user?.firstName}  ${user?.lastName}`}</h1>
             <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-2">
               <MapPin className="w-4 h-4" /> {mockUserProfile?.location}
             </p>
@@ -94,7 +93,7 @@ function ProfileContent() {
         </TabsList>
 
         <TabsContent value="personal">
-          <PersonalInfo profile={userDetails} />
+          <PersonalInfo profile={userDetails} user={user} />
         </TabsContent>
 
         <TabsContent value="community">
@@ -113,6 +112,7 @@ function ProfileContent() {
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         profile={userDetails}
+        user={user}
       />
     </div>
   );

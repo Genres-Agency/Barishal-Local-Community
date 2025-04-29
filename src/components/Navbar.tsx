@@ -1,6 +1,7 @@
 "use client";
 import { navigationItemsLeftSite } from "@/lib/config/navigation";
 import { logoutMenuItem, profileMenuItems } from "@/lib/config/profileMenu";
+import { useLazyGetAllPostQuery } from "@/redux/features/post/post.api";
 
 import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
@@ -28,6 +29,7 @@ const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
   const [signOut] = useLogoutMutation();
@@ -37,6 +39,12 @@ const Navbar = () => {
     skip: !userData?.userId,
   });
   const { data: categories } = useGetAllCategoryQuery([]);
+  // const { refetch: refetchPosts } = useGetAllPostQuery(
+  //   { categoryId: undefined, search: undefined },
+  //   { skip: true } // initially skip it
+  // );
+  const [triggerGetPosts] = useLazyGetAllPostQuery();
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const router = useRouter();
 
   const handleLogout = () => {
@@ -47,8 +55,9 @@ const Navbar = () => {
       .catch((err) => console.error("Logout failed:", err));
   };
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
+
     // Implement search logic here
     console.log(
       "Searching for:",
@@ -56,6 +65,21 @@ const Navbar = () => {
       "in category:",
       selectedCategory
     );
+    try {
+      const categoryIdNumber = selectedCategory
+        ? parseInt(selectedCategory)
+        : undefined;
+
+      const { data } = await triggerGetPosts({
+        categoryId: categoryIdNumber,
+        search: searchQuery,
+      });
+
+      setSearchResults(data);
+      console.log("Search Results:", data);
+    } catch (error) {
+      console.error("Search failed:", error);
+    }
   };
 
   const handleSearchFocus = () => {
@@ -64,6 +88,17 @@ const Navbar = () => {
 
   const handleSearchBlur = () => {
     setTimeout(() => setShowSearchDropdown(false), 200);
+  };
+
+  const handleSearchPost = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Implement search logic here
+    console.log(
+      "Searching for:",
+      searchQuery,
+      "in category:",
+      selectedCategory
+    );
   };
 
   return (
@@ -121,7 +156,7 @@ const Navbar = () => {
                   size={16}
                 />
               </div>
-              <div className="relative flex-grow">
+              <form onSubmit={handleSearchPost} className="relative flex-grow">
                 <input
                   type="search"
                   value={searchQuery}
@@ -131,7 +166,7 @@ const Navbar = () => {
                   placeholder="কমিউনিটিতে অনুসন্ধান করুন"
                   className="w-full md:w-[400px] px-4 py-2.5 border text-sm focus:outline-none focus:ring-2 focus:ring-green-500 border-x-0"
                 />
-                {showSearchDropdown && searchQuery && (
+                {/* {showSearchDropdown && searchQuery && (
                   <div className="absolute w-full bg-white border rounded-lg mt-1 shadow-lg z-50">
                     <div className="p-2">
                       <p className="text-sm text-gray-500 mb-2">সাজেশন</p>
@@ -148,8 +183,20 @@ const Navbar = () => {
                       </div>
                     </div>
                   </div>
+                )} */}
+                {showSearchDropdown && searchResults.length > 0 && (
+                  <div className="absolute w-full bg-white border rounded-lg mt-1 shadow-lg z-50">
+                    {searchResults.map((post) => (
+                      <div
+                        key={post.id}
+                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                      >
+                        {post.content}
+                      </div>
+                    ))}
+                  </div>
                 )}
-              </div>
+              </form>
               <button
                 type="submit"
                 className="px-6 py-2.5 text-sm text-white bg-green-600 rounded-r-lg font-medium hover:bg-green-700 transition-colors border border-green-600"

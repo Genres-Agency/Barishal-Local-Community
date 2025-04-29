@@ -1,7 +1,7 @@
-import React from "react";
-import LeftSidebar from "@/components/navigation/leftSide/LeftSidebar";
-import CommunityFeed from "@/components/feed/CommunityFeed";
 import CommunityEvent from "@/components/community-event/CommunityEvent";
+import CommunityFeed from "@/components/feed/CommunityFeed";
+import HelplineSection from "@/components/helpline/HelplineSection";
+import LeftSidebar from "@/components/navigation/leftSide/LeftSidebar";
 import RightSidebar from "@/components/navigation/rightSide/RightSidebar";
 
 export default function Home() {
@@ -10,6 +10,9 @@ export default function Home() {
       {/* Community Event Section */}
       <div className="relative z-40 mt-16 lg:mt-20">
         <CommunityEvent />
+      </div>
+      <div className="relative z-40 mt-16 lg:mt-20">
+        <HelplineSection />
       </div>
 
       {/* Main Content Container */}

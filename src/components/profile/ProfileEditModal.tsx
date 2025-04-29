@@ -19,17 +19,19 @@ interface ProfileEditModalProps {
   isOpen: boolean;
   onClose: () => void;
   profile: any;
+  user: any;
 }
 
 export default function ProfileEditModal({
   isOpen,
   onClose,
   profile,
+  user,
 }: ProfileEditModalProps) {
   const [updateUserDetail, { isLoading }] = useUpdateUserDetailMutation();
   const [formData, setFormData] = useState({
-    firstName: profile?.user?.firstName || "",
-    lastName: profile?.user?.lastName || "",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
     location: profile?.location || "",
     bio: profile?.bio || "",
     phone: profile?.phone || "",
@@ -60,7 +62,7 @@ export default function ProfileEditModal({
     try {
       console.log("submit data ==> ", submitData, "id==>", profile?.user?.id);
       await updateUserDetail({
-        userId: profile?.user?.id,
+        userId: user?.id,
         formData: submitData,
       }).unwrap();
 

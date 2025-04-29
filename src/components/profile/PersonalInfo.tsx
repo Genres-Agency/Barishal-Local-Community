@@ -23,7 +23,7 @@ interface PersonalInfoProps {
   };
 }
 
-export default function PersonalInfo({ profile }) {
+export default function PersonalInfo({ profile, user }) {
   console.log("profile", profile);
   return (
     <div className="space-y-6">
@@ -33,15 +33,13 @@ export default function PersonalInfo({ profile }) {
           <div className="space-y-4">
             <div>
               <Label>পূর্ণ নাম</Label>
-              <Input
-                defaultValue={`${profile?.user?.firstName}  ${profile?.user?.lastName}`}
-              />
+              <Input defaultValue={`${user?.firstName}  ${user?.lastName}`} />
             </div>
             <div>
               <Label>ইমেইল</Label>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-gray-500" />
-                <Input defaultValue={profile?.user?.email} />
+                <Input defaultValue={user?.email} />
               </div>
             </div>
             <div>

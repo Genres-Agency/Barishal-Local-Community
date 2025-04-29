@@ -49,13 +49,13 @@ export default function RegisterForm() {
     }
 
     const data = { firstName, lastName, email, password };
-    const toastId = toast.loading("Logging in");
+    const toastId = toast.loading("Creating new user.");
     try {
       const result = await register(data);
       // console.log("result", result);
-      const user = verifyToken(result?.data?.token);
+      const user = verifyToken(result?.data?.accessToken);
       console.log("user", user);
-      dispatch(setUser({ user: user, token: result?.data?.token }));
+      dispatch(setUser({ user: user, token: result?.data?.accessToken }));
       if (user) {
         navigate.push("/profile");
       }
