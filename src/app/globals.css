@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+  display: flex;
+  gap: 1rem;
+}
+
+.animate-marquee > * {
+  flex-shrink: 0;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
 /* Main page scrollbar styling */
 html::-webkit-scrollbar {
   width: 12px;

@@ -195,7 +195,7 @@ export default function PostCard({
               <span className="text-sm text-gray-500">{role}</span>
 
               <span className="text-sm text-gray-500">
-                {moment(author?.createdAt).fromNow()}
+                {moment(author?.updatedAt).fromNow()}
 
                 {/* {moment(comment.createdAt).fromNow()} */}
               </span>
@@ -215,18 +215,18 @@ export default function PostCard({
             alt="Post content"
             width={600}
             height={400}
-            className="rounded-lg w-full object-cover"
+            className="rounded-lg w-full lg:h-[368px] object-cover"
           />
         </div>
       )}
       <div className="flex items-center gap-6 text-gray-500">
         <button
           className={`flex items-center gap-2 ${
-            isLiked ? "text-red-500" : "hover:text-red-500"
+            likes?.count ? "text-red-500" : "hover:text-red-500"
           }`}
           onClick={handleLike}
         >
-          <Heart size={20} fill={isLiked ? "currentColor" : "none"} />
+          <Heart size={20} fill={likes?.count ? "currentColor" : "none"} />
           <span>{likes?.count || 0}</span>
         </button>
         <button
@@ -308,7 +308,7 @@ export default function PostCard({
               (comment: {
                 id: string | number;
                 content: string;
-                createdAt: string;
+                updatedAt: string;
               }) => (
                 <div key={comment.id} className="flex gap-2">
                   <Avatar className="w-8 h-8">
@@ -322,7 +322,7 @@ export default function PostCard({
                     <div className="flex justify-between items-start">
                       <p className="text-sm">{comment?.content}</p>
                       <span className="text-xs text-gray-500">
-                        {moment(comment.createdAt).fromNow()}
+                        {moment(comment.updatedAt).fromNow()}
                       </span>
                     </div>
                   </div>
