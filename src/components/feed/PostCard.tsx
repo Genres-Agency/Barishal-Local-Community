@@ -51,6 +51,7 @@ export default function PostCard({
   const [showShareOptions, setShowShareOptions] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState(comment?.comments || []);
+  const [isExpanded, setIsExpanded] = useState(false);
   const router = useRouter();
 
   console.log("categpory", category);
@@ -207,7 +208,20 @@ export default function PostCard({
           </button>
         </div>
       </div>
-      <p className="text-gray-700 mb-4">{content}</p>
+      <div className="text-gray-700 prose prose-lg max-w-none mb-6">
+        <p className="whitespace-pre-wrap">
+          {isExpanded ? content : content?.slice(0, 100)}
+          {content?.length > 100 && !isExpanded && "..."}
+        </p>
+        {content?.length > 100 && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-2"
+          >
+            {isExpanded ? "Show Less" : "Show More"}
+          </button>
+        )}
+      </div>
       {photo && (
         <div className="mb-4">
           <Image

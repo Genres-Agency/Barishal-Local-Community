@@ -166,33 +166,28 @@ const Navbar = () => {
                   placeholder="কমিউনিটিতে অনুসন্ধান করুন"
                   className="w-full md:w-[400px] px-4 py-2.5 border text-sm focus:outline-none focus:ring-2 focus:ring-green-500 border-x-0"
                 />
-                {/* {showSearchDropdown && searchQuery && (
-                  <div className="absolute w-full bg-white border rounded-lg mt-1 shadow-lg z-50">
-                    <div className="p-2">
-                      <p className="text-sm text-gray-500 mb-2">সাজেশন</p>
-                      <div className="space-y-1">
-                        <p className="text-sm hover:bg-gray-100 p-2 rounded cursor-pointer">
-                          সাজেশন ১
-                        </p>
-                        <p className="text-sm hover:bg-gray-100 p-2 rounded cursor-pointer">
-                          সাজেশন ২
-                        </p>
-                        <p className="text-sm hover:bg-gray-100 p-2 rounded cursor-pointer">
-                          সাজেশন ৩
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )} */}
+
                 {showSearchDropdown && searchResults.length > 0 && (
                   <div className="absolute w-full bg-white border rounded-lg mt-1 shadow-lg z-50">
-                    {searchResults.map((post) => (
-                      <div
+                    {searchResults?.slice(0, 4)?.map((post) => (
+                      <Link
                         key={post.id}
-                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                        href={`/post/${post.id}`}
+                        className="block p-3 hover:bg-gray-100 border-b last:border-b-0"
+                        onClick={() => setShowSearchDropdown(false)}
                       >
-                        {post.content}
-                      </div>
+                        <p className="text-sm text-gray-600 line-clamp-2">
+                          {post?.content}
+                        </p>
+                        <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
+                          {post.category && (
+                            <>
+                              <span>•</span>
+                              <span>{post.category.title}</span>
+                            </>
+                          )}
+                        </div>
+                      </Link>
                     ))}
                   </div>
                 )}

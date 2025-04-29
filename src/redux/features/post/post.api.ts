@@ -22,10 +22,10 @@ const postApi = baseApi.injectEndpoints({
     }),
     // Get Single post
     getSinglePost: builder.query({
-      query: (postId) => ({
-        url: `/posts/${postId}`,
+      query: (id) => ({
+        url: `/posts/${id}`,
         method: "GET",
-        params: postId,
+        params: id,
       }),
       providesTags: ["Post"],
     }),
