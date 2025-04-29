@@ -28,6 +28,7 @@ export default function PostDetailPage() {
   const { data: user } = useGetUserQuery(undefined);
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState("");
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const [toggleLike] = useToggleLikeMutation();
   const { data: likes, refetch } = useGetSingleLikeQuery(id);
@@ -85,8 +86,19 @@ export default function PostDetailPage() {
             <span>{formatDate(post.createdAt)}</span>
           </div>
 
-          <div className="prose prose-lg max-w-none mb-6 whitespace-pre-wrap">
-            {post.content}
+          <div className="text-gray-700 prose prose-lg max-w-none mb-6">
+            <p className="whitespace-pre-wrap">
+              {isExpanded ? post?.content : post?.content?.slice(0, 150)}
+              {post?.content?.length > 150 && !isExpanded && "..."}
+            </p>
+            {post?.content?.length > 150 && (
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-2"
+              >
+                {isExpanded ? "Show Less" : "Show More"}
+              </button>
+            )}
           </div>
 
           <div className="flex items-center gap-6 text-gray-600">
