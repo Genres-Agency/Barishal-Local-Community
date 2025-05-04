@@ -1,25 +1,19 @@
 "use client";
-import CommunityEvent from "@/components/community-event/CommunityEvent";
-import CommunityFeed from "@/components/feed/CommunityFeed";
-import HelplineSection from "@/components/helpline/HelplineSection";
-import LeftSidebar from "@/components/navigation/leftSide/LeftSidebar";
-import RightSidebar from "@/components/navigation/rightSide/RightSidebar";
-
 import { useState } from "react";
-interface Hashtag {
-  id: number;
-  title: string;
-  slug: string;
-  authorId: number;
-}
-export default function Home() {
+import CommunityEvent from "../community-event/CommunityEvent";
+import CommunityFeed from "../feed/CommunityFeed";
+import HelplineSection from "../helpline/HelplineSection";
+import LeftSidebar from "../navigation/leftSide/LeftSidebar";
+import RightSidebar from "../navigation/rightSide/RightSidebar";
+
+export default function HomePage() {
   const [selectedTrendTopic, setSelectedTrendTopic] = useState<
     number | undefined
   >();
 
   const handleTrendTopicSelect = (hashtagId: number) => {
-    setSelectedTrendTopic((prevSelected) =>
-      prevSelected === hashtagId ? undefined : hashtagId
+    setSelectedTrendTopic(
+      hashtagId === selectedTrendTopic ? undefined : hashtagId
     );
   };
   return (

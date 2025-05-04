@@ -1,12 +1,10 @@
 "use client";
 
-import "@/styles/scrollbar-hide.css";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface SubCategory {
-  id?: number;
+  id: number;
   title: string;
   icon?: string;
 }
@@ -152,87 +150,91 @@ const helplineCategories: Category[] = [
   },
 ];
 
-import { useRef } from "react";
-
-export default function HelplineSection() {
+export default function HelplineCategoryPage() {
+  const params = useParams();
   const router = useRouter();
-  const marqueeRef = useRef<HTMLDivElement>(null);
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<number | null>(
+    null
+  );
 
-  const scrollAmount = 300; // px to scroll per click
+  const category = helplineCategories.find(
+    (cat) => encodeURIComponent(cat.id) === params.category
+  );
 
-  const handleCategoryClick = (category: Category) => {
-    const encodedTitle = encodeURIComponent(category.id);
-    router.push(`/helpline/${encodedTitle}`);
-  };
+  if (!category) {
+    return <div>Category not found</div>;
+  }
 
-  const handleScroll = (direction: "left" | "right") => {
-    if (marqueeRef.current) {
-      const { scrollLeft } = marqueeRef.current;
-      const newScroll =
-        direction === "left"
-          ? scrollLeft - scrollAmount
-          : scrollLeft + scrollAmount;
-      marqueeRef.current.scrollTo({ left: newScroll, behavior: "smooth" });
-    }
-  };
+  const filteredServices = selectedSubCategory
+    ? category.subCategories?.filter((sub) => sub.id === selectedSubCategory)
+    : category.subCategories;
 
   return (
-    <div className="container mx-auto py-3 px-4">
-      <h1 className="text-5xl text-center py-4">কমিউনিটি হেল্পলাইন </h1>
-      <div className="relative overflow-hidden">
-        {/* Left Arrow */}
-        <button
-          aria-label="Scroll left"
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full shadow p-2 transition-colors"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          onClick={() => handleScroll("left")}
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-        {/* Right Arrow */}
-        <button
-          aria-label="Scroll right"
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full shadow p-2 transition-colors"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          onClick={() => handleScroll("right")}
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
-        <div
-          ref={marqueeRef}
-          className="whitespace-nowrap pb-4 overflow-x-auto scrollbar-hide scroll-smooth flex space-x-4 px-4"
-          style={{ scrollBehavior: "smooth" }}
-        >
-          {[...helplineCategories, ...helplineCategories].map(
-            (category, index) => (
-              <div
-                key={index}
-                onClick={() => handleCategoryClick(category)}
-                className="flex-shrink-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-sm p-4 min-w-[100px] cursor-pointer hover:bg-gray-50 transition-colors"
-              >
-                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-red-100 mb-2">
-                  <img
-                    src={category.icon}
-                    alt={category.title}
-                    className="w-6 h-6"
-                  />
-                </div>
-                <span className="text-sm text-center font-medium">
-                  {category.title}
-                </span>
-              </div>
-            )
-          )}
+    <div className="container mx-auto px-4 relative z-40 mt-16 lg:mt-20 py-8">
+      <div className="flex items-center gap-4 mb-8">
+        <div className="w-12 h-12 flex items-center justify-center rounded-full bg-red-100">
+          <img src={category.icon} alt={category.title} className="w-6 h-6" />
         </div>
+        <h1 className="text-4xl font-bold">{category.title}</h1>
+      </div>
+
+      {/* Filter Section */}
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4">সাব-ক্যাটাগরি ফিল্টার</h2>
+        <div className="flex flex-wrap gap-3">
+          <button
+            onClick={() => setSelectedSubCategory(null)}
+            className={`px-4 py-2 rounded-full transition-colors ${
+              !selectedSubCategory
+                ? "bg-green-600 text-white"
+                : "bg-gray-100 hover:bg-gray-200"
+            }`}
+          >
+            সকল
+          </button>
+          {category.subCategories?.map((subCategory) => (
+            <button
+              key={subCategory.id}
+              onClick={() => setSelectedSubCategory(subCategory.id)}
+              className={`px-4 py-2 rounded-full transition-colors ${
+                selectedSubCategory === subCategory.id
+                  ? "bg-green-600 text-white"
+                  : "bg-gray-100 hover:bg-gray-200"
+              }`}
+            >
+              {subCategory.title}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Services Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredServices?.map((service) => (
+          <div
+            key={service.id}
+            className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+          >
+            <div className="p-6">
+              <h3 className="text-2xl font-semibold mb-4">{service.title}</h3>
+              <p className="text-gray-600 mb-4">
+                এই সার্ভিসের বিস্তারিত তথ্য খুব শীঘ্রই আসছে
+              </p>
+              <button
+                onClick={() =>
+                  router.push(
+                    `/helpline/${params.category}/${encodeURIComponent(
+                      service.id
+                    )}`
+                  )
+                }
+                className="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-colors"
+              >
+                বিস্তারিত দেখুন
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

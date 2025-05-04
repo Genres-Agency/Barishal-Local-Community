@@ -11,19 +11,44 @@ import FeedNavigation from "./FeedNavigation";
 import PostCard from "./PostCard";
 import PostCreator from "./PostCreator";
 
-const CommunityFeed = () => {
+interface Post {
+  id: number;
+  content: string;
+  photo: string | null;
+  authorId: number;
+  categoryId: number;
+  createdAt: string;
+  updatedAt: string;
+  hashtag: {
+    id: number;
+    title: string;
+    slug: string;
+    authorId: number;
+  }[];
+  _count: {
+    likes: number;
+    comments: number;
+  };
+}
+
+interface CommunityFeedProps {
+  selectedTrendTopic?: number;
+}
+
+const CommunityFeed = ({ selectedTrendTopic }: CommunityFeedProps) => {
   const user = useAppSelector(selectCurrentUser);
   const [activeTab, setActiveTab] = useState<"latest" | "popular" | "network">(
     "latest"
   );
 
-  console.log("user.id", user?.userId);
-
   const [selectedCategory, setSelectedCategory] = useState<
     number | undefined
   >();
-  const { data: postData } = useGetAllPostQuery({
+
+  console.log("selectedTrendTopic", selectedTrendTopic);
+  const { data: postData, isFetching } = useGetAllPostQuery({
     categoryId: selectedCategory,
+    hashTagId: selectedTrendTopic,
   });
 
   const handleCategorySelect = (categoryId: number) => {
@@ -32,7 +57,7 @@ const CommunityFeed = () => {
     );
   };
 
-  // console.log("postData", postData);
+  console.log("postData", postData);
   return (
     <div className="space-y-4">
       {/* Feed Navigation ---------------- */}
@@ -63,11 +88,23 @@ const CommunityFeed = () => {
       </div>
 
       {/* All Posts ------------------ */}
-      <div className="px-3 sm:px-0">
-        {postData?.map((post: any, index: any) => (
-          <PostCard key={index} {...post} />
-        ))}
-      </div>
+      {isFetching ? (
+        <div className="container mx-auto px-4 py-8">
+          <div className="animate-pulse space-y-4">
+            <div className="h-64 bg-gray-200 rounded-lg"></div>
+            <div className="h-8 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-6 bg-gray-200 rounded w-1/2"></div>
+            <div className="h-6 bg-gray-200 rounded w-2/3"></div>
+            <div className="h-32 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      ) : (
+        <div className="px-3 sm:px-0">
+          {postData?.map((post: any, index: any) => (
+            <PostCard key={index} {...post} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -5,11 +5,11 @@ interface PostsProps {
   posts: PostItemProps[];
 }
 
-export default function Posts({ posts }: PostsProps) {
+export default function Posts({ posts }: any) {
   return (
     <Card className="p-6">
       <div className="space-y-6">
-        {posts.map((post, index) => (
+        {posts?.map((post, index) => (
           <PostItem key={index} {...post} />
         ))}
       </div>

@@ -3,11 +3,18 @@ import { baseApi } from "../../api/baseApi";
 const postApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllPost: builder.query({
-      query: (params: { categoryId?: number; search?: string }) => {
+      query: (params: {
+        categoryId?: number;
+        search?: string;
+        hashTagId?: number;
+      }) => {
         const urlParams = new URLSearchParams();
 
         if (params?.categoryId) {
           urlParams.append("categoryId", params?.categoryId.toString());
+        }
+        if (params?.hashTagId) {
+          urlParams.append("hashTagId", params?.hashTagId.toString());
         }
         if (params?.search) {
           urlParams.append("search", params?.search);
@@ -19,6 +26,7 @@ const postApi = baseApi.injectEndpoints({
           params: urlParams,
         };
       },
+      providesTags: ["Post"],
     }),
     // Get Single post
     getSinglePost: builder.query({
@@ -66,4 +74,6 @@ export const {
   useGetSinglePostQuery,
   useAddPostMutation,
   useLazyGetAllPostQuery,
+  useUpdatePostMutation,
+  useDeletePostMutation,
 } = postApi;

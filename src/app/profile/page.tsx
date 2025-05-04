@@ -9,9 +9,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/ui/loading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { mockUserProfile, posts } from "@/lib/config/profile";
+import { mockUserProfile } from "@/lib/config/profile";
 import { useGetUserQuery } from "@/redux/features/auth/authApi";
-import { useGetUserDetailQuery } from "@/redux/features/user/userDetail.api";
+import {
+  useGetUserDetailQuery,
+  useGetUserPostByIdQuery,
+} from "@/redux/features/user/userDetail.api";
 import { Edit2, MapPin } from "lucide-react";
 import moment from "moment";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -25,6 +28,10 @@ function ProfileContent() {
   const { data: user } = useGetUserQuery(undefined);
 
   console.log("User ==>", user);
+  const { data: userPosts, isLoading: isLoadingPosts } =
+    useGetUserPostByIdQuery(user?.id);
+
+  console.log("userPosts", userPosts);
 
   const { data: userDetails, isLoading: isLoadingDetails } =
     useGetUserDetailQuery(undefined);
@@ -101,7 +108,7 @@ function ProfileContent() {
         </TabsContent>
 
         <TabsContent value="posts">
-          <Posts posts={posts} />
+          <Posts posts={userPosts} />
         </TabsContent>
 
         <TabsContent value="settings">
