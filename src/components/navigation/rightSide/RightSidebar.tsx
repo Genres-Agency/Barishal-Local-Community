@@ -1,12 +1,15 @@
-import React from "react";
 import CommunityStats from "./stats/CommunityStats";
 import TrendingTopics from "./trending/TrendingTopics";
 
-const RightSidebar = () => {
+interface RightSidebarProps {
+  onTrendTopicSelect: (hashtagId: number) => void;
+}
+
+const RightSidebar = ({ onTrendTopicSelect }: RightSidebarProps) => {
   return (
     <div className="py-6 space-y-6">
       <CommunityStats />
-      <TrendingTopics />
+      <TrendingTopics onTrendTopicSelect={onTrendTopicSelect} />
     </div>
   );
 };

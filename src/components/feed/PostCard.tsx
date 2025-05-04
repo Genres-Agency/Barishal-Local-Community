@@ -42,9 +42,12 @@ export default function PostCard({
   categoryId,
 }: PostProps) {
   const currentUser = useAppSelector(selectCurrentUser);
-  const { data: author } = useGetAuthorQuery(authorId);
-  const { data: comment } = useGetSingleCommentQuery(id);
-  const { data: category } = useGetSingleCategoryQuery(categoryId);
+  const { data: author, isFetching: authorFetching } =
+    useGetAuthorQuery(authorId);
+  const { data: comment, isFetching: commentFetching } =
+    useGetSingleCommentQuery(id);
+  const { data: category, isFetching: categoryFetching } =
+    useGetSingleCategoryQuery(categoryId);
   const { data: user } = useGetUserQuery(undefined);
   const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -54,7 +57,7 @@ export default function PostCard({
   const [isExpanded, setIsExpanded] = useState(false);
   const router = useRouter();
 
-  console.log("categpory", category);
+  // console.log("categpory", category);
 
   const [toggleLike, { isLoading }] = useToggleLikeMutation();
   const { data: likes, refetch } = useGetSingleLikeQuery(id);
@@ -63,14 +66,14 @@ export default function PostCard({
   const [addComment, { isLoading: isCommentLoading }] = useAddCommentMutation();
   // console.log("likes", likes);
 
-  console.log("user ==>", user);
+  // console.log("user ==>", user);
   // Fix the handleLike function to ensure id is properly converted to a number
   const handleLike = async () => {
     try {
       if (!currentUser) {
         return router.push("/auth");
       }
-      console.log("post id is before like ==>", id);
+      // console.log("post id is before like ==>", id);
 
       await toggleLike({ postId: id });
       // console.log("post after like id is ==>>>>>>>", id);
@@ -96,8 +99,8 @@ export default function PostCard({
     role = "User";
   }
 
-  console.log("Author", author);
-  console.log("user from post card", user);
+  // console.log("Author", author);
+  // console.log("user from post card", user);
 
   const handleLikeClick = () => {
     setIsLiked(!isLiked);

@@ -38,8 +38,20 @@ const userDetailApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+
+    // Get user post by id
+    getUserPostById: builder.query({
+      query: (id) => ({
+        url: `/posts/my-posts/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["User", "Post"],
+    }),
   }),
 });
 
-export const { useGetUserDetailQuery, useUpdateUserDetailMutation } =
-  userDetailApi;
+export const {
+  useGetUserDetailQuery,
+  useUpdateUserDetailMutation,
+  useGetUserPostByIdQuery,
+} = userDetailApi;
