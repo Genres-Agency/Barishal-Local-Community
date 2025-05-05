@@ -21,6 +21,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://barishalcommunity.com"),
   title: "Barishal Community",
   description:
     "A vibrant community platform for the people of Barishal, fostering connections, sharing information, and building stronger relationships.",
