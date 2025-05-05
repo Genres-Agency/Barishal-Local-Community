@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useParams } from "next/navigation";
 
 interface ServiceItem {
@@ -590,7 +591,7 @@ export default function SubCategoryPage() {
     <div className="container mx-auto px-4 relative z-40 mt-16 lg:mt-20 py-8">
       <div className="flex items-center gap-4 mb-8">
         <div className="w-12 h-12 flex items-center justify-center rounded-full bg-red-100">
-          <img src={category.icon} alt={category.title} className="w-6 h-6" />
+          <Image src={category.icon} alt={category.title} className="w-6 h-6" />
         </div>
         <div>
           <h1 className="text-4xl font-bold">{subCategory.title}</h1>
@@ -607,7 +608,7 @@ export default function SubCategoryPage() {
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
             >
               <div className="aspect-video relative overflow-hidden">
-                <img
+                <Image
                   src={service.image}
                   alt={service.title}
                   className="w-full h-full object-cover"

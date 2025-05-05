@@ -11,25 +11,25 @@ import FeedNavigation from "./FeedNavigation";
 import PostCard from "./PostCard";
 import PostCreator from "./PostCreator";
 
-interface Post {
-  id: number;
-  content: string;
-  photo: string | null;
-  authorId: number;
-  categoryId: number;
-  createdAt: string;
-  updatedAt: string;
-  hashtag: {
-    id: number;
-    title: string;
-    slug: string;
-    authorId: number;
-  }[];
-  _count: {
-    likes: number;
-    comments: number;
-  };
-}
+// interface Post {
+//   id: number;
+//   content: string;
+//   photo: string | null;
+//   authorId: number;
+//   categoryId: number;
+//   createdAt: string;
+//   updatedAt: string;
+//   hashtag: {
+//     id: number;
+//     title: string;
+//     slug: string;
+//     authorId: number;
+//   }[];
+//   _count: {
+//     likes: number;
+//     comments: number;
+//   };
+// }
 
 interface CommunityFeedProps {
   selectedTrendTopic?: number;

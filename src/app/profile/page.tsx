@@ -28,10 +28,9 @@ function ProfileContent() {
   const { data: user } = useGetUserQuery(undefined);
 
   console.log("User ==>", user);
-  const { data: userPosts, isLoading: isLoadingPosts } =
-    useGetUserPostByIdQuery(user?.id);
+  const { data: userPosts } = useGetUserPostByIdQuery(user?.id);
 
-  console.log("userPosts", userPosts);
+  // console.log("userPosts", userPosts);
 
   const { data: userDetails, isLoading: isLoadingDetails } =
     useGetUserDetailQuery(undefined);

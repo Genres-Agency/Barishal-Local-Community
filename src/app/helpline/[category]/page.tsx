@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -173,7 +174,7 @@ export default function HelplineCategoryPage() {
     <div className="container mx-auto px-4 relative z-40 mt-16 lg:mt-20 py-8">
       <div className="flex items-center gap-4 mb-8">
         <div className="w-12 h-12 flex items-center justify-center rounded-full bg-red-100">
-          <img src={category.icon} alt={category.title} className="w-6 h-6" />
+          <Image src={category.icon} alt={category.title} className="w-6 h-6" />
         </div>
         <h1 className="text-4xl font-bold">{category.title}</h1>
       </div>

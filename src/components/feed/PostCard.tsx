@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 
-import { PostProps } from "@/lib/constant";
 import {
   useGetAuthorQuery,
   useGetUserQuery,
@@ -33,21 +32,25 @@ import Image from "next/image";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
+interface PostCardProps {
+  content: string;
+  photo?: string;
+  authorId: number;
+  id: number;
+  categoryId: number;
+}
+
 export default function PostCard({
   content,
   photo,
   authorId,
-  _count,
   id,
   categoryId,
-}: PostProps) {
+}: PostCardProps) {
   const currentUser = useAppSelector(selectCurrentUser);
-  const { data: author, isFetching: authorFetching } =
-    useGetAuthorQuery(authorId);
-  const { data: comment, isFetching: commentFetching } =
-    useGetSingleCommentQuery(id);
-  const { data: category, isFetching: categoryFetching } =
-    useGetSingleCategoryQuery(categoryId);
+  const { data: author } = useGetAuthorQuery(authorId);
+  const { data: comment } = useGetSingleCommentQuery(id);
+  const { data: category } = useGetSingleCategoryQuery(categoryId);
   const { data: user } = useGetUserQuery(undefined);
   const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
@@ -59,11 +62,11 @@ export default function PostCard({
 
   // console.log("categpory", category);
 
-  const [toggleLike, { isLoading }] = useToggleLikeMutation();
+  const [toggleLike] = useToggleLikeMutation();
   const { data: likes, refetch } = useGetSingleLikeQuery(id);
 
   // Add comment
-  const [addComment, { isLoading: isCommentLoading }] = useAddCommentMutation();
+  const [addComment] = useAddCommentMutation();
   // console.log("likes", likes);
 
   // console.log("user ==>", user);
@@ -101,11 +104,6 @@ export default function PostCard({
 
   // console.log("Author", author);
   // console.log("user from post card", user);
-
-  const handleLikeClick = () => {
-    setIsLiked(!isLiked);
-    // Here you would typically call an API to update the like status
-  };
 
   const handleCommentClick = () => {
     setShowComments(!showComments);
