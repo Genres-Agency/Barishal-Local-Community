@@ -67,7 +67,7 @@ export default function RegisterForm() {
       setPassword("");
       setConfirmPassword("");
     } catch (error: any) {
-      // console.error("Error:", error.message);
+      console.error("Error:", error.message);
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
       // Reset input fields after successful registration
       setFirstName("");

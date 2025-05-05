@@ -6,12 +6,12 @@ import LeftSidebar from "@/components/navigation/leftSide/LeftSidebar";
 import RightSidebar from "@/components/navigation/rightSide/RightSidebar";
 
 import { useState } from "react";
-interface Hashtag {
-  id: number;
-  title: string;
-  slug: string;
-  authorId: number;
-}
+// interface Hashtag {
+//   id: number;
+//   title: string;
+//   slug: string;
+//   authorId: number;
+// }
 export default function Home() {
   const [selectedTrendTopic, setSelectedTrendTopic] = useState<
     number | undefined

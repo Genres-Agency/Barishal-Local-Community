@@ -1,15 +1,14 @@
-import React from "react";
-import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
-import { Search, Calendar, Briefcase, Store } from "lucide-react";
 import { getCategoryStyle } from "@/lib/config/navigation";
-
-
+import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
+import React from "react";
 
 interface FeedNavigationProps {
   onCategorySelect: (categoryId: number) => void;
 }
 
-const FeedNavigation: React.FC<FeedNavigationProps> = ({ onCategorySelect }) => {
+const FeedNavigation: React.FC<FeedNavigationProps> = ({
+  onCategorySelect,
+}) => {
   const { data: categories, isLoading } = useGetAllCategoryQuery([]);
 
   if (isLoading) {

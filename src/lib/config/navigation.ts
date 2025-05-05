@@ -1,3 +1,4 @@
+import { CategoryStyle } from "@/types/global";
 import {
   BellRing,
   Briefcase,
@@ -8,7 +9,6 @@ import {
   Settings,
   Store,
 } from "lucide-react";
-import { CategoryStyle } from "@lib/types/global";
 
 export const feedNavigationItems = [
   {
@@ -20,7 +20,7 @@ export const feedNavigationItems = [
     href: "/reports",
   },
   {
-    icon: Store, 
+    icon: Store,
     text: "বাজারের আপডেট",
     bgColor: "bg-green-50",
     textColor: "text-green-600",
@@ -149,11 +149,9 @@ export const trendingTopics: TrendingTopic[] = [
   },
 ];
 
-
-
 export const getCategoryStyle = (slug: string): CategoryStyle => {
   switch (slug) {
-    case 'reports':
+    case "reports":
       return {
         icon: Search,
         text: "রিপোর্ট ও তথ্য",
@@ -162,7 +160,7 @@ export const getCategoryStyle = (slug: string): CategoryStyle => {
         hoverBg: "hover:bg-red-100",
         href: "/reports",
       };
-    case 'events':
+    case "events":
       return {
         icon: Calendar,
         text: "ইভেন্ট",
@@ -171,7 +169,7 @@ export const getCategoryStyle = (slug: string): CategoryStyle => {
         hoverBg: "hover:bg-purple-100",
         href: "/events",
       };
-    case 'jobs':
+    case "jobs":
       return {
         icon: Briefcase,
         text: "চাকরির পোস্ট",
@@ -180,7 +178,7 @@ export const getCategoryStyle = (slug: string): CategoryStyle => {
         hoverBg: "hover:bg-blue-100",
         href: "/jobs",
       };
-    case 'markets':
+    case "markets":
       return {
         icon: Store,
         text: "বাজারের আপডেট",

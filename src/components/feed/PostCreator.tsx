@@ -11,7 +11,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useGetUserQuery } from "@/redux/features/auth/authApi";
 import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
 import { useAddPostMutation } from "@/redux/features/post/post.api";
-import { Image, Loader2, X } from "lucide-react";
+import { Image as ImageIcon, Loader2, X } from "lucide-react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
@@ -45,7 +46,7 @@ const PostCreator: React.FC = () => {
     if (categories?.length && !selectedCategory) {
       setSelectedCategory(categories[0].id); // or name, depending on API
     }
-  }, [categories]);
+  }, [categories, selectedCategory]);
   const handlePostSubmit = async () => {
     // if (!postContent.trim() && !file) return;
 
@@ -144,9 +145,11 @@ const PostCreator: React.FC = () => {
             {/* Display image preview if available */}
             {preview && (
               <div className="mt-4 relative">
-                <img
+                <Image
                   src={preview}
                   alt="Selected image"
+                  width={600}
+                  height={400}
                   className="w-full max-h-60 object-contain rounded-md"
                 />
                 <button
@@ -171,7 +174,7 @@ const PostCreator: React.FC = () => {
                   htmlFor="image-upload"
                   className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-md cursor-pointer"
                 >
-                  <Image size={20} className="text-gray-500" />
+                  <ImageIcon size={20} className="text-gray-500" />
                   <span className="font-medium">ছবি যোগ করুন</span>
                 </label>
                 <Input

@@ -70,6 +70,7 @@ export default function ProfileEditModal({
       onClose();
     } catch (error) {
       toast.error("প্রোফাইল আপডেট ব্যর্থ হয়েছে");
+      console.error(error);
     }
   };
 

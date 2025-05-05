@@ -1,11 +1,9 @@
 import { Card } from "@/components/ui/card";
-import PostItem, { PostItemProps } from "./PostItem";
+import { PostsProps } from "@/types/global";
+import PostItem from "./PostItem";
 
-interface PostsProps {
-  posts: PostItemProps[];
-}
-
-export default function Posts({ posts }: any) {
+export default function Posts({ posts }: PostsProps) {
+  console.log("posts: ", posts);
   return (
     <Card className="p-6">
       <div className="space-y-6">

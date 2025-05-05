@@ -2,8 +2,8 @@
 
 import "@/styles/scrollbar-hide.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 interface SubCategory {
   id?: number;
@@ -157,7 +157,7 @@ import { useRef } from "react";
 export default function HelplineSection() {
   const router = useRouter();
   const marqueeRef = useRef<HTMLDivElement>(null);
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  // const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
   const scrollAmount = 300; // px to scroll per click
 
@@ -220,7 +220,7 @@ export default function HelplineSection() {
                 className="flex-shrink-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-sm p-4 min-w-[100px] cursor-pointer hover:bg-gray-50 transition-colors"
               >
                 <div className="w-12 h-12 flex items-center justify-center rounded-full bg-red-100 mb-2">
-                  <img
+                  <Image
                     src={category.icon}
                     alt={category.title}
                     className="w-6 h-6"

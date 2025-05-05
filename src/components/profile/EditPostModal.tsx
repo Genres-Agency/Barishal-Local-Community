@@ -21,8 +21,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useUpdatePostMutation } from "@/redux/features/post/post.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-import * as z from "zod";
+import z from "zod";
 
 const formSchema = z.object({
   content: z.string().min(1, "কন্টেন্ট প্রয়োজন"),

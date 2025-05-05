@@ -39,8 +39,8 @@ export default function LoginForm() {
     const toastId = toast.loading("Logging in");
     try {
       const result = await login(data);
-      console.log('result access token', result);
-      console.log('result', result?.data?.accessToken)
+      console.log("result access token", result);
+      // console.log('result', result?.data?.accessToken)
       const user = verifyToken(result?.data?.accessToken);
       dispatch(setUser({ user: user, token: result?.data?.accessToken }));
       if (user) {
@@ -54,6 +54,7 @@ export default function LoginForm() {
     } catch (error: any) {
       toast.error("Something went wrong", { id: toastId, duration: 2000 });
       // Reset input fields after successful login
+      console.log("error", error);
       setEmail("");
       setPassword("");
     } finally {

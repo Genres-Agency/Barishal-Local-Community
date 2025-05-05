@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useAddEventMutation } from "@/redux/features/events/events.api";
+import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -141,7 +142,7 @@ const EventCreator = () => {
                 </label>
                 {imagePreview && (
                   <div className="relative w-full h-40 rounded-lg overflow-hidden">
-                    <img
+                    <Image
                       src={imagePreview}
                       alt="Preview"
                       className="w-full h-full object-cover"
@@ -169,6 +170,7 @@ const EventCreator = () => {
         </DialogContent>
       </Dialog>
     </>
-)}
+  );
+};
 
 export default EventCreator;

@@ -35,6 +35,7 @@ export default function Settings({
       toast.success("অ্যাকাউন্ট সফলভাবে ডিলিট করা হয়েছে");
       router.push("/auth");
     } catch (error) {
+      console.error("Error deleting account:", error);
       toast.error("অ্যাকাউন্ট ডিলিট করতে ব্যর্থ হয়েছে");
     }
   };

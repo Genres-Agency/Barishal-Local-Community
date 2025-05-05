@@ -4,26 +4,15 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Profile, User } from "@/types/global";
 import { Facebook, Globe, Linkedin, Mail, Phone, Twitter } from "lucide-react";
 
 interface PersonalInfoProps {
-  profile: {
-    name: string;
-    location: string;
-    memberSince: string;
-    email: string;
-    phone: string;
-    bio: string;
-    website: string;
-    social: {
-      facebook: string;
-      twitter: string;
-      linkedin: string;
-    };
-  };
+  profile: Profile;
+  user: User;
 }
 
-export default function PersonalInfo({ profile, user }) {
+export default function PersonalInfo({ profile, user }: PersonalInfoProps) {
   console.log("profile", profile);
   return (
     <div className="space-y-6">

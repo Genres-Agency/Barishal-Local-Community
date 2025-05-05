@@ -19,7 +19,7 @@ export function EventSlider() {
   );
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
-  const { data: eventsData, isLoading } = useGetAllEventsQuery(undefined);
+  const { data: eventsData } = useGetAllEventsQuery(undefined);
   // console.log("eventsData", eventsData);
 
   React.useEffect(() => {

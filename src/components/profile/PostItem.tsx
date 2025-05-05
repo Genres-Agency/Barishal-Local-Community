@@ -12,32 +12,12 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useDeletePostMutation } from "@/redux/features/post/post.api";
+import { PostItemProps } from "@/types/global";
 import { Edit2, Hash, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
 import EditPostModal from "./EditPostModal";
-
-interface Hashtag {
-  title: string;
-  id: number;
-  createdAt: string;
-  slug: string;
-  authorId: number;
-}
-export interface PostItemProps {
-  id: string;
-  authorId: number;
-  categoryId: number;
-  content: string;
-  hashtag: Hashtag[];
-  photo?: string;
-  updatedAt: string;
-  _count: {
-    likes: number;
-    comments: number;
-  };
-}
 
 export default function PostItem({
   id,
@@ -52,6 +32,16 @@ export default function PostItem({
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [deletePost] = useDeletePostMutation();
+
+  const handleDeletePost = async () => {
+    try {
+      await deletePost(id).unwrap();
+      toast.success("পোস্টটি সফলভাবে মুছে ফেলা হয়েছে");
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      toast.error("পোস্টটি মুছে ফেলতে সমস্যা হয়েছে");
+    }
+  };
   return (
     <div className="bg-white p-4 rounded-lg border">
       <div className="flex items-start justify-between">
@@ -91,14 +81,7 @@ export default function PostItem({
               <AlertDialogFooter>
                 <AlertDialogCancel>বাতিল</AlertDialogCancel>
                 <AlertDialogAction
-                  onClick={async () => {
-                    try {
-                      await deletePost(id).unwrap();
-                      toast.success("পোস্টটি সফলভাবে মুছে ফেলা হয়েছে");
-                    } catch (error) {
-                      toast.error("পোস্টটি মুছে ফেলতে সমস্যা হয়েছে");
-                    }
-                  }}
+                  onClick={handleDeletePost}
                   className="bg-red-600 hover:bg-red-700"
                 >
                   মুছে ফেলুন
