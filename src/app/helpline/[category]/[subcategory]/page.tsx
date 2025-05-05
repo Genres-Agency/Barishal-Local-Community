@@ -45,6 +45,24 @@ const shoppingMallServices: ServiceItem[] = [
     description:
       "আধুনিক শপিং মল। ফ্যাশন স্টোর, সুপারশপ এবং রেস্টুরেন্ট সহ বিভিন্ন দোকান।",
   },
+  {
+    id: 3,
+    title: "নতুন বাজার শপিং কমপ্লেক্স",
+    image: "/assets/images/malls/new-market.jpg",
+    address: "নতুন বাজার, বরিশাল",
+    phone: "০১৯১২-৩৪৫৬৭৮",
+    description:
+      "ঐতিহ্যবাহী শপিং এলাকা। পোশাক, ইলেকট্রনিক্স এবং দৈনন্দিন প্রয়োজনীয় পণ্যের দোকান।",
+  },
+  {
+    id: 4,
+    title: "বরিশাল প্লাজা",
+    image: "/assets/images/malls/barishal-plaza.jpg",
+    address: "বেল তলা, বরিশাল",
+    phone: "০১৮১৫-৯৮৭৬৫৪",
+    description:
+      "আধুনিক শপিং কমপ্লেক্স। বিভিন্ন ব্র্যান্ডের শোরুম এবং বিনোদন কেন্দ্র।",
+  },
 ];
 
 const parkServices: ServiceItem[] = [
@@ -65,6 +83,24 @@ const parkServices: ServiceItem[] = [
     phone: "০১৮১২-৯৮৭৬৫৪",
     description:
       "শিশুদের জন্য নিরাপদ খেলার স্থান। বিভিন্ন রাইড এবং খেলার সরঞ্জাম সহ।",
+  },
+  {
+    id: 3,
+    title: "ইকো পার্ক বরিশাল",
+    image: "/assets/images/parks/eco-park.jpg",
+    address: "কাউনিয়া, বরিশাল",
+    phone: "০১৯১২-৩৪৫৬৭৮",
+    description:
+      "প্রাকৃতিক পরিবেশে অবস্থিত ইকো পার্ক। বিভিন্ন প্রজাতির গাছ, পাখি এবং প্রজাপতি দেখার সুযোগ।",
+  },
+  {
+    id: 4,
+    title: "স্পোর্টস কমপ্লেক্স পার্ক",
+    image: "/assets/images/parks/sports-park.jpg",
+    address: "স্টেডিয়াম রোড, বরিশাল",
+    phone: "০১৮১৫-৯৮৭৬৫৪",
+    description:
+      "ক্রীড়া সুবিধা সম্পন্ন পার্ক। ফুটবল মাঠ, ব্যাডমিন্টন কোর্ট এবং জগিং ট্র্যাক সহ।",
   },
 ];
 
@@ -87,6 +123,33 @@ const restaurantServices: ServiceItem[] = [
     description:
       "চাইনিজ এবং থাই খাবারের রেস্টুরেন্ট। নুডলস, সুপ এবং সী-ফুড স্পেশালিটি।",
   },
+  {
+    id: 3,
+    title: "পিৎজা হাট",
+    image: "/assets/images/restaurants/pizza-hut.jpg",
+    address: "সিটি মল, বরিশাল",
+    phone: "০১৯১২-৩৪৫৬৭৮",
+    description:
+      "ইতালিয়ান পিৎজা এবং পাস্তার রেস্টুরেন্ট। বিভিন্ন ধরনের পিৎজা এবং সাইড ডিশ।",
+  },
+  {
+    id: 4,
+    title: "কফি হাউস",
+    image: "/assets/images/restaurants/coffee-house.jpg",
+    address: "বেল তলা, বরিশাল",
+    phone: "০১৮১৫-৯৮৭৬৫৪",
+    description:
+      "আধুনিক ক্যাফে। প্রিমিয়াম কফি, স্ন্যাকস এবং ডেজার্ট। ওয়াই-ফাই সহ আরামদায়ক পরিবেশ।",
+  },
+  {
+    id: 5,
+    title: "হেলদি বাইটস",
+    image: "/assets/images/restaurants/healthy-bites.jpg",
+    address: "সদর রোড, বরিশাল",
+    phone: "০১৭১৫-৯৮৭৬৫৪",
+    description:
+      "স্বাস্থ্যসম্মত খাবারের রেস্টুরেন্ট। সালাদ, স্মুদি, এবং অর্গানিক খাবার।",
+  },
 ];
 
 const hospitalServices: ServiceItem[] = [
@@ -107,6 +170,33 @@ const hospitalServices: ServiceItem[] = [
     phone: "০১৮১২-৯৮৭৬৫৪",
     description:
       "আধুনিক প্রাইভেট হাসপাতাল। সকল ধরনের রোগের চিকিৎসা এবং সার্জারি সুবিধা।",
+  },
+  {
+    id: 3,
+    title: "ডেন্টাল কেয়ার সেন্টার",
+    image: "/assets/images/hospitals/dental-care.jpg",
+    address: "কাজীর মোড়, বরিশাল",
+    phone: "০১৯১২-৩৪৫৬৭৮",
+    description:
+      "আধুনিক দন্ত চিকিৎসা কেন্দ্র। দাঁতের সমস্ত ধরনের চিকিৎসা এবং কসমেটিক ডেন্টিস্ট্রি।",
+  },
+  {
+    id: 4,
+    title: "লাইফ কেয়ার ডায়াগনস্টিক",
+    image: "/assets/images/hospitals/life-care.jpg",
+    address: "বেল তলা, বরিশাল",
+    phone: "০১৮১৫-৯৮৭৬৫৪",
+    description:
+      "আধুনিক ডায়াগনস্টিক সেন্টার। এমআরআই, সিটি স্ক্যান, এক্স-রে এবং প্যাথলজি সেবা।",
+  },
+  {
+    id: 5,
+    title: "মাদার কেয়ার ক্লিনিক",
+    image: "/assets/images/hospitals/mother-care.jpg",
+    address: "সদর রোড, বরিশাল",
+    phone: "০১৭১৫-৯৮৭৬৫৪",
+    description:
+      "মা ও শিশু স্বাস্থ্য কেন্দ্র। প্রসূতি সেবা, শিশু রোগ বিশেষজ্ঞ এবং টিকাদান কেন্দ্র।",
   },
 ];
 
@@ -129,6 +219,33 @@ const religiousServices: ServiceItem[] = [
     description:
       "প্রাচীন কালী মন্দির। ধর্মীয় অনুষ্ঠান এবং পূজা-অর্চনার কেন্দ্র।",
   },
+  {
+    id: 3,
+    title: "সেন্ট পিটারস চার্চ",
+    image: "/assets/images/religious/st-peters.jpg",
+    address: "চার্চ রোড, বরিশাল",
+    phone: "০১৯১২-৩৪৫৬৭৮",
+    description:
+      "ঐতিহ্যবাহী খ্রিস্টান গির্জা। রবিবারের প্রার্থনা এবং ধর্মীয় উৎসব পালন।",
+  },
+  {
+    id: 4,
+    title: "বরিশাল বৌদ্ধ বিহার",
+    image: "/assets/images/religious/buddhist-temple.jpg",
+    address: "বেল তলা, বরিশাল",
+    phone: "০১৮১৫-৯৮৭৬৫৪",
+    description:
+      "শান্তিপূর্ণ বৌদ্ধ মন্দির। ধ্যান কেন্দ্র এবং ধর্মীয় শিক্ষার স্থান।",
+  },
+  {
+    id: 5,
+    title: "গুরুদ্বারা সাহিব",
+    image: "/assets/images/religious/gurudwara.jpg",
+    address: "সদর রোড, বরিশাল",
+    phone: "০১৭১৫-৯৮৭৬৫৪",
+    description:
+      "শিখ ধর্মের উপাসনালয়। লঙ্গর (সামাজিক রান্নাঘর) এবং ধর্মীয় অনুষ্ঠান।",
+  },
 ];
 
 const touristServices: ServiceItem[] = [
@@ -147,6 +264,33 @@ const touristServices: ServiceItem[] = [
     address: "নতুন বাজার, বরিশাল",
     phone: "০১৮১২-৯৮৭৬৫৪",
     description: "নৌ ভ্রমণের জনপ্রিয় স্থান। সূর্যাস্ত দেখার সুন্দর জায়গা।",
+  },
+  {
+    id: 3,
+    title: "কীর্তনখোলা নদী ঘাট",
+    image: "/assets/images/tourist/river-ghat.jpg",
+    address: "নদী ঘাট, বরিশাল",
+    phone: "০১৯১২-৩৪৫৬৭৮",
+    description:
+      "নৌকা ভ্রমণ এবং নদী দর্শনের জনপ্রিয় স্থান। স্থানীয় জীবনযাত্রা দেখার সুযোগ।",
+  },
+  {
+    id: 4,
+    title: "বরিশাল স্মৃতি জাদুঘর",
+    image: "/assets/images/tourist/museum.jpg",
+    address: "বেল তলা, বরিশাল",
+    phone: "০১৮১৫-৯৮৭৬৫৪",
+    description:
+      "ঐতিহাসিক নিদর্শন সংগ্রহশালা। স্থানীয় ইতিহাস ও সংস্কৃতির তথ্যভাণ্ডার।",
+  },
+  {
+    id: 5,
+    title: "গৌরনদী ইকো পার্ক",
+    image: "/assets/images/tourist/eco-park.jpg",
+    address: "গৌরনদী, বরিশাল",
+    phone: "০১৭১৫-৯৮৭৬৫৪",
+    description:
+      "প্রাকৃতিক সৌন্দর্যের লীলাভূমি। পিকনিক স্পট এবং বিনোদন কেন্দ্র।",
   },
 ];
 

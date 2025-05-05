@@ -20,7 +20,7 @@ const helplineCategories: Category[] = [
   {
     id: 1,
     title: "🛍️ শপিং মল",
-    icon: "/assets/icons/shopping.svg",
+    icon: "/assets/helpline/shoping-mall.png",
     subCategories: [
       { id: 101, title: "🛒 সুপার মল" },
       { id: 102, title: "🏬 স্থানীয় বাজার" },
@@ -32,7 +32,7 @@ const helplineCategories: Category[] = [
   {
     id: 2,
     title: "🌳 পার্ক",
-    icon: "/assets/icons/park.svg",
+    icon: "/assets/helpline/park.png",
     subCategories: [
       { id: 201, title: "🧘 পাবলিক পার্ক" },
       { id: 202, title: "🧒 শিশু পার্ক" },
@@ -44,7 +44,7 @@ const helplineCategories: Category[] = [
   {
     id: 3,
     title: "🍽️ রেস্টুরেন্ট",
-    icon: "/assets/icons/restaurant.svg",
+    icon: "/assets/helpline/restaurant.png",
     subCategories: [
       { id: 301, title: "🍛 বাঙালি খাবার" },
       { id: 302, title: "🍔 ফাস্ট ফুড" },
@@ -57,7 +57,7 @@ const helplineCategories: Category[] = [
   {
     id: 4,
     title: "🏥 হাসপাতাল ও ক্লিনিক",
-    icon: "/assets/icons/hospital.svg",
+    icon: "/assets/helpline/hospital.png",
     subCategories: [
       { id: 401, title: "🏥 সরকারি হাসপাতাল" },
       { id: 402, title: "🏨 প্রাইভেট হাসপাতাল" },
@@ -69,7 +69,7 @@ const helplineCategories: Category[] = [
   {
     id: 5,
     title: "🕌 ধর্মীয় স্থান",
-    icon: "/assets/icons/religious.svg",
+    icon: "/assets/helpline/mosque.png",
     subCategories: [
       { id: 501, title: "🕌 মসজিদ" },
       { id: 502, title: "🛕 মন্দির" },
@@ -80,7 +80,7 @@ const helplineCategories: Category[] = [
   {
     id: 6,
     title: "🎡 পর্যটন আকর্ষণ",
-    icon: "/assets/icons/tourist.svg",
+    icon: "/assets/helpline/tourist.png",
     subCategories: [
       { id: 601, title: "🏯 ঐতিহাসিক স্থান" },
       { id: 602, title: "🌊 সৈকত / নদীতীর" },
@@ -92,7 +92,7 @@ const helplineCategories: Category[] = [
   {
     id: 7,
     title: "🏫 শিক্ষা প্রতিষ্ঠান",
-    icon: "/assets/icons/education.svg",
+    icon: "/assets/helpline/school.png",
     subCategories: [
       { id: 701, title: "🏫 স্কুল" },
       { id: 702, title: "🏛️ কলেজ" },
@@ -104,7 +104,7 @@ const helplineCategories: Category[] = [
   {
     id: 8,
     title: "🏨 হোটেল ও রিসোর্ট",
-    icon: "/assets/icons/hotel.svg",
+    icon: "/assets/helpline/hotel.png",
     subCategories: [
       { id: 801, title: "⭐ ৩-তারকা হোটেল" },
       { id: 802, title: "⭐ ৫-তারকা হোটেল" },
@@ -116,7 +116,7 @@ const helplineCategories: Category[] = [
   {
     id: 9,
     title: "🛒 সুপারমার্কেট ও মুদি দোকান",
-    icon: "/assets/icons/supermarket.svg",
+    icon: "/assets/helpline/store.png",
     subCategories: [
       { id: 901, title: "🏪 কনভিনিয়েন্স স্টোর" },
       { id: 902, title: "🛍️ ডিপার্টমেন্টাল স্টোর" },
@@ -128,7 +128,7 @@ const helplineCategories: Category[] = [
   {
     id: 10,
     title: "🚌 পরিবহন কেন্দ্র",
-    icon: "/assets/icons/transport.svg",
+    icon: "/assets/helpline/transportation.png",
     subCategories: [
       { id: 1001, title: "🚉 রেল স্টেশন" },
       { id: 1002, title: "🚌 বাস টার্মিনাল" },
@@ -140,7 +140,7 @@ const helplineCategories: Category[] = [
   {
     id: 11,
     title: "✈️ বিমানবন্দর",
-    icon: "/assets/icons/airport.svg",
+    icon: "/assets/helpline/airport.png",
     subCategories: [
       { id: 1101, title: "🛫 আন্তর্জাতিক বিমানবন্দর" },
       { id: 1102, title: "🛬 অভ্যন্তরীণ বিমানবন্দর" },
