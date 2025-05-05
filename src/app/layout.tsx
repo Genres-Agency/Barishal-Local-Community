@@ -2,18 +2,11 @@ import Navbar from "@/components/Navbar";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import ReduxProvider from "@/lib/providers/ReduxProviders";
 import type { Metadata } from "next";
-import { Poppins, Tiro_Bangla } from "next/font/google";
-import localFont from "next/font/local";
+import { Hind_Siliguri, Poppins } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-const arial = localFont({
-  src: "./fonts/arial.ttf",
-  variable: "--font-bangla",
-  display: "swap",
-});
-
-const tiro_bangla = Tiro_Bangla({
+const hind_shiliguri = Hind_Siliguri({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-bangla",
@@ -54,8 +47,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${tiro_bangla.variable} ${poppins.variable}`}>
-      <body className="bg-gray-50">
+    <html lang="en">
+      <body
+        className={`${hind_shiliguri.variable} ${poppins.variable}bg-gray-50 mx-auto px-4`}
+      >
         <ReduxProvider>
           <ErrorBoundary>
             {/* Sticky Navbar */}

@@ -28,7 +28,7 @@ export const communityStats: StatConfig[] = [
   {
     icon: BriefcaseBusiness,
     label: "চাকরির পোস্ট",
-    value: "৮00+",
+    value: "৮০০+",
     iconColor: "text-purple-600",
     bgColor: "bg-purple-50",
   },
