@@ -26,7 +26,7 @@ const postApi = baseApi.injectEndpoints({
           params: urlParams,
         };
       },
-      providesTags: ["Post"],
+      providesTags: ["Post", "User"],
     }),
     // Get Single post
     getSinglePost: builder.query({
