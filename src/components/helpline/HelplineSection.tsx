@@ -224,6 +224,8 @@ export default function HelplineSection() {
                     src={category.icon}
                     alt={category.title}
                     className="w-6 h-6"
+                    height={32}
+                    width={32}
                   />
                 </div>
                 <span className="text-sm text-center font-medium">
