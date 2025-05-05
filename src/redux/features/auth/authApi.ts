@@ -9,6 +9,7 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: userInfo,
       }),
+      invalidatesTags: ["User"],
     }),
 
     // Login a new user
@@ -18,6 +19,7 @@ const authApi = baseApi.injectEndpoints({
         method: "POST",
         body: userInfo,
       }),
+      invalidatesTags: ["User"],
     }),
     // Get User Profile
     getUser: builder.query({
