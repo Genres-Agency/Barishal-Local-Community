@@ -134,8 +134,9 @@ export default function PostItem({
         post={{
           id,
           content,
-          categoryId,
-          hashTagId: hashtag?.[0]?.id,
+          // categoryId,
+          // hashTagId: hashtag?.[0]?.id,
+          photo,
         }}
       />
     </div>
