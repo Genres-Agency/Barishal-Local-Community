@@ -4,32 +4,18 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdatePostMutation } from "@/redux/features/post/post.api";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import z from "zod";
-
-const formSchema = z.object({
-  content: z.string().min(1, "কন্টেন্ট প্রয়োজন"),
-  categoryId: z.number().optional(),
-  hashTagId: z.number().optional(),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+import { DialogDescription } from "@radix-ui/react-dialog";
+import { X } from "lucide-react";
+import Image from "next/image";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface EditPostModalProps {
   isOpen: boolean;
@@ -37,8 +23,7 @@ interface EditPostModalProps {
   post: {
     id: string;
     content: string;
-    categoryId?: number;
-    hashTagId?: number;
+    photo?: string;
   };
 }
 
@@ -47,108 +32,123 @@ export default function EditPostModal({
   onClose,
   post,
 }: EditPostModalProps) {
-  const [updatePost] = useUpdatePostMutation();
-
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      content: post.content,
-      categoryId: post.categoryId,
-      hashTagId: post.hashTagId,
-    },
+  const [updatePost, { isLoading }] = useUpdatePostMutation();
+  const [formData, setFormData] = useState({
+    content: post.content || "",
+    photo: null as File | null,
   });
 
-  const onSubmit = async (values: FormValues) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFormData({ ...formData, photo: e.target.files[0] });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const submitData = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value !== null) {
+        submitData.append(key, value);
+      }
+    });
+
+    console.log("submitData ===>", submitData, post.id);
+
     try {
       await updatePost({
-        id: post.id,
-        ...values,
+        postId: post.id,
+        formData: submitData,
       }).unwrap();
+      toast.success("পোস্ট আপডেট সফল হয়েছে");
       onClose();
-      form.reset();
     } catch (error) {
-      console.error("পোস্ট আপডেট করতে সমস্যা হয়েছে:", error);
+      toast.error("পোস্ট আপডেট ব্যর্থ হয়েছে");
+      console.error(error);
     }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>পোস্ট সম্পাদনা করুন</DialogTitle>
-          <DialogDescription>
+      <DialogContent className="max-w-[800px] w-[90vw] p-6 bg-white rounded-lg shadow-lg overflow-y-auto max-h-[90vh]">
+        <DialogHeader className="mb-6">
+          <DialogTitle className="text-2xl font-semibold">
+            পোস্ট সম্পাদনা করুন
+          </DialogTitle>
+          <DialogDescription className="text-gray-600">
             আপনার পোস্টের তথ্য পরিবর্তন করুন। সব ফিল্ড পূরণ করা বাধ্যতামূলক নয়।
           </DialogDescription>
         </DialogHeader>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>কন্টেন্ট</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="আপনার পোস্টের বিষয়বস্তু লিখুন"
-                      className="min-h-[100px]"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid gap-4">
+            {/* Post Content */}
+            <div className="grid gap-2">
+              <Label htmlFor="content">কন্টেন্ট</Label>
+              <Textarea
+                id="content"
+                value={formData.content}
+                onChange={(e) =>
+                  setFormData({ ...formData, content: e.target.value })
+                }
+                className="min-h-[150px]"
+                placeholder="আপনার পোস্টের বিষয়বস্তু লিখুন"
+              />
+            </div>
 
-            <FormField
-              control={form.control}
-              name="categoryId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>ক্যাটাগরি</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="ক্যাটাগরি আইডি"
-                      {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
-                  </FormControl>
-                </FormItem>
+            {/* Image Upload */}
+            <div className="flex items-start gap-6 bg-gray-50 p-4 rounded-lg">
+              {(formData.photo || post.photo) && (
+                <div className="relative w-32 h-32">
+                  <Image
+                    src={
+                      formData.photo
+                        ? URL.createObjectURL(formData.photo)
+                        : post.photo || "/assets/placeholder.png"
+                    }
+                    alt="Post image"
+                    fill
+                    className="object-cover rounded-lg"
+                  />
+                  <button
+                    onClick={() => setFormData({ ...formData, photo: null })}
+                    className="absolute -top-2 -right-2 bg-black bg-opacity-50 rounded-full p-1"
+                  >
+                    <X size={16} className="text-white" />
+                  </button>
+                </div>
               )}
-            />
+              <div className="flex-1">
+                <Label htmlFor="image">পোস্টের ছবি</Label>
+                <Input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="mt-2"
+                />
+              </div>
+            </div>
 
-            <FormField
-              control={form.control}
-              name="hashTagId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>হ্যাশট্যাগ</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      placeholder="হ্যাশট্যাগ আইডি"
-                      {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            <DialogFooter>
+            <div className="flex justify-end space-x-4 mt-8">
               <Button
                 type="button"
                 variant="outline"
                 onClick={onClose}
-                className="mr-2"
+                disabled={isLoading}
               >
                 বাতিল
               </Button>
-              <Button type="submit">সংরক্ষণ করুন</Button>
-            </DialogFooter>
-          </form>
-        </Form>
+              <Button
+                type="submit"
+                className="bg-green-600 hover:bg-green-700"
+                disabled={isLoading}
+              >
+                {isLoading ? "আপডেট হচ্ছে..." : "সেভ করুন"}
+              </Button>
+            </div>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   );
