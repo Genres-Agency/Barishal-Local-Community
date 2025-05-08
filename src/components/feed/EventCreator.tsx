@@ -146,6 +146,8 @@ const EventCreator = () => {
                       src={imagePreview}
                       alt="Preview"
                       className="w-full h-full object-cover"
+                      height={400}
+                      width={600}
                     />
                   </div>
                 )}

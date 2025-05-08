@@ -103,9 +103,11 @@ export default function LoginForm() {
               )}
             </button>
           </div>
-          <Button variant="link" className="px-0 text-sm">
-            পাসওয়ার্ড ভুলে গেছেন?
-          </Button>
+          <Link href="/auth/forgot-password">
+            <Button variant="link" className="px-0 text-sm">
+              পাসওয়ার্ড ভুলে গেছেন?
+            </Button>
+          </Link>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <Button type="submit" className="w-full" disabled={isLoading}>

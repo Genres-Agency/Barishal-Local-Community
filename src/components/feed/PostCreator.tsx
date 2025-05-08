@@ -64,6 +64,8 @@ const PostCreator: React.FC = () => {
         console.log("File added to FormData", file);
       }
 
+      console.log("FormData before sending:", formData);
+
       // Call the API and capture the response
       const result = await addPost(formData);
 
