@@ -20,11 +20,14 @@ const EventCreator = () => {
     location: "",
     image: null as File | null,
     description: "",
+    status: "UPCOMING",
   });
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value, type } = e.target;
     if (type === "file") {
@@ -50,7 +53,7 @@ const EventCreator = () => {
       data.append("title", formData.title);
       data.append("location", formData.location);
       data.append("description", formData.description);
-      data.append("status", "active"); // Adjust if needed
+      data.append("status", formData.status);
       data.append("time", new Date(formData.date).toISOString());
 
       if (formData.image) {
@@ -66,6 +69,7 @@ const EventCreator = () => {
         location: "",
         image: null,
         description: "",
+        status: "UPCOMING",
       });
       setImagePreview(null);
       setIsModalOpen(false);
@@ -123,6 +127,19 @@ const EventCreator = () => {
                   className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                   required
                 />
+              </div>
+              <div>
+                <select
+                  name="status"
+                  value={formData.status}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                  required
+                >
+                  <option value="UPCOMING">Upcoming</option>
+                  <option value="ACTIVE">Active</option>
+                  <option value="COMPLETED">Completed</option>
+                </select>
               </div>
               <div className="space-y-2">
                 <label className="block w-full px-4 py-2 text-center border-2 border-dashed rounded-lg cursor-pointer hover:border-green-500 transition-colors">

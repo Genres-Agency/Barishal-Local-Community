@@ -1,4 +1,4 @@
-import { User, MessageSquare, Users, Settings, LogOut } from "lucide-react";
+import { LogOut, MessageSquare, Settings, User, Users } from "lucide-react";
 
 export interface ProfileMenuItem {
   label: string;
@@ -17,6 +17,11 @@ export const profileMenuItems: ProfileMenuItem[] = [
     label: "আমার পোস্ট",
     icon: MessageSquare,
     href: "/profile?tab=posts",
+  },
+  {
+    label: "আমার ইভেন্ট",
+    icon: MessageSquare,
+    href: "/profile?tab=events",
   },
   {
     label: "কমিউনিটি একটিভিটি",

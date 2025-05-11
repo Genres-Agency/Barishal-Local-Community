@@ -16,7 +16,7 @@ import { setUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { verifyToken } from "@/utils/verifyToken";
 // import Cookies from "js-cookie";
-import { Eye, EyeOff, Facebook, Github } from "lucide-react";
+import { Eye, EyeOff, Facebook } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -121,17 +121,17 @@ export default function LoginForm() {
               <span className="bg-white px-2 text-gray-500">অথবা</span>
             </div>
           </div>
-          <div className="flex gap-4 w-full">
+          <div className="w-full ">
             <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/auth/google`}>
               <Button variant="outline" className="w-full" type="button">
                 <Facebook className="mr-2 h-4 w-4" />
                 Google
               </Button>
             </Link>
-            <Button variant="outline" className="w-full" type="button">
+            {/* <Button variant="outline" className="w-full" type="button">
               <Github className="mr-2 h-4 w-4" />
               Github
-            </Button>
+            </Button> */}
           </div>
         </CardFooter>
       </form>

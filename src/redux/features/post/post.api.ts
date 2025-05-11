@@ -57,6 +57,7 @@ const postApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Post"],
     }),
+
     // Delete a post
     deletePost: builder.mutation({
       query: (id) => ({
