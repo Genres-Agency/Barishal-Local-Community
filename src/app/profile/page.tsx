@@ -108,9 +108,11 @@ function ProfileContent() {
           <TabsTrigger value="events" className="flex-1 md:flex-none">
             ইভেন্টস সমূহ
           </TabsTrigger>
-          <TabsTrigger value="category" className="flex-1 md:flex-none">
-            ক্যাটেগরি সমূহ
-          </TabsTrigger>
+          {isAdmin && (
+            <TabsTrigger value="category" className="flex-1 md:flex-none">
+              ক্যাটেগরি সমূহ
+            </TabsTrigger>
+          )}
           <TabsTrigger value="settings" className="flex-1 md:flex-none">
             সেটিংস
           </TabsTrigger>
@@ -130,9 +132,11 @@ function ProfileContent() {
         <TabsContent value="events">
           <Events events={userEvents} />
         </TabsContent>
-        <TabsContent value="category">
-          <CategoryList categories={category} isAdmin={isAdmin} />
-        </TabsContent>
+        {isAdmin && (
+          <TabsContent value="category">
+            <CategoryList categories={category} isAdmin={isAdmin} />
+          </TabsContent>
+        )}
 
         <TabsContent value="settings">
           <Settings />
