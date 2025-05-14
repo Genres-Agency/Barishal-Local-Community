@@ -12,14 +12,6 @@ export type IEvent = {
   updatedAt?: string;
 };
 
-export type ICreateEvent = {
-  title: string;
-  date: string;
-  location: string;
-  image: string;
-  description?: string;
-};
-
 const eventsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllEvents: builder.query<IEvent[], void>({
@@ -47,19 +39,23 @@ const eventsApi = baseApi.injectEndpoints({
       invalidatesTags: ["Event"],
     }),
 
-    updateEvent: builder.mutation<
-      IEvent,
-      { id: string; data: Partial<ICreateEvent> }
-    >({
-      query: ({ id, data }) => ({
+    updateEvent: builder.mutation({
+      query: ({ id, formData }) => ({
         url: `/events/${id}`,
         method: "PATCH",
-        body: data,
+        body: formData,
       }),
       invalidatesTags: ["Event"],
     }),
-
-    deleteEvent: builder.mutation<void, string>({
+    // Get user post by id
+    getUserEventById: builder.query({
+      query: (id) => ({
+        url: `/events/my-events/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["User", "Event"],
+    }),
+    deleteEvent: builder.mutation({
       query: (id) => ({
         url: `/events/${id}`,
         method: "DELETE",
@@ -75,4 +71,5 @@ export const {
   useAddEventMutation,
   useUpdateEventMutation,
   useDeleteEventMutation,
+  useGetUserEventByIdQuery,
 } = eventsApi;

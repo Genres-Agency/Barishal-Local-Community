@@ -112,3 +112,19 @@ export interface Profile {
   x?: string;
   user: User;
 }
+
+export type Event = {
+  id: number;
+  title: string;
+  description: string;
+  location: string;
+  time: string;
+  status: string;
+  image?: string;
+  authorId: number;
+  createdAt: string;
+  updatedAt: string;
+};
+export interface EventProps {
+  events: Event[];
+}

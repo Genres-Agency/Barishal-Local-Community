@@ -1,6 +1,8 @@
 "use client";
 
+import CategoryList from "@/components/profile/CategoryList";
 import CommunityActivity from "@/components/profile/CommunityActivity";
+import Events from "@/components/profile/Events";
 import PersonalInfo from "@/components/profile/PersonalInfo";
 import Posts from "@/components/profile/Posts";
 import ProfileEditModal from "@/components/profile/ProfileEditModal";
@@ -11,6 +13,8 @@ import { Loading } from "@/components/ui/loading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { mockUserProfile } from "@/lib/config/profile";
 import { useGetUserQuery } from "@/redux/features/auth/authApi";
+import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
+import { useGetUserEventByIdQuery } from "@/redux/features/events/events.api";
 import {
   useGetUserDetailQuery,
   useGetUserPostByIdQuery,
@@ -30,10 +34,18 @@ function ProfileContent() {
   console.log("User ==>", user);
   const { data: userPosts } = useGetUserPostByIdQuery(user?.id);
 
+  const isAdmin = user?.role === "ADMIN" || user?.role === "SUPER_ADMIN";
+
   console.log("userPosts", userPosts);
+  const { data: userEvents } = useGetUserEventByIdQuery(user?.id);
+
+  console.log("userEvents", userEvents);
 
   const { data: userDetails, isLoading: isLoadingDetails } =
     useGetUserDetailQuery(undefined);
+
+  const { data: category, isLoading: isLoadingCategory } =
+    useGetAllCategoryQuery(undefined);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   if (isLoadingDetails) {
@@ -93,6 +105,12 @@ function ProfileContent() {
           <TabsTrigger value="posts" className="flex-1 md:flex-none">
             পোস্টসমূহ
           </TabsTrigger>
+          <TabsTrigger value="events" className="flex-1 md:flex-none">
+            ইভেন্টস সমূহ
+          </TabsTrigger>
+          <TabsTrigger value="category" className="flex-1 md:flex-none">
+            ক্যাটেগরি সমূহ
+          </TabsTrigger>
           <TabsTrigger value="settings" className="flex-1 md:flex-none">
             সেটিংস
           </TabsTrigger>
@@ -108,6 +126,12 @@ function ProfileContent() {
 
         <TabsContent value="posts">
           <Posts posts={userPosts} />
+        </TabsContent>
+        <TabsContent value="events">
+          <Events events={userEvents} />
+        </TabsContent>
+        <TabsContent value="category">
+          <CategoryList categories={category} isAdmin={isAdmin} />
         </TabsContent>
 
         <TabsContent value="settings">

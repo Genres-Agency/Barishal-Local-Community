@@ -16,7 +16,7 @@ import { useRegisterMutation } from "@/redux/features/auth/authApi";
 import { setUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { verifyToken } from "@/utils/verifyToken";
-import { Eye, EyeOff, Facebook, Github } from "lucide-react"; // Import Eye and EyeOff icons
+import { Eye, EyeOff, Facebook } from "lucide-react"; // Import Eye and EyeOff icons
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -86,7 +86,10 @@ export default function RegisterForm() {
         <CardTitle>রেজিস্টার করুন</CardTitle>
         <CardDescription>নতুন একাউন্ট তৈরি করুন</CardDescription>
       </CardHeader>
-      <form onSubmit={handleSubmit}>
+      <form
+        className=" bg-white rounded-lg shadow-lg overflow-y-auto max-h-[80vh] "
+        onSubmit={handleSubmit}
+      >
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="firstName">প্রথম নাম</Label>
@@ -180,17 +183,17 @@ export default function RegisterForm() {
               <span className="bg-white px-2 text-gray-500">অথবা</span>
             </div>
           </div>
-          <div className="flex gap-4 w-full">
+          <div className=" w-full">
             <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/auth/google`}>
               <Button variant="outline" className="w-full" type="button">
                 <Facebook className="mr-2 h-4 w-4" />
                 Google
               </Button>
             </Link>
-            <Button variant="outline" className="w-full" type="button">
+            {/* <Button variant="outline" className="w-full" type="button">
               <Github className="mr-2 h-4 w-4" />
               Github
-            </Button>
+            </Button> */}
           </div>
         </CardFooter>
       </form>
