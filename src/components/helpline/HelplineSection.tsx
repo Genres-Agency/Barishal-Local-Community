@@ -1,36 +1,33 @@
 "use client";
 
+import { useGetAllHelplineCategoryQuery } from "@/redux/features/helpline-category/helpline-category";
 import "@/styles/scrollbar-hide.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useRef } from "react";
 
 interface SubCategory {
-  id?: number;
+  id: number;
   title: string;
-  icon?: string;
+  icon: string | null;
+  categoryId: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface Category {
   id: number;
   title: string;
   icon: string;
-  subCategories?: SubCategory[];
+  authorId: number;
+  createdAt: string;
+  updatedAt: string;
+  subCommunityCategories: SubCategory[];
 }
 
-const helplineCategories: Category[] = [
-  {
-    id: 1,
-    title: " শপিং মল",
-    icon: "/assets/helpline/shoping-mall.png",
-    subCategories: [
-      { id: 101, title: " সুপার মল" },
-      { id: 102, title: " স্থানীয় বাজার" },
-      { id: 103, title: " প্লাজা" },
-      { id: 104, title: " ফ্যাশন আউটলেট" },
-      { id: 105, title: " ফুড কোর্ট" },
-    ],
-  },
+// Fallback categories in case API fails or during development
+const fallbackCategories = [
   {
     id: 2,
     title: " পার্ক",
@@ -152,12 +149,14 @@ const helplineCategories: Category[] = [
   },
 ];
 
-import { useRef } from "react";
-
 export default function HelplineSection() {
   const router = useRouter();
   const marqueeRef = useRef<HTMLDivElement>(null);
-  // const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const {
+    data: categories,
+    isLoading,
+    error,
+  } = useGetAllHelplineCategoryQuery([]);
 
   const scrollAmount = 300; // px to scroll per click
 
@@ -177,6 +176,19 @@ export default function HelplineSection() {
     }
   };
 
+  // Use fallback categories if API fails or during development
+  const displayCategories = categories;
+
+  if (error) {
+    return (
+      <div className="container mx-auto py-3 px-4">
+        <div className="text-center py-4 text-red-600">
+          Error loading categories. Please try again later.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto py-3 px-4">
       <h1 className="text-5xl text-center py-4">কমিউনিটি হেল্পলাইন </h1>
@@ -191,6 +203,7 @@ export default function HelplineSection() {
             justifyContent: "center",
           }}
           onClick={() => handleScroll("left")}
+          disabled={isLoading}
         >
           <ChevronLeft className="w-6 h-6" />
         </button>
@@ -204,6 +217,7 @@ export default function HelplineSection() {
             justifyContent: "center",
           }}
           onClick={() => handleScroll("right")}
+          disabled={isLoading}
         >
           <ChevronRight className="w-6 h-6" />
         </button>
@@ -212,30 +226,39 @@ export default function HelplineSection() {
           className="whitespace-nowrap pb-4 overflow-x-auto scrollbar-hide scroll-smooth flex space-x-4 px-4"
           style={{ scrollBehavior: "smooth" }}
         >
-          {[...helplineCategories, ...helplineCategories].map(
-            (category, index) => (
-              <div
-                key={index}
-                onClick={() => handleCategoryClick(category)}
-                className="flex-shrink-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-sm p-4 min-w-[100px] cursor-pointer hover:bg-gray-50 transition-colors"
-              >
-                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-green-200 mb-2">
-                  <Image
-                    src={category.icon}
-                    alt={category.title}
-                    className="w-6 h-6"
-                    height={32}
-                    width={32}
-                  />
+          {displayCategories &&
+            [...displayCategories, ...displayCategories].map(
+              (category, index) => (
+                <div
+                  key={`${category.id}-${index}`}
+                  onClick={() => handleCategoryClick(category)}
+                  className="flex-shrink-0 flex flex-col items-center justify-center bg-white rounded-lg shadow-sm p-4 min-w-[100px] cursor-pointer hover:bg-gray-50 transition-colors"
+                >
+                  <div className="w-12 h-12 flex items-center justify-center rounded-full bg-green-200 mb-2">
+                    <Image
+                      src={category.icon}
+                      alt={category.title}
+                      className="w-6 h-6"
+                      height={32}
+                      width={32}
+                    />
+                  </div>
+                  <span className="text-sm text-center font-medium">
+                    {category.title}
+                  </span>
                 </div>
-                <span className="text-sm text-center font-medium">
-                  {category.title}
-                </span>
-              </div>
-            )
-          )}
+              )
+            )}
         </div>
       </div>
+      {isLoading && (
+        <div className="text-center py-4">
+          <div className="animate-pulse">
+            <div className="h-12 bg-gray-200 rounded-full w-12 mx-auto mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-20 mx-auto"></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

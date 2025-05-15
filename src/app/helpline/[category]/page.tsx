@@ -1,23 +1,45 @@
 "use client";
 
+import { useGetSingleHelplineCategoryQuery } from "@/redux/features/helpline-category/helpline-category";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
+interface Service {
+  id: number;
+  title: string;
+  image: string;
+  address: string;
+  phone: string;
+  description: string;
+  subCategoryId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface SubCategory {
   id: number;
   title: string;
-  icon?: string;
+  icon: string;
+  categoryId: number;
+  createdAt: string;
+  updatedAt: string;
+  services: Service[];
+  communityCategory: Category;
 }
 
 interface Category {
   id: number;
   title: string;
   icon: string;
-  subCategories?: SubCategory[];
+  authorId: number;
+  createdAt: string;
+  updatedAt: string;
+  subCommunityCategories: SubCategory[];
 }
 
-const helplineCategories: Category[] = [
+// Fallback categories in case API fails
+const fallbackCategories = [
   {
     id: 1,
     title: " শপিং মল",
@@ -158,17 +180,27 @@ export default function HelplineCategoryPage() {
     null
   );
 
-  const category = helplineCategories.find(
-    (cat) => encodeURIComponent(cat.id) === params.category
-  );
+  const {
+    data: category,
+    isLoading,
+    error,
+  } = useGetSingleHelplineCategoryQuery(params.category);
 
-  if (!category) {
-    return <div>Category not found</div>;
+  if (isLoading) {
+    return <div className="container mx-auto px-4 py-8">Loading...</div>;
   }
 
-  const filteredServices = selectedSubCategory
-    ? category.subCategories?.filter((sub) => sub.id === selectedSubCategory)
-    : category.subCategories;
+  if (error || !category) {
+    return (
+      <div className="container mx-auto px-4 py-8">Category not found</div>
+    );
+  }
+
+  const filteredSubCategories = selectedSubCategory
+    ? category.subCommunityCategories?.filter(
+        (sub) => sub.id === selectedSubCategory
+      )
+    : category.subCommunityCategories;
 
   return (
     <div className="container mx-auto px-4 relative z-40 mt-16 lg:mt-20 py-8">
@@ -199,7 +231,7 @@ export default function HelplineCategoryPage() {
           >
             সকল
           </button>
-          {category.subCategories?.map((subCategory) => (
+          {category.subCommunityCategories?.map((subCategory) => (
             <button
               key={subCategory.id}
               onClick={() => setSelectedSubCategory(subCategory.id)}
@@ -217,25 +249,68 @@ export default function HelplineCategoryPage() {
 
       {/* Services Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredServices?.map((service) => (
+        {filteredSubCategories?.map((subCategory) => (
           <div
-            key={service.id}
+            key={subCategory.id}
             className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
           >
             <div className="p-6">
-              <h3 className="text-2xl font-semibold mb-4">{service.title}</h3>
-              <p className="text-gray-600 mb-4">
-                এই সার্ভিসের বিস্তারিত তথ্য খুব শীঘ্রই আসছে
-              </p>
+              <div className="flex items-center gap-3 mb-4">
+                {subCategory.icon && (
+                  <Image
+                    src={subCategory.icon}
+                    height={40}
+                    width={40}
+                    alt={subCategory.title}
+                    className="rounded-full"
+                  />
+                )}
+                <h3 className="text-2xl font-semibold">{subCategory.title}</h3>
+              </div>
+
+              {subCategory.services && subCategory.services.length > 0 ? (
+                <div className="space-y-4">
+                  {subCategory.services.map((service) => (
+                    <div key={service.id} className="border-t pt-4">
+                      <div className="flex items-center gap-3 mb-2">
+                        <Image
+                          src={service.image}
+                          height={60}
+                          width={60}
+                          alt={service.title}
+                          className="rounded-lg"
+                        />
+                        <div>
+                          <h4 className="font-semibold">{service.title}</h4>
+                          <p className="text-sm text-gray-600">
+                            {service.address}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            {service.phone}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-700">
+                        {service.description}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-600 mb-4">
+                  এই সার্ভিসের বিস্তারিত তথ্য খুব শীঘ্রই আসছে
+                </p>
+              )}
+
               <button
                 onClick={() =>
                   router.push(
                     `/helpline/${params.category}/${encodeURIComponent(
-                      service.id
+                      subCategory.id
                     )}`
                   )
                 }
-                className="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-colors"
+                className="mt-4 bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition-colors"
               >
                 বিস্তারিত দেখুন
               </button>
