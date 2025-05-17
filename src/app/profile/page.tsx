@@ -2,6 +2,9 @@
 
 import CategoryList from "@/components/profile/CategoryList";
 import CommunityActivity from "@/components/profile/CommunityActivity";
+import CommunityHelplineCategory from "@/components/profile/CommunityHelplineCategory";
+import CommunityHelplineSubCategory from "@/components/profile/CommunityHelplineSubCategory";
+import CommunityServiceItem from "@/components/profile/CommunityServiceItem";
 import Events from "@/components/profile/Events";
 import PersonalInfo from "@/components/profile/PersonalInfo";
 import Posts from "@/components/profile/Posts";
@@ -108,9 +111,31 @@ function ProfileContent() {
           <TabsTrigger value="events" className="flex-1 md:flex-none">
             ইভেন্টস সমূহ
           </TabsTrigger>
-          <TabsTrigger value="category" className="flex-1 md:flex-none">
-            ক্যাটেগরি সমূহ
-          </TabsTrigger>
+          {isAdmin && (
+            <>
+              <TabsTrigger value="category" className="flex-1 md:flex-none">
+                ক্যাটেগরি সমূহ
+              </TabsTrigger>
+              <TabsTrigger
+                value="helpline-category"
+                className="flex-1 md:flex-none"
+              >
+                হেল্পলাইন ক্যাটেগরি
+              </TabsTrigger>
+              <TabsTrigger
+                value="helpline-sub-category"
+                className="flex-1 md:flex-none"
+              >
+                হেল্পলাইন সাব ক্যাটেগরি
+              </TabsTrigger>
+              <TabsTrigger
+                value="helpline-service-item"
+                className="flex-1 md:flex-none"
+              >
+                হেল্পলাইন সার্ভিস আইটেম
+              </TabsTrigger>
+            </>
+          )}
           <TabsTrigger value="settings" className="flex-1 md:flex-none">
             সেটিংস
           </TabsTrigger>
@@ -130,9 +155,22 @@ function ProfileContent() {
         <TabsContent value="events">
           <Events events={userEvents} />
         </TabsContent>
-        <TabsContent value="category">
-          <CategoryList categories={category} isAdmin={isAdmin} />
-        </TabsContent>
+        {isAdmin && (
+          <>
+            <TabsContent value="category">
+              <CategoryList categories={category} isAdmin={isAdmin} />
+            </TabsContent>
+            <TabsContent value="helpline-category">
+              <CommunityHelplineCategory isAdmin={isAdmin} />
+            </TabsContent>
+            <TabsContent value="helpline-sub-category">
+              <CommunityHelplineSubCategory isAdmin={isAdmin} />
+            </TabsContent>
+            <TabsContent value="helpline-service-item">
+              <CommunityServiceItem isAdmin={isAdmin} />
+            </TabsContent>
+          </>
+        )}
 
         <TabsContent value="settings">
           <Settings />

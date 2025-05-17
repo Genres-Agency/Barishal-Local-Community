@@ -92,6 +92,9 @@ export const baseApi = createApi({
     "Like",
     "Comment",
     "Event",
+    "HelplineCategory",
+    "HelplineSubCategory",
+    "ServiceItem",
   ],
   endpoints: () => ({}),
 });
