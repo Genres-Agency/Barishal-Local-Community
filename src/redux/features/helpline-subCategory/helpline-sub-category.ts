@@ -63,4 +63,10 @@ const helplineSubCategoryApi = baseApi.injectEndpoints({
   }),
 });
 
-export const {} = helplineSubCategoryApi;
+export const {
+  useGetAllHelplineSubCategoryQuery,
+  useGetSingleHelplineSubCategoryQuery,
+  useAddHelplineSubCategoryMutation,
+  useUpdateHelplineSubCategoryMutation,
+  useDeleteHelplineSubCategoryMutation,
+} = helplineSubCategoryApi;

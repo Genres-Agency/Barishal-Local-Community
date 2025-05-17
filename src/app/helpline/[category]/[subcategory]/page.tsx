@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetSingleHelplineCategoryQuery } from "@/redux/features/helpline-category/helpline-category";
+import { useGetSingleHelplineSubCategoryQuery } from "@/redux/features/helpline-subCategory/helpline-sub-category";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
@@ -44,11 +44,12 @@ interface SubCategory {
 
 export default function SubCategoryPage() {
   const params = useParams();
+  console.log("Sub categories params ==>", params);
   const {
     data: subCategory,
     isLoading,
     isError,
-  } = useGetSingleHelplineCategoryQuery(params.subcategory);
+  } = useGetSingleHelplineSubCategoryQuery(params.subcategory);
 
   if (isLoading) {
     return (
@@ -75,7 +76,7 @@ export default function SubCategoryPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 relative z-40 mt-16 lg:mt-20 py-8">
       <div className="flex items-center gap-4 mb-8">
         <div className="w-12 h-12 flex items-center justify-center rounded-full bg-red-100">
           <Image

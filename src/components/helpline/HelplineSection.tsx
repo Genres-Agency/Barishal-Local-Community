@@ -179,6 +179,8 @@ export default function HelplineSection() {
   // Use fallback categories if API fails or during development
   const displayCategories = categories;
 
+  console.log("categories from helpline section==>", categories);
+
   if (error) {
     return (
       <div className="container mx-auto py-3 px-4">
