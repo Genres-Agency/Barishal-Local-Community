@@ -33,7 +33,7 @@ import { toast } from "sonner";
 interface HelplineCategory {
   id: number;
   title: string;
-  icon?: string | File;
+  icon?: string;
 }
 
 interface CommunityHelplineCategoryProps {

@@ -41,7 +41,7 @@ import { toast } from "sonner";
 interface HelplineSubCategory {
   id: number;
   title: string;
-  icon?: string | File;
+  icon?: string;
   categoryId: number;
 }
 

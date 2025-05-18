@@ -42,7 +42,7 @@ import { toast } from "sonner";
 interface ServiceItem {
   id: number;
   title: string;
-  image?: string | File;
+  image?: string;
   address: string;
   phone: string;
   description: string;
