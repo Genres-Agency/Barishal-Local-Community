@@ -108,11 +108,12 @@ function ProfileContent() {
           <TabsTrigger value="posts" className="flex-1 md:flex-none">
             পোস্টসমূহ
           </TabsTrigger>
-          <TabsTrigger value="events" className="flex-1 md:flex-none">
-            ইভেন্টস সমূহ
-          </TabsTrigger>
+          
           {isAdmin && (
             <>
+            <TabsTrigger value="events" className="flex-1 md:flex-none">
+            ইভেন্টস সমূহ
+          </TabsTrigger>
               <TabsTrigger value="category" className="flex-1 md:flex-none">
                 ক্যাটেগরি সমূহ
               </TabsTrigger>
@@ -146,7 +147,7 @@ function ProfileContent() {
         </TabsContent>
 
         <TabsContent value="community">
-          <CommunityActivity stats={mockUserProfile.stats} />
+          <CommunityActivity  />
         </TabsContent>
 
         <TabsContent value="posts">

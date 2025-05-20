@@ -95,6 +95,7 @@ export const baseApi = createApi({
     "HelplineCategory",
     "HelplineSubCategory",
     "ServiceItem",
+    "Activity"
   ],
   endpoints: () => ({}),
 });
