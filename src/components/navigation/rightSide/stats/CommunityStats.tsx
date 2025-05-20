@@ -17,8 +17,9 @@ export interface StatConfig {
 
 
 const CommunityStats = () => {
-const {data: users} = useGetAllUsersQuery(undefined);
-const {data: posts} = useGetAllPostQuery({});
+  const {data: users} = useGetAllUsersQuery(undefined);
+const {data: jobPosts} = useGetAllPostQuery({categoryId: 3});
+const {data: posts} = useGetAllPostQuery(undefined);
 const {data:category} = useGetAllCategoryQuery(undefined);
 
 const getDailyPosts = () => {
@@ -47,7 +48,7 @@ const getDailyPosts = () => {
   {
     icon: BriefcaseBusiness,
     label: "চাকরির পোস্ট",
-    value: posts?.length?.toString() || "০",
+    value: jobPosts?.length?.toString() || "০",
     iconColor: "text-purple-600",
     bgColor: "bg-purple-50",
   },
