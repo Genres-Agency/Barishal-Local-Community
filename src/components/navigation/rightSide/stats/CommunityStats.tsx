@@ -1,31 +1,27 @@
 import React from "react";
-import { communityStats } from "@/lib/config/stats";
+
 import StatItem from "./StatsItem";
 import { BriefcaseBusiness, CircleCheck, Users } from "lucide-react";
 import { useGetAllUsersQuery} from "@/redux/features/user/userDetail.api"
 import { useGetAllPostQuery } from "@/redux/features/post/post.api";
 import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
+import { PostItemProps} from "@/types/global"
 
-export interface StatConfig {
-  icon: typeof Users | typeof CircleCheck | typeof BriefcaseBusiness;
-  label: string;
-  value: string;
-  description?: string;
-  iconColor: string;
-  bgColor: string;
-}
+import { StatConfig } from "@/lib/config/stats";
+
+
 
 
 const CommunityStats = () => {
   const {data: users} = useGetAllUsersQuery(undefined);
 const {data: jobPosts} = useGetAllPostQuery({categoryId: 3});
-const {data: posts} = useGetAllPostQuery(undefined);
+const {data: posts} = useGetAllPostQuery({});
 const {data:category} = useGetAllCategoryQuery(undefined);
 
 const getDailyPosts = () => {
   if (!posts) return 0;
   const last24Hours = new Date(Date.now() - 24 * 60 * 60 * 1000);
-  return posts.filter(post => new Date(post.updatedAt) > last24Hours).length;
+  return posts.filter((post:PostItemProps) => new Date(post.updatedAt) > last24Hours).length;
 };
   
  const communityStats: StatConfig[] = [
