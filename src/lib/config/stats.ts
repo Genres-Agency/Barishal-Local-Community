@@ -13,7 +13,7 @@ export const communityStats: StatConfig[] = [
   {
     icon: Users,
     label: "মোট সদস্য",
-    value: "১৪,০০০",
+    value: users?.length?.toString() || "০",
     description: "গত মাসে +৩৪০ নতুন সদস্য",
     iconColor: "text-blue-600",
     bgColor: "bg-blue-50",
