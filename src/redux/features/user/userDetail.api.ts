@@ -25,6 +25,13 @@ const userDetailApi = baseApi.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
+    getAllUsers: builder.query({
+      query: () => ({
+        url: `/users`,
+        method: "GET",
+      }),
+      providesTags: ["User"],
+    }),
 
     // Update User Detail
     updateUserDetail: builder.mutation<
@@ -64,4 +71,5 @@ export const {
   useUpdateUserDetailMutation,
   useGetUserPostByIdQuery,
   useDeleteUserAccountMutation,
+  useGetAllUsersQuery
 } = userDetailApi;

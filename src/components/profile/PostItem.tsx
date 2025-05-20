@@ -92,7 +92,7 @@ export default function PostItem({
         </div>
       </div>
       {photo && (
-        <div className="relative w-full h-48 mt-4 rounded-lg overflow-hidden">
+        <div className="relative w-full h-full  mt-4 rounded-lg overflow-hidden">
           <Image src={photo} alt="Post image" fill className="object-cover" />
         </div>
       )}

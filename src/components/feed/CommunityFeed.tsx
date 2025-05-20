@@ -58,6 +58,7 @@ const CommunityFeed = ({ selectedTrendTopic }: CommunityFeedProps) => {
   };
 
   console.log("postData", postData);
+  const isAdmin = user?.role === "ADMIN" || user?.role === "SUPER_ADMIN";
   return (
     <div className="space-y-4">
       {/* Feed Navigation ---------------- */}
@@ -66,9 +67,11 @@ const CommunityFeed = ({ selectedTrendTopic }: CommunityFeedProps) => {
       {user?.userId && (
         <>
           <PostCreator />
-          <EventCreator />
+          
         </>
       )}
+      {/* Event Creator Field --------------- */}
+      {isAdmin && <EventCreator />}
 
       {/* Tab Navigation ---------------- */}
       <div className="flex gap-6 mb-4 pt-2 border-b px-3 sm:px-0">
