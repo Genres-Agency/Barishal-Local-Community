@@ -2,16 +2,23 @@ import { baseApi } from "../../api/baseApi";
 
 export interface IUserActivity {
   stats: {
-    posts: number;
-    comments: number;
-    events: number;
+    totalPosts: number;
+    totalComments: number;
+    totalEvents: number;
+    totalLikes: number;
+    lastActivity: string | null;
   };
-  recentActivities: Array<{
-    id: string;
-    type: 'post' | 'comment' | 'event';
-    description: string;
+  posts: Array<{
+    id: number;
+    content: string;
+    photo: string | null;
     createdAt: string;
+    _count: {
+      likes: number;
+      comments: number;
+    }
   }>;
+  events: Array<any>;
 }
 
 const activityApi = baseApi.injectEndpoints({
