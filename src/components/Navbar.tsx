@@ -10,7 +10,6 @@ import { ChevronDown, Menu, Search, User, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import LeftSidebar from "./navigation/leftSide/LeftSidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 import {
@@ -24,6 +23,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import UpcomingEvents from "./navigation/leftSide/events/UpcomingEvents";
+
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -284,14 +285,56 @@ const Navbar = () => {
         >
           <div className="h-full overflow-y-auto">
             <div className="p-4 border-b">
-              <Link
-                href="/auth"
-                className="w-full px-4 py-2 text-sm text-green-600 font-medium hover:text-green-700 border border-green-600 rounded-md flex items-center justify-center gap-2"
-              >
-                <User size={18} /> সাইন ইন
-              </Link>
+              {!userData?.userId ? (
+                <Link
+                  href="/auth"
+                  className="w-full px-4 py-2 text-sm text-green-600 font-medium hover:text-green-700 border border-green-600 rounded-md flex items-center justify-center gap-2"
+                >
+                  <User size={18} /> সাইন ইন
+                </Link>
+              ) : (
+                <>
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <Avatar className="cursor-pointer">
+                      <AvatarImage src={user?.avatar || "/assets/user.png"} />
+                      <AvatarFallback>USER</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="text-sm font-medium text-gray-600">
+                        {user?.firstName} {user?.lastName}
+                      </p>
+                      <p className="text-xs text-gray-500">{user?.email}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+
+                  {profileMenuItems.map((item, index) => (
+                    
+                      <div
+                        key={index}
+                        >
+                          <Link
+                        href={item.href}
+                        className="flex items-center gap-2 cursor-pointer"
+                      >
+                        <item.icon className="w-4 h-4" />
+                        <span>{item.label}</span>
+                      </Link>
+                          </div>
+                    
+                  ))}
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center py-2 gap-2 text-sm text-red-600 hover:bg-red-50 rounded-md w-full"
+                    >
+                      <logoutMenuItem.icon className="w-4 h-4" />
+                      <span>লগআউট</span>
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
-            <LeftSidebar />
+            <UpcomingEvents />
           </div>
         </div>
       </div>

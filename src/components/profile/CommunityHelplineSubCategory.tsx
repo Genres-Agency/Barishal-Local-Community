@@ -257,8 +257,11 @@ export default function CommunityHelplineSubCategory({
                 />
                 {previewIcon && (
                   <div className="mt-2">
-                    <img
+                    <Image
                       src={previewIcon}
+                      height={100}
+                      width={100}
+                      
                       alt="Preview"
                       className="w-10 h-10 object-contain"
                     />

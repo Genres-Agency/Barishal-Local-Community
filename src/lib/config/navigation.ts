@@ -8,6 +8,7 @@ import {
   Search,
   Settings,
   Store,
+
 } from "lucide-react";
 
 export const feedNavigationItems = [
@@ -51,16 +52,7 @@ export const navigationItemsLeftSite = [
     label: "হোম",
     href: "/",
   },
-  // {
-  //   icon: Newspaper,
-  //   label: "ফিড",
-  //   href: "/feed",
-  // },
-  // {
-  //   icon: Users,
-  //   label: "গ্রুপস",
-  //   href: "/groups",
-  // },
+  
   {
     icon: MessageSquare,
     label: "মেসেজেস",
