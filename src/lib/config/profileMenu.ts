@@ -18,11 +18,11 @@ export const profileMenuItems: ProfileMenuItem[] = [
     icon: MessageSquare,
     href: "/profile?tab=posts",
   },
-  {
-    label: "আমার ইভেন্ট",
-    icon: MessageSquare,
-    href: "/profile?tab=events",
-  },
+  // {
+  //   label: "আমার ইভেন্ট",
+  //   icon: MessageSquare,
+  //   href: "/profile?tab=events",
+  // },
   {
     label: "কমিউনিটি একটিভিটি",
     icon: Users,

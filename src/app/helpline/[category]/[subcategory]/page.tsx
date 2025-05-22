@@ -24,23 +24,23 @@ interface ServiceItem {
   };
 }
 
-interface SubCategory {
-  id: number;
-  title: string;
-  icon: string;
-  categoryId: number;
-  createdAt: string;
-  updatedAt: string;
-  services: ServiceItem[];
-  communityCategory: {
-    id: number;
-    title: string;
-    icon: string;
-    authorId: number;
-    createdAt: string;
-    updatedAt: string;
-  };
-}
+// interface SubCategory {
+//   id: number;
+//   title: string;
+//   icon: string;
+//   categoryId: number;
+//   createdAt: string;
+//   updatedAt: string;
+//   services: ServiceItem[];
+//   communityCategory: {
+//     id: number;
+//     title: string;
+//     icon: string;
+//     authorId: number;
+//     createdAt: string;
+//     updatedAt: string;
+//   };
+// }
 
 export default function SubCategoryPage() {
   const params = useParams();

@@ -1,9 +1,9 @@
 import { TQueryParam } from "@/types/global";
 import { baseApi } from "../../api/baseApi";
 
-type TCategorory = {
-  title: string;
-};
+// type TCategorory = {
+//   title: string;
+// };
 
 const categoriesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
