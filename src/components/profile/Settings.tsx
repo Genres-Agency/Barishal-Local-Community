@@ -44,7 +44,7 @@ export default function Settings({
       <div className="space-y-6">
         <div>
           <h3 className="text-lg font-semibold mb-4">অ্যাকাউন্ট সেটিংস</h3>
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <div>
               <Label>ভাষা পছন্দ</Label>
               <select
@@ -65,10 +65,10 @@ export default function Settings({
                 <option>Other</option>
               </select>
             </div>
-          </div>
+          </div> */}
         </div>
 
-        <div>
+        {/* <div>
           <h3 className="text-lg font-semibold mb-4">নোটিফিকেশন সেটিংস</h3>
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -80,7 +80,7 @@ export default function Settings({
               <input type="checkbox" defaultChecked={pushNotifications} />
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div>
           <h3 className="text-lg font-semibold mb-4 text-red-600">

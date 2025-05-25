@@ -61,7 +61,7 @@ export default function HelplineCategoryPage() {
     );
   }
 
-  console.log("category ==> ", category);
+  // console.log("category ==> ", category);
 
   const filteredSubCategories = selectedSubCategory
     ? category.subCommunityCategories?.filter(

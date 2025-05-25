@@ -60,7 +60,7 @@ export default function ProfileEditModal({
     });
 
     try {
-      console.log("submit data ==> ", submitData, "id==>", profile?.user?.id);
+      // console.log("submit data ==> ", submitData, "id==>", profile?.user?.id);
       await updateUserDetail({
         userId: user?.id,
         formData: submitData,

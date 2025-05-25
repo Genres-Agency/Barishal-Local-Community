@@ -34,15 +34,15 @@ function ProfileContent() {
   const activeTab = tab || "personal";
   const { data: user } = useGetUserQuery(undefined);
 
-  console.log("User ==>", user);
+  // console.log("User ==>", user);
   const { data: userPosts } = useGetUserPostByIdQuery(user?.id);
 
   const isAdmin = user?.role === "ADMIN" || user?.role === "SUPER_ADMIN";
 
-  console.log("userPosts", userPosts);
+  // console.log("userPosts", userPosts);
   const { data: userEvents } = useGetUserEventByIdQuery(user?.id);
 
-  console.log("userEvents", userEvents);
+  // console.log("userEvents", userEvents);
 
   const { data: userDetails, isLoading: isLoadingDetails } =
     useGetUserDetailQuery(undefined);

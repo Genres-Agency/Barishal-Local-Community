@@ -44,7 +44,7 @@ interface ServiceItem {
 
 export default function SubCategoryPage() {
   const params = useParams();
-  console.log("Sub categories params ==>", params);
+  // console.log("Sub categories params ==>", params);
   const {
     data: subCategory,
     isLoading,

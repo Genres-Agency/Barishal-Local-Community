@@ -54,7 +54,7 @@ export default function RegisterForm() {
       const result = await register(data);
       // console.log("result", result);
       const user = verifyToken(result?.data?.accessToken);
-      console.log("user", user);
+      // console.log("user", user);
       dispatch(setUser({ user: user, token: result?.data?.accessToken }));
       if (user) {
         navigate.push("/profile");
