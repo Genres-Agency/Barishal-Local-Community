@@ -42,27 +42,31 @@ const CommunityFeed = ({ selectedTrendTopic }: CommunityFeedProps) => {
   );
 
   const [selectedCategory, setSelectedCategory] = useState<
-    number | undefined
-  >();
+    number | null 
+  >(null);
 
-  console.log("selectedTrendTopic", selectedTrendTopic);
+  // console.log("selectedTrendTopic", selectedTrendTopic);
   const { data: postData, isFetching } = useGetAllPostQuery({
-    categoryId: selectedCategory,
+    categoryId: selectedCategory ?? undefined,
     hashTagId: selectedTrendTopic,
   });
 
-  const handleCategorySelect = (categoryId: number) => {
-    setSelectedCategory(
-      categoryId === selectedCategory ? undefined : categoryId
-    );
+  // const handleCategorySelect = (categoryId: number | null) => {
+  //   setSelectedCategory(
+  //     categoryId === selectedCategory ? null : categoryId
+  //   );
+  // };
+
+  const handleCategorySelect = (categoryId: number | null) => {
+    setSelectedCategory(categoryId === selectedCategory ? null : categoryId);
   };
 
-  console.log("postData", postData);
+  // console.log("postData", postData);
   const isAdmin = user?.role === "ADMIN" || user?.role === "SUPER_ADMIN";
   return (
     <div className="space-y-4">
       {/* Feed Navigation ---------------- */}
-      <FeedNavigation onCategorySelect={handleCategorySelect} />
+      <FeedNavigation selectedCategory={selectedCategory}  onCategorySelect={handleCategorySelect} />
       {/* Post Creator Field --------------- */}
       {user?.userId && (
         <>

@@ -28,7 +28,7 @@ const PostCreator: React.FC = () => {
 
   const { data: categories } = useGetAllCategoryQuery(undefined);
   const { data: userData } = useGetUserQuery(undefined);
-  console.log("userData", userData);
+  // console.log("userData", userData);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -51,7 +51,7 @@ const PostCreator: React.FC = () => {
     // if (!postContent.trim() && !file) return;
 
     try {
-      console.log({ postContent, selectedCategory, file });
+      // console.log({ postContent, selectedCategory, file });
       const formData = new FormData();
 
       // Add data to FormData matching backend DTO
@@ -61,10 +61,10 @@ const PostCreator: React.FC = () => {
 
       if (file) {
         formData.append("image", file);
-        console.log("File added to FormData", file);
+        // console.log("File added to FormData", file);
       }
 
-      console.log("FormData before sending:", formData);
+      // console.log("FormData before sending:", formData);
 
       // Call the API and capture the response
       const result = await addPost(formData);
@@ -84,7 +84,7 @@ const PostCreator: React.FC = () => {
       }
     } catch (error) {
       console.error("Exception during post creation:", error);
-      alert("An unexpected error occurred. Please try again later.");
+      
     }
   };
 

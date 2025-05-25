@@ -179,7 +179,7 @@ export default function HelplineSection() {
   // Use fallback categories if API fails or during development
   const displayCategories = categories;
 
-  console.log("categories from helpline section==>", categories);
+  // console.log("categories from helpline section==>", categories);
 
   if (error) {
     return (

@@ -28,7 +28,7 @@ const activityApi = baseApi.injectEndpoints({
         url: '/user/activity',
         method: 'GET',
       }),
-      providesTags: ['Activity', 'Post', 'Event','Comment'],
+      providesTags: ['Activity', 'Post', 'Event','Comment',"Like"],
     }),
   }),
 });

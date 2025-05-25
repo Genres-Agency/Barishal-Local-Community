@@ -8,10 +8,19 @@ import {
   Search,
   Settings,
   Store,
-
+  XCircle,
+  Proportions
 } from "lucide-react";
 
 export const feedNavigationItems = [
+  {
+    icon: XCircle,
+    text: "অল পোস্ট",
+    bgColor: "bg-green-50",
+    textColor: "text-green-600",
+    hoverBg: "hover:bg-green-100",
+    href: "/",
+  },
   {
     icon: Search,
     text: "রিপোর্ট ও তথ্য",
@@ -52,32 +61,16 @@ export const navigationItemsLeftSite = [
     label: "হোম",
     href: "/",
   },
-  
   {
     icon: MessageSquare,
     label: "মেসেজেস",
     href: "/messages",
   },
-  // {
-  //   icon: ShoppingBag,
-  //   label: "মার্কেটপ্লেস",
-  //   href: "/marketplace",
-  // },
-  // {
-  //   icon: Calendar,
-  //   label: "ইভেন্টস",
-  //   href: "/events",
-  // },
   {
     icon: BellRing,
     label: "নোটিফিকেশন্স",
     href: "/notifications",
   },
-  // {
-  //   icon: HelpCircle,
-  //   label: "সহায়তা",
-  //   href: "/help",
-  // },
   {
     icon: Settings,
     label: "সেটিংস",
@@ -143,6 +136,15 @@ export const trendingTopics: TrendingTopic[] = [
 
 export const getCategoryStyle = (slug: string): CategoryStyle => {
   switch (slug) {
+    case "all":
+      return {
+        icon: Proportions,
+        text: "সব পোস্ট",
+        bgColor: "bg-green-50",
+        textColor: "text-green-600",
+        hoverBg: "hover:bg-green-100",
+        href: "/",
+      };
     case "reports":
       return {
         icon: Search,
@@ -181,12 +183,12 @@ export const getCategoryStyle = (slug: string): CategoryStyle => {
       };
     default:
       return {
-        icon: Search,
-        text: "অন্যান্য",
+        icon: Proportions,
+        text: "সব পোস্ট",
         bgColor: "bg-gray-50",
         textColor: "text-gray-600",
         hoverBg: "hover:bg-gray-100",
         href: "/",
       };
-  }
+  };
 };

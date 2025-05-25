@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
 import {
   useGetAuthorQuery,
   useGetUserQuery,
@@ -40,6 +39,18 @@ interface PostCardProps {
   categoryId: number;
 }
 
+interface IComments {
+  id: number;
+  content: string;
+  createdAt: string;
+  user: {
+    firstName: string;
+    lastName: string;
+    avatar: string;
+  };
+  updatedAt: string;
+}
+
 export default function PostCard({
   content,
   photo,
@@ -52,6 +63,7 @@ export default function PostCard({
   const { data: comment } = useGetSingleCommentQuery(id);
   const { data: category } = useGetSingleCategoryQuery(categoryId);
   const { data: user } = useGetUserQuery(undefined);
+
   const [isLiked, setIsLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [showShareOptions, setShowShareOptions] = useState(false);
@@ -60,7 +72,8 @@ export default function PostCard({
   const [isExpanded, setIsExpanded] = useState(false);
   const router = useRouter();
 
-  // console.log("categpory", category);
+  // console.log("comments", comment);
+  // console.log('user==>', user)
 
   const [toggleLike] = useToggleLikeMutation();
   const { data: likes, refetch } = useGetSingleLikeQuery(id);
@@ -263,14 +276,14 @@ export default function PostCard({
           onClick={handleShareClick}
         >
           <Share2 size={20} fill={showShareOptions ? "currentColor" : "none"} />
-          <span>{"4"}</span>
+          {/* <span>{"4"}</span> */}
         </button>
       </div>
 
       {/* Share options */}
       {showShareOptions && (
         <div className="mt-4 pt-4 border-t">
-          <h4 className="font-medium mb-3">শেয়ার করুন</h4>
+          <h4 className="font-medium mb-3">শেযার করুন</h4>
           <div className="flex flex-wrap gap-4">
             <button
               onClick={() => handleShare("copy")}
@@ -314,31 +327,41 @@ export default function PostCard({
 
       {/* Comments section */}
       {showComments && (
-        <div className="mt-4 pt-4 border-t">
-          <h4 className="font-medium mb-3">মন্তব্য</h4>
+        <div className="mt-6 pt-4 border-t border-gray-200">
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="font-semibold text-gray-900">মন্তব্য ({comment?.count || 0})</h4>
+            {comment?.count > 0 && (
+              <button className="text-sm text-gray-500 hover:text-gray-700">সব দেখুন</button>
+            )}
+          </div>
 
           {/* Comment list */}
-          <div className="space-y-3 mb-4">
+          <div className="space-y-4 mb-6">
             {comment?.comments?.map(
-              (comment: {
-                id: string | number;
-                content: string;
-                updatedAt: string;
-              }) => (
-                <div key={comment.id} className="flex gap-2">
-                  <Avatar className="w-8 h-8">
+              (comment: IComments) => (
+                <div key={comment.id} className="flex gap-3">
+                  <Avatar className="w-8 h-8 shrink-0">
                     <AvatarImage
                       className="object-cover"
-                      src={user ? user?.avatar : "/assets/user.png"}
+                      src={comment?.user ? comment?.user?.avatar : "/assets/user.png"}
                     />
                     <AvatarFallback>U</AvatarFallback>
                   </Avatar>
-                  <div className="bg-gray-100 p-2 rounded-lg flex-1">
-                    <div className="flex justify-between items-start">
-                      <p className="text-sm">{comment?.content}</p>
-                      <span className="text-xs text-gray-500">
-                        {moment(comment.updatedAt).fromNow()}
-                      </span>
+                  <div className="flex-1">
+                    <div className="bg-gray-50 p-3 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-medium text-sm text-gray-900">
+                          {comment?.user?.firstName || "Anonymous"}
+                        </span>
+                        <span className="text-xs text-gray-500">
+                          {moment(comment.updatedAt).fromNow()}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-700">{comment?.content}</p>
+                    </div>
+                    <div className="flex items-center gap-4 mt-1 pl-3">
+                      <button className="text-xs text-gray-500 hover:text-gray-700">Like</button>
+                      <button className="text-xs text-gray-500 hover:text-gray-700">Reply</button>
                     </div>
                   </div>
                 </div>
@@ -347,34 +370,37 @@ export default function PostCard({
           </div>
 
           {/* Add comment input */}
-          <div className="flex gap-2 items-center">
-            <Avatar className="w-8 h-8">
+          <div className="flex gap-3 items-start">
+            <Avatar className="w-8 h-8 shrink-0">
               <AvatarImage
                 className="object-cover"
                 src={user?.avatar ? user?.avatar : "/assets/user.png"}
               />
               <AvatarFallback>ME</AvatarFallback>
             </Avatar>
-            <div className="flex-1 flex gap-2 bg-gray-100 rounded-full px-3 py-1">
-              <input
-                type="text"
-                placeholder="আপনার মন্তব্য লিখুন..."
-                className="bg-transparent flex-1 outline-none text-sm"
-                value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleAddComment();
-                  }
-                }}
-              />
-              <button
-                onClick={handleAddComment}
-                className="text-blue-500"
-                disabled={!commentText.trim()}
-              >
-                <Send size={16} />
-              </button>
+            <div className="flex-1">
+              <div className="flex gap-2 bg-gray-50 rounded-lg px-4 py-2">
+                <input
+                  type="text"
+                  placeholder="আপনার মন্তব্য লিখুন..."
+                  className="bg-transparent flex-1 outline-none text-sm"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleAddComment();
+                    }
+                  }}
+                />
+                <button
+                  onClick={handleAddComment}
+                  className={`text-blue-500 hover:text-blue-600 transition-colors ${!commentText.trim() && 'opacity-50 cursor-not-allowed'}`}
+                  disabled={!commentText.trim()}
+                >
+                  <Send size={16} />
+                </button>
+              </div>
+              <p className="text-xs text-gray-500 mt-1 pl-3">Press Enter to post</p>
             </div>
           </div>
         </div>

@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 
 const EventDetailsPage = () => {
   const { id } = useParams();
-  console.log("params", id);
+  // console.log("params", id);
   //   const convParams = Number(params?.id);
   const { data: event, isLoading } = useGetSingleEventQuery(id as string);
 
