@@ -101,11 +101,6 @@ export default function PostCard({
     }
   };
 
-  // Remove the unused handleLikeClick function since you're using handleLike
-  // const handleLikeClick = () => {
-  //   setIsLiked(!isLiked);
-  //   // Here you would typically call an API to update the like status
-  // };
   let role;
   if (author?.role === "SUPER_ADMIN") {
     role = "Admin";
@@ -192,7 +187,7 @@ export default function PostCard({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
+    <div className="bg-white rounded-lg shadow-sm p-3 lg:p-4 mb-4">
       <div className="flex items-start gap-3 mb-4">
         <Avatar>
           <AvatarImage
@@ -243,7 +238,8 @@ export default function PostCard({
             alt="Post content"
             width={600}
             height={400}
-            className="rounded-lg w-full lg:h-[368px] object-cover"
+            // className="rounded-lg w-full lg:h-[368px] object-cover"
+            className="rounded-lg w-full  object-contain"
           />
         </div>
       )}

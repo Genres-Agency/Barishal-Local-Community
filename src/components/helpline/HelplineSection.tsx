@@ -192,8 +192,8 @@ export default function HelplineSection() {
   }
 
   return (
-    <div className="container mx-auto py-3 px-4">
-      <h1 className="text-5xl text-center py-4">কমিউনিটি হেল্পলাইন </h1>
+    <div className="container mx-auto py-3 px:2 md:px-4">
+      <h1 className="text-3xl lg:text-5xl text-center py-4">কমিউনিটি হেল্পলাইন </h1>
       <div className="relative overflow-hidden">
         {/* Left Arrow */}
         <button
