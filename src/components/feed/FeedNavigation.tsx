@@ -21,7 +21,7 @@ const FeedNavigation: React.FC<FeedNavigationProps> = ({
   const allPostsStyle = getCategoryStyle("all");
 
   return (
-    <nav className="grid grid-cols-2 lg:grid-cols-4 gap-4 px-3 sm:px-0">
+    <nav className="grid grid-cols-2 lg:grid-cols-4 gap-4 px-2 md:px-3 sm:px-0">
       <button
         onClick={() => onCategorySelect(null)}
         className={`cursor-pointer flex flex-col items-center justify-center w-full shadow ${allPostsStyle.bgColor} ${allPostsStyle.textColor} ${allPostsStyle.hoverBg} transition-all duration-300 py-3 lg:py-7 px-2 rounded-lg `}

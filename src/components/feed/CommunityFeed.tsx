@@ -78,7 +78,7 @@ const CommunityFeed = ({ selectedTrendTopic }: CommunityFeedProps) => {
       {isAdmin && <EventCreator />}
 
       {/* Tab Navigation ---------------- */}
-      <div className="flex gap-6 mb-4 pt-2 border-b px-3 sm:px-0">
+      <div className="flex gap-6 mb-4 pt-2 border-b px-2 md:px-3 sm:px-0">
         {feedTabs.map((tab) => (
           <button
             key={tab.value}
@@ -106,7 +106,7 @@ const CommunityFeed = ({ selectedTrendTopic }: CommunityFeedProps) => {
           </div>
         </div>
       ) : (
-        <div className="px-3 sm:px-0">
+        <div className=" md:px-2 sm:px-0">
           {postData?.map((post: any, index: any) => (
             <PostCard key={index} {...post} />
           ))}
