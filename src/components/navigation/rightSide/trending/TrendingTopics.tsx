@@ -7,7 +7,7 @@ interface HashtagData {
   slug: string;
   authorId: number;
   _count?: {
-    posts: number;
+    post: number;
   };
 }
 
@@ -55,7 +55,7 @@ const TrendingTopics = ({ onTrendTopicSelect }: TrendingTopicsProps) => {
           >
             <span className="text-blue-600 font-medium">{topic?.title}</span>
             <span className="text-gray-500 text-sm">
-              {topic?._count?.posts} পোস্ট
+              {topic?._count?.post} টি পোস্ট
             </span>
           </div>
         ))}

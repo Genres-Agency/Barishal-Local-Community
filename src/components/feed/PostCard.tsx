@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import {
   useGetAuthorQuery,
   useGetUserQuery,
@@ -16,6 +15,7 @@ import {
   useToggleLikeMutation,
 } from "@/redux/features/likes/like.api";
 import { useAppSelector } from "@/redux/hooks";
+import { extractLink, getCleanContent } from "@/utils/globals";
 import {
   Copy,
   Facebook,
@@ -28,8 +28,19 @@ import {
 } from "lucide-react";
 import moment from "moment";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+
+interface IHashTag {
+  id: number;
+  title: string;
+  slug: string;
+  authorId: number;
+  createdAt: string;
+  updatedAt: string;
+}
 
 interface PostCardProps {
   content: string;
@@ -37,6 +48,8 @@ interface PostCardProps {
   authorId: number;
   id: number;
   categoryId: number;
+  createdAt: string;
+  hashTag: IHashTag[];
 }
 
 interface IComments {
@@ -57,6 +70,8 @@ export default function PostCard({
   authorId,
   id,
   categoryId,
+  createdAt,
+  hashTag,
 }: PostCardProps) {
   const currentUser = useAppSelector(selectCurrentUser);
   const { data: author } = useGetAuthorQuery(authorId);
@@ -205,7 +220,7 @@ export default function PostCard({
               <span className="text-sm text-gray-500">{role}</span>
 
               <span className="text-sm text-gray-500">
-                {moment(author?.updatedAt).fromNow()}
+                {moment(createdAt).fromNow()}
 
                 {/* {moment(comment.createdAt).fromNow()} */}
               </span>
@@ -219,10 +234,12 @@ export default function PostCard({
       </div>
       <div className="text-gray-700 prose prose-lg max-w-none mb-6">
         <p className="whitespace-pre-wrap">
-          {isExpanded ? content : content?.slice(0, 100)}
-          {content?.length > 100 && !isExpanded && "..."}
+          {isExpanded
+            ? getCleanContent(content)
+            : getCleanContent(content)?.slice(0, 70)}
+          {getCleanContent(content)?.length > 70 && !isExpanded && "..."}
         </p>
-        {content?.length > 100 && (
+        {getCleanContent(content)?.length > 70 && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-2"
@@ -231,17 +248,46 @@ export default function PostCard({
           </button>
         )}
       </div>
-      {photo && (
-        <div className="mb-4">
-          <Image
-            src={photo}
-            alt="Post content"
-            width={600}
-            height={400}
-            // className="rounded-lg w-full lg:h-[368px] object-cover"
-            className="rounded-lg w-full  object-contain"
-          />
+
+      {/* link  */}
+      {extractLink(content) && (
+        <div className="mt-4">
+          <Link
+            href={extractLink(content) as string}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-2"
+          >
+            {extractLink(content) as string}
+          </Link>
         </div>
+      )}
+      {/* hashTag */}
+      {hashTag?.map((hashTag) => {
+        return (
+          <Link
+            href={`/category/${hashTag?.slug}`}
+            key={hashTag?.id}
+            className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-8"
+          >
+            #{hashTag?.slug}
+          </Link>
+        );
+      })}
+
+      {photo && (
+        <Link href={`/post/${id}`}>
+          <div className="mb-4">
+            <Image
+              src={photo}
+              alt="Post content"
+              width={600}
+              height={400}
+              // className="rounded-lg w-full lg:h-[368px] object-cover"
+              className="rounded-lg w-full  object-contain"
+            />
+          </div>
+        </Link>
       )}
       <div className="flex items-center gap-6 text-gray-500">
         <button
@@ -325,44 +371,52 @@ export default function PostCard({
       {showComments && (
         <div className="mt-6 pt-4 border-t border-gray-200">
           <div className="flex items-center justify-between mb-4">
-            <h4 className="font-semibold text-gray-900">মন্তব্য ({comment?.count || 0})</h4>
+            <h4 className="font-semibold text-gray-900">
+              মন্তব্য ({comment?.count || 0})
+            </h4>
             {comment?.count > 0 && (
-              <button className="text-sm text-gray-500 hover:text-gray-700">সব দেখুন</button>
+              <button className="text-sm text-gray-500 hover:text-gray-700">
+                সব দেখুন
+              </button>
             )}
           </div>
 
           {/* Comment list */}
           <div className="space-y-4 mb-6">
-            {comment?.comments?.map(
-              (comment: IComments) => (
-                <div key={comment.id} className="flex gap-3">
-                  <Avatar className="w-8 h-8 shrink-0">
-                    <AvatarImage
-                      className="object-cover"
-                      src={comment?.user ? comment?.user?.avatar : "/assets/user.png"}
-                    />
-                    <AvatarFallback>U</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <div className="bg-gray-50 p-3 rounded-lg">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-sm text-gray-900">
-                          {comment?.user?.firstName || "Anonymous"}
-                        </span>
-                        <span className="text-xs text-gray-500">
-                          {moment(comment.updatedAt).fromNow()}
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-700">{comment?.content}</p>
+            {comment?.comments?.map((comment: IComments) => (
+              <div key={comment.id} className="flex gap-3">
+                <Avatar className="w-8 h-8 shrink-0">
+                  <AvatarImage
+                    className="object-cover"
+                    src={
+                      comment?.user ? comment?.user?.avatar : "/assets/user.png"
+                    }
+                  />
+                  <AvatarFallback>U</AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <div className="bg-gray-50 p-3 rounded-lg">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-medium text-sm text-gray-900">
+                        {comment?.user?.firstName || "Anonymous"}
+                      </span>
+                      <span className="text-xs text-gray-500">
+                        {moment(comment.updatedAt).fromNow()}
+                      </span>
                     </div>
-                    <div className="flex items-center gap-4 mt-1 pl-3">
-                      <button className="text-xs text-gray-500 hover:text-gray-700">Like</button>
-                      <button className="text-xs text-gray-500 hover:text-gray-700">Reply</button>
-                    </div>
+                    <p className="text-sm text-gray-700">{comment?.content}</p>
+                  </div>
+                  <div className="flex items-center gap-4 mt-1 pl-3">
+                    <button className="text-xs text-gray-500 hover:text-gray-700">
+                      Like
+                    </button>
+                    <button className="text-xs text-gray-500 hover:text-gray-700">
+                      Reply
+                    </button>
                   </div>
                 </div>
-              )
-            )}
+              </div>
+            ))}
           </div>
 
           {/* Add comment input */}
@@ -390,13 +444,17 @@ export default function PostCard({
                 />
                 <button
                   onClick={handleAddComment}
-                  className={`text-blue-500 hover:text-blue-600 transition-colors ${!commentText.trim() && 'opacity-50 cursor-not-allowed'}`}
+                  className={`text-blue-500 hover:text-blue-600 transition-colors ${
+                    !commentText.trim() && "opacity-50 cursor-not-allowed"
+                  }`}
                   disabled={!commentText.trim()}
                 >
                   <Send size={16} />
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mt-1 pl-3">Press Enter to post</p>
+              <p className="text-xs text-gray-500 mt-1 pl-3">
+                Press Enter to post
+              </p>
             </div>
           </div>
         </div>

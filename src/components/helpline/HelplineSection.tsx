@@ -2,7 +2,6 @@
 
 import { useGetAllHelplineCategoryQuery } from "@/redux/features/helpline-category/helpline-category";
 import "@/styles/scrollbar-hide.css";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
@@ -19,7 +18,7 @@ interface SubCategory {
 interface Category {
   id: number;
   title: string;
-  icon: string;
+  icon?: string;
   authorId: number;
   createdAt: string;
   updatedAt: string;
@@ -177,7 +176,7 @@ export default function HelplineSection() {
   };
 
   // Use fallback categories if API fails or during development
-  const displayCategories = categories;
+  const displayCategories: Category[] = categories;
 
   // console.log("categories from helpline section==>", categories);
 
@@ -193,10 +192,12 @@ export default function HelplineSection() {
 
   return (
     <div className="container mx-auto py-3 px:2 md:px-4">
-      <h1 className="text-3xl lg:text-5xl text-center py-4">কমিউনিটি হেল্পলাইন </h1>
-      <div className="relative overflow-hidden">
-        {/* Left Arrow */}
-        <button
+      <h1 className="text-3xl lg:text-5xl text-center py-4">
+        কমিউনিটি হেল্পলাইন{" "}
+      </h1>
+      {/* <div className="relative overflow-hidden"> */}
+      {/* Left Arrow */}
+      {/* <button
           aria-label="Scroll left"
           className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full shadow p-2 transition-colors"
           style={{
@@ -208,9 +209,9 @@ export default function HelplineSection() {
           disabled={isLoading}
         >
           <ChevronLeft className="w-6 h-6" />
-        </button>
-        {/* Right Arrow */}
-        <button
+        </button> */}
+      {/* Right Arrow */}
+      {/* <button
           aria-label="Scroll right"
           className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full shadow p-2 transition-colors"
           style={{
@@ -222,8 +223,8 @@ export default function HelplineSection() {
           disabled={isLoading}
         >
           <ChevronRight className="w-6 h-6" />
-        </button>
-        <div
+        </button> */}
+      {/* <div
           ref={marqueeRef}
           className="whitespace-nowrap pb-4 overflow-x-auto scrollbar-hide scroll-smooth flex space-x-4 px-4"
           style={{ scrollBehavior: "smooth" }}
@@ -251,16 +252,44 @@ export default function HelplineSection() {
                 </div>
               )
             )}
-        </div>
-      </div>
-      {isLoading && (
-        <div className="text-center py-4">
-          <div className="animate-pulse">
-            <div className="h-12 bg-gray-200 rounded-full w-12 mx-auto mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-20 mx-auto"></div>
+        </div> */}
+      {/* </div> */}
+
+      <div
+        // ref={marqueeRef}
+        className=" pb-4 flex flex-wrap gap-4"
+        // style={{ scrollBehavior: "smooth" }}
+      >
+        {displayCategories?.map((category, index) => (
+          <div
+            key={`${category.id}-${index}`}
+            onClick={() => handleCategoryClick(category)}
+            className=" flex flex-col items-center  bg-white rounded-lg shadow-sm p-4 min-w-[100px]  cursor-pointer hover:bg-gray-50 transition-colors"
+          >
+            <div className="w-12 h-12 flex items-center justify-center rounded-full bg-green-100 mb-2">
+              <Image
+                src={category?.icon as string}
+                alt={category?.title}
+                className="w-6 h-6"
+                height={32}
+                width={32}
+              />
+            </div>
+            <span className="text-sm text-center font-medium">
+              {category.title}
+            </span>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
+      {isLoading &&
+        displayCategories?.map((category, index) => (
+          <div key={`${category.id}-${index}`} className="text-center py-4">
+            <div className="animate-pulse">
+              <div className="h-12 bg-gray-200 rounded-full w-12 mx-auto mb-2"></div>
+              <div className="h-4 bg-gray-200 rounded w-20 mx-auto"></div>
+            </div>
+          </div>
+        ))}
     </div>
   );
 }

@@ -83,7 +83,8 @@ export default function PostDetailPage() {
         )}
         <div className="p-6">
           <div className="flex items-center gap-4 text-gray-600 text-sm mb-4">
-            <span>{formatDate(post.createdAt)}</span>
+            {/* <span>{formatDate(post.createdAt)}</span> */}
+            <span>{moment(post?.createdAt).fromNow()}</span>
           </div>
 
           <div className="text-gray-700 prose prose-lg max-w-none mb-6">

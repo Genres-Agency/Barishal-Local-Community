@@ -1,18 +1,18 @@
 "use client";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Calendar, ImageIcon, Loader2, MapPin, X } from "lucide-react";
-import { useAddEventMutation } from "@/redux/features/events/events.api";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Label } from "@/components/ui/label";
 import { useGetUserQuery } from "@/redux/features/auth/authApi";
+import { useAddEventMutation } from "@/redux/features/events/events.api";
+import { Calendar, ImageIcon, Loader2, MapPin, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -23,11 +23,11 @@ const EventCreator = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
-    date: "",
+    startDate: "",
+    endDate: "",
     location: "",
     image: null as File | null,
     description: "",
-    status: "UPCOMING",
   });
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
@@ -61,8 +61,8 @@ const EventCreator = () => {
       data.append("title", formData.title);
       data.append("location", formData.location);
       data.append("description", formData.description);
-      data.append("status", formData.status);
-      data.append("time", new Date(formData.date).toISOString());
+      data.append("startDate", new Date(formData.startDate).toISOString());
+      data.append("endDate", new Date(formData.endDate).toISOString());
 
       if (formData.image) {
         data.append("image", formData.image);
@@ -73,11 +73,11 @@ const EventCreator = () => {
       toast.success("ইভেন্টটি সফলভাবে তৈরি হয়েছে!");
       setFormData({
         title: "",
-        date: "",
+        startDate: "",
+        endDate: "",
         location: "",
         image: null,
         description: "",
-        status: "UPCOMING",
       });
       setImagePreview(null);
       setIsModalOpen(false);
@@ -90,7 +90,6 @@ const EventCreator = () => {
     <div className="px-2 md:px-3 sm:px-0">
       <div className="bg-green-500 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-3 sm:p-4 mb-4">
         <div className="flex gap-3 sm:gap-4 items-center">
-          
           <button
             onClick={() => setIsModalOpen(true)}
             className="flex-1 flex items-center gap-2 text-left   text-white transition-colors duration-200"
@@ -109,7 +108,10 @@ const EventCreator = () => {
             </DialogTitle>
           </DialogHeader>
 
-          <form onSubmit={handleSubmit} className="p-4 space-y-4 h-[calc(95vh-8rem)] overflow-y-auto">
+          <form
+            onSubmit={handleSubmit}
+            className="p-4 space-y-4 h-[calc(95vh-8rem)] overflow-y-auto"
+          >
             <div className="flex items-center gap-3 mb-4">
               <Avatar className="w-10 h-10 ring-2 ring-gray-100">
                 <AvatarImage
@@ -139,13 +141,29 @@ const EventCreator = () => {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="date">তারিখ ও সময়</Label>
+              <Label htmlFor="startDate">শুরুর তারিখ ও সময়</Label>
               <div className="relative">
                 <Input
-                  id="date"
+                  id="startDate"
                   type="datetime-local"
-                  name="date"
-                  value={formData.date}
+                  name="startDate"
+                  value={formData.startDate}
+                  onChange={handleChange}
+                  className="focus-visible:ring-green-500 pl-9"
+                  required
+                />
+                <Calendar className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="endDate">শেষের তারিখ ও সময়</Label>
+              <div className="relative">
+                <Input
+                  id="endDate"
+                  type="datetime-local"
+                  name="endDate"
+                  value={formData.endDate}
                   onChange={handleChange}
                   className="focus-visible:ring-green-500 pl-9"
                   required
@@ -171,22 +189,6 @@ const EventCreator = () => {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="status">স্টেটাস</Label>
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="w-full px-3 py-2 rounded-md border border-input bg-background text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
-                required
-              >
-                <option value="UPCOMING">আসন্ন</option>
-                <option value="ACTIVE">চলমান</option>
-                <option value="COMPLETED">সমাপ্ত</option>
-              </select>
-            </div>
-
-            <div className="space-y-1.5">
               <Label>ছবি</Label>
               <div className="flex items-center gap-2">
                 <label
@@ -194,9 +196,13 @@ const EventCreator = () => {
                   className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors duration-200 w-full"
                 >
                   <ImageIcon size={20} className="text-gray-600" />
-                  <span className="font-medium text-gray-700">ছবি যোগ করুন</span>
+                  <span className="font-medium text-gray-700">
+                    ছবি যোগ করুন
+                  </span>
                   <span className="text-sm text-gray-500 ml-auto">
-                    {formData.image ? formData.image.name : "কোনো ফাইল নির্বাচন করা হয়নি"}
+                    {formData.image
+                      ? formData.image.name
+                      : "কোনো ফাইল নির্বাচন করা হয়নি"}
                   </span>
                 </label>
                 <Input
@@ -250,7 +256,8 @@ const EventCreator = () => {
                   autoFocus
                 />
                 <div className="absolute bottom-2 right-2 text-sm text-gray-400">
-                  {formData.description.length > 0 && `${formData.description.length} অক্ষর`}
+                  {formData.description.length > 0 &&
+                    `${formData.description.length} অক্ষর`}
                 </div>
               </div>
             </div>

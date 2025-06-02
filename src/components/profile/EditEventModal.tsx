@@ -17,13 +17,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateEventMutation } from "@/redux/features/events/events.api";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,8 +30,8 @@ const formSchema = z.object({
   title: z.string().min(1, "টাইটেল প্রয়োজন"),
   description: z.string().min(1, "বিবরণ প্রয়োজন"),
   location: z.string().min(1, "লোকেশন প্রয়োজন"),
-  time: z.string().min(1, "সময় প্রয়োজন"),
-  status: z.string().min(1, "স্ট্যাটাস প্রয়োজন"),
+  startDate: z.string().min(1, "শুরুর তারিখ ও সময় প্রয়োজন"),
+  endDate: z.string().min(1, "শেষের তারিখ ও সময় প্রয়োজন"),
   image: z.string().optional(),
 });
 
@@ -48,11 +41,11 @@ type EditEventModalProps = {
   event: {
     id: number;
     title: string;
-    time: string;
+    startDate: Date;
+    endDate: Date;
     location: string;
     description: string;
     image?: string;
-    status: string;
   };
 };
 
@@ -72,8 +65,8 @@ export default function EditEventModal({
       title: event.title,
       description: event.description,
       location: event.location,
-      time: event.time,
-      status: event.status,
+      startDate: new Date(event.startDate).toISOString(),
+      endDate: new Date(event.endDate).toISOString(),
       image: event.image,
     },
   });
@@ -94,7 +87,11 @@ export default function EditEventModal({
     try {
       const formData = new FormData();
       Object.entries(values).forEach(([key, value]) => {
-        if (value) formData.append(key, value);
+        if (key === "startDate" || key === "endDate") {
+          formData.append(key, new Date(value).toISOString());
+        } else if (value) {
+          formData.append(key, value);
+        }
       });
 
       await updateEvent({ id: event.id, formData }).unwrap();
@@ -165,14 +162,31 @@ export default function EditEventModal({
               />
               <FormField
                 control={form.control}
-                name="time"
+                name="startDate"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>সময়</FormLabel>
+                    <FormLabel>শুরুর তারিখ ও সময়</FormLabel>
                     <FormControl>
                       <Input
                         type="datetime-local"
-                        placeholder="ইভেন্টের সময় নির্বাচন করুন"
+                        placeholder="ইভেন্টের শুরুর সময় নির্বাচন করুন"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="endDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>শেষের তারিখ ও সময়</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        placeholder="ইভেন্টের শেষের সময় নির্বাচন করুন"
                         {...field}
                       />
                     </FormControl>
@@ -210,32 +224,7 @@ export default function EditEventModal({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>স্ট্যাটাস</FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      defaultValue={event.status}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="স্ট্যাটাস নির্বাচন করুন" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="ACTIVE">ACTIVE</SelectItem>
-                        <SelectItem value="UPCOMING">UPCOMING</SelectItem>
-                        <SelectItem value="COMPLETE">COMPLETE</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+
               <div className="flex justify-end space-x-4 mt-8">
                 <Button
                   variant="outline"

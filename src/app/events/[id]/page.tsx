@@ -51,7 +51,7 @@ const EventDetailsPage = () => {
           <div className="flex items-center gap-4 text-gray-600">
             <p className="flex items-center gap-2">
               <span className="font-medium">সময়:</span>
-              {moment(event.time).format("MMMM D, YYYY [at] h:mm A")}
+              {moment(event.startDate).format("MMMM D, YYYY [at] h:mm A")}
             </p>
           </div>
           <p className="flex items-center gap-2">
