@@ -22,21 +22,22 @@ import EditEventModal from "./EditEventModal";
 export default function EventItem({
   id,
   title,
-  time,
+  startDate,
   location,
   description,
   image,
   createdAt,
   updatedAt,
   authorId,
-  status,
+  computedStatus,
+  endDate,
 }: Event) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [deletePost] = useDeleteEventMutation();
 
-  const formatDate = (date: string) => {
+  const formatDate = (date: Date) => {
     return new Date(date).toLocaleDateString("bn-BD", {
       year: "numeric",
       month: "long",
@@ -48,9 +49,9 @@ export default function EventItem({
     switch (status?.toLowerCase()) {
       case "active":
         return "bg-green-100 text-green-800";
-      case "pending":
+      case "upcoming":
         return "bg-yellow-100 text-yellow-800";
-      case "cancelled":
+      case "ended":
         return "bg-red-100 text-red-800";
       default:
         return "bg-gray-100 text-gray-800";
@@ -87,7 +88,7 @@ export default function EventItem({
                   d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                 />
               </svg>
-              {formatDate(createdAt)}
+              {formatDate(startDate)}
             </span>
             <span className="flex items-center">
               <svg
@@ -112,13 +113,13 @@ export default function EventItem({
               </svg>
               {location}
             </span>
-            {status && (
+            {computedStatus && (
               <span
                 className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-                  status
+                  computedStatus
                 )}`}
               >
-                {status}
+                {computedStatus}
               </span>
             )}
           </div>
@@ -212,11 +213,11 @@ export default function EventItem({
         event={{
           id,
           title,
-          time,
+          startDate,
           location,
           description,
           image,
-          status,
+          endDate,
         }}
       />
     </div>

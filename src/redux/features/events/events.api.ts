@@ -3,9 +3,9 @@ import { baseApi } from "../../api/baseApi";
 export type IEvent = {
   id: string;
   title: string;
-  time: string;
+  startDate: Date;
   location: string;
-  status: string;
+  endDate: Date;
   image: string;
   description?: string;
   createdAt?: string;

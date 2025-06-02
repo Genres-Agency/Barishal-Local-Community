@@ -25,8 +25,22 @@ const EventsPage = () => {
       </div>
     );
   }
+  const now = new Date();
 
-  const upcomingEvents = events?.filter((event) => event.status === "UPCOMING");
+  const getStatus = (startDate: Date, endDate: Date) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    if (now < start) return "UPCOMING";
+    if (now >= start && now <= end) return "ACTIVE";
+    return "PAST";
+  };
+
+  const upcomingEvents = (events ?? []).filter((event) => {
+    if (!event.startDate || !event.endDate) return false;
+    return getStatus(event.startDate, event.endDate) === "UPCOMING";
+  });
+  // const upcomingEvents = events?.filter((event) => event.status === "UPCOMING");
 
   return (
     <div className="container mx-auto px-4 relative z-40 mt-16 lg:mt-20 py-8">
@@ -48,7 +62,7 @@ const EventsPage = () => {
             <div className="p-4 space-y-2">
               <h2 className="text-xl font-semibold">{event.title}</h2>
               <p className="text-gray-500">
-                {moment(event.time).format("MMMM D, YYYY [at] h:mm A")}
+                {moment(event.startDate).format("MMMM D, YYYY [at] h:mm A")}
               </p>
               <p className="text-gray-600">{event.location}</p>
               {event.description && (

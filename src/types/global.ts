@@ -118,9 +118,10 @@ export type Event = {
   title: string;
   description: string;
   location: string;
-  time: string;
-  status: string;
+  startDate: Date;
+  endDate: Date;
   image?: string;
+  computedStatus?: string;
   authorId: number;
   createdAt: string;
   updatedAt: string;
