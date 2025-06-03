@@ -234,7 +234,7 @@ export default function PostCard({
         </div>
       </div>
       <div className="text-gray-700  mb-6">
-        <p className="">
+        <p className="whitespace-pre-wrap">
           {isExpanded
             ? getCleanContent(content)
             : getCleanContent(content)?.slice(0, 70)}
@@ -243,36 +243,40 @@ export default function PostCard({
         {getCleanContent(content)?.length > 70 && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-2 transition-colors   py-1 pb-2"
+            className="text-blue-500 hover:text-blue-600 text-sm font-medium my-2 transition-colors   py-1 pb-2"
           >
             {isExpanded ? "Show Less" : "Show More"}
           </button>
         )}
         {/* link  */}
-        {extractLink(content) && (
-          <div className="mt-4">
-            <Link
-              href={extractLink(content) as string}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-600 text-sm font-medium flex-wrap transition-colors inline-flex items-center gap-1   py-1"
-            >
-              {extractLink(content) as string}
-            </Link>
-          </div>
-        )}
+        <div>
+          {extractLink(content) && (
+            <div className="">
+              <Link
+                href={extractLink(content) as string}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:text-blue-600 text-sm font-medium flex-wrap transition-colors inline-flex items-center gap-1 px-1  py-1"
+              >
+                {extractLink(content) as string}
+              </Link>
+            </div>
+          )}
+        </div>
         {/* hashTag */}
-        {hashTag?.map((hashTag) => {
-          return (
-            <Link
-              href={`/category/${hashTag?.slug}`}
-              key={hashTag?.id}
-              className="text-blue-500  hover:text-blue-600 text-sm font-medium mt-2 flex-wrap transition-colors inline-flex items-center gap-1"
-            >
-              #{hashTag?.slug}
-            </Link>
-          );
-        })}
+        <div>
+          {hashTag?.map((hashTag) => {
+            return (
+              <Link
+                href={`/category/${hashTag?.slug}`}
+                key={hashTag?.id}
+                className="text-blue-500  hover:text-blue-600 text-sm font-medium  flex-wrap transition-colors inline-flex items-center gap-1 px-1  py-1"
+              >
+                #{hashTag?.slug}
+              </Link>
+            );
+          })}
+        </div>
       </div>
 
       {photo && (
