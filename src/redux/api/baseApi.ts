@@ -46,13 +46,16 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     console.log("Sending refresh token");
 
     try {
-      const res = await fetch("http://localhost:3333/api/auth/refresh", {
-        method: "POST",
-        credentials: "include",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/refresh`,
+        {
+          method: "POST",
+          credentials: "include",
+          // headers: {
+          //   "Content-Type": "application/json",
+          // },
+        }
+      );
 
       const data = await res.json();
       console.log("data: ", data);
@@ -95,7 +98,7 @@ export const baseApi = createApi({
     "HelplineCategory",
     "HelplineSubCategory",
     "ServiceItem",
-    "Activity"
+    "Activity",
   ],
   endpoints: () => ({}),
 });

@@ -109,13 +109,6 @@ export function EventSlider() {
                     <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-black/70 flex items-end pb-20 px-1 lg:px-10">
                       <div className="container mx-auto px-5">
                         <div className="text-white max-w-2xl">
-                          <span
-                            className={`inline-block ${getStatusColor(
-                              event?.computedStatus
-                            )} text-white px-4 py-2 rounded text-xs md:text-sm mb-5`}
-                          >
-                            {event?.computedStatus}
-                          </span>
                           <Link href={`/events/${event.id}`}>
                             <h1 className="text-2xl lg:text-5xl font-bold mb-5">
                               {event?.title}
@@ -124,6 +117,13 @@ export function EventSlider() {
                           <p className="text-base lg:text-lg leading-relaxed">
                             {event?.description}
                           </p>
+                          <span
+                            className={`inline-block ${getStatusColor(
+                              event?.computedStatus
+                            )} text-white px-4 py-2 rounded text-xs md:text-sm mb-5`}
+                          >
+                            {event?.computedStatus}
+                          </span>
                         </div>
                       </div>
                     </div>
