@@ -18,6 +18,7 @@ export default {
     "hover:bg-green-100",
     "hover:bg-blue-100",
     "hover:bg-yellow-100",
+    "hover:bg-purple-100",
   ],
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",

@@ -257,14 +257,16 @@ export default function HelplineSection() {
 
       <div
         // ref={marqueeRef}
-        className=" pb-4 flex flex-wrap gap-4"
+        className=" pb-4 grid grid-cols-3 lg:grid-cols-8  gap-4 "
+        // className=" pb-4 flex flex-wrap gap-4"
         // style={{ scrollBehavior: "smooth" }}
       >
         {displayCategories?.map((category, index) => (
           <div
             key={`${category.id}-${index}`}
             onClick={() => handleCategoryClick(category)}
-            className=" flex flex-col items-center  bg-white rounded-lg shadow-sm p-4 min-w-[100px]  cursor-pointer hover:bg-gray-50 transition-colors"
+            className=" flex flex-col items-center  bg-white rounded-lg shadow-sm p-4 min-w-[100px]  cursor-pointer hover:shadow transition-colors "
+            // className=" flex flex-col items-center  bg-white rounded-lg shadow-sm p-4 min-w-[100px]  cursor-pointer hover:bg-gray-50 transition-colors"
           >
             <div className="w-12 h-12 flex items-center justify-center rounded-full bg-green-100 mb-2">
               <Image

@@ -53,7 +53,7 @@ export default function EditPostModal({
       }
     });
 
-    console.log("submitData ===>", submitData, post.id);
+    // console.log("submitData ===>", submitData, post.id);
 
     try {
       await updatePost({
