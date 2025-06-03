@@ -233,7 +233,7 @@ export default function PostCard({
           </button>
         </div>
       </div>
-      <div className="text-gray-700  mb-6">
+      <div className="text-gray-700  mb-4">
         <p className="whitespace-pre-wrap">
           {isExpanded
             ? getCleanContent(content)
@@ -251,16 +251,14 @@ export default function PostCard({
         {/* link  */}
         <div>
           {extractLink(content) && (
-            <div className="">
-              <Link
-                href={extractLink(content) as string}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:text-blue-600 text-sm font-medium flex-wrap transition-colors inline-flex items-center gap-1 px-1  py-1"
-              >
-                {extractLink(content) as string}
-              </Link>
-            </div>
+            <Link
+              href={extractLink(content) as string}
+              target="_blank"
+              // rel="noopener noreferrer"
+              className="text-blue-500  hover:text-blue-600 text-sm font-medium  flex-wrap transition-colors inline-flex items-start gap-1   py-1"
+            >
+              {extractLink(content) as string}
+            </Link>
           )}
         </div>
         {/* hashTag */}
@@ -270,7 +268,7 @@ export default function PostCard({
               <Link
                 href={`/category/${hashTag?.slug}`}
                 key={hashTag?.id}
-                className="text-blue-500  hover:text-blue-600 text-sm font-medium  flex-wrap transition-colors inline-flex items-center gap-1 px-1  py-1"
+                className="text-blue-500  hover:text-blue-600 text-sm font-medium  flex-wrap transition-colors inline-flex items-center gap-1   py-1"
               >
                 #{hashTag?.slug}
               </Link>
