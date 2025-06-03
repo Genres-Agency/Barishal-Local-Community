@@ -6,9 +6,14 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useGetUserQuery } from "@/redux/features/auth/authApi";
 import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
 import { useAddPostMutation } from "@/redux/features/post/post.api";
@@ -17,7 +22,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 
 const PostCreator: React.FC = () => {
   const [postContent, setPostContent] = useState("");
@@ -96,7 +100,7 @@ const PostCreator: React.FC = () => {
             </DialogTitle>
           </DialogHeader>
 
-          <div className="p-4 max-h-[calc(90vh-8rem)] overflow-y-auto">
+          <div className="p-4 space-y-4 h-[calc(95vh-8rem)] overflow-y-auto">
             <div className="flex items-center gap-3 mb-4">
               <Avatar className="w-10 h-10 ring-2 ring-gray-100">
                 <AvatarImage
@@ -158,8 +162,12 @@ const PostCreator: React.FC = () => {
                   className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors duration-200 w-full"
                 >
                   <ImageIcon size={20} className="text-gray-600" />
-                  <span className="font-medium text-gray-700">ছবি যোগ করুন</span>
-                  <span className="text-sm text-gray-500 ml-auto">{file ? file.name : "কোনো ফাইল নির্বাচন করা হয়নি"}</span>
+                  <span className="font-medium text-gray-700">
+                    ছবি যোগ করুন
+                  </span>
+                  <span className="text-sm text-gray-500 ml-auto">
+                    {file ? file.name : "কোনো ফাইল নির্বাচন করা হয়নি"}
+                  </span>
                 </label>
                 <Input
                   id="image-upload"
@@ -174,7 +182,10 @@ const PostCreator: React.FC = () => {
                 <p className="font-medium text-gray-900">
                   পোস্টের ক্যাটাগরি নির্বাচন করুন:
                 </p>
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <Select
+                  value={selectedCategory}
+                  onValueChange={setSelectedCategory}
+                >
                   <SelectTrigger className="w-full bg-gray-50 hover:bg-gray-100 transition-colors duration-200">
                     <SelectValue placeholder="ক্যাটাগরি নির্বাচন করুন" />
                   </SelectTrigger>
