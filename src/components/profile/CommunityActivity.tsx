@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function CommunityActivity() {
   const { data: activityData, isLoading } = useGetUserActivityQuery(undefined);
-  console.log("activityData: ", activityData);
+  // console.log("activityData: ", activityData);
   return (
     <div className="bg-white rounded-lg p-6 shadow-sm">
       {isLoading ? (

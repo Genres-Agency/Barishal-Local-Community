@@ -4,7 +4,7 @@ import { EventProps } from "@/types/global";
 import EventItem from "./EventItem";
 
 export default function Events({ events }: EventProps) {
-  console.log("events: ", events);
+  // console.log("events: ", events);
 
   const now = new Date();
   const filteredEvents = (events ?? [])

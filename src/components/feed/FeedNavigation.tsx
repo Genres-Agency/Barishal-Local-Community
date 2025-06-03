@@ -26,7 +26,9 @@ const FeedNavigation: React.FC<FeedNavigationProps> = ({
         onClick={() => onCategorySelect(null)}
         className={`cursor-pointer flex flex-col items-center justify-center w-full shadow ${allPostsStyle.bgColor} ${allPostsStyle.textColor} ${allPostsStyle.hoverBg} transition-all duration-300 py-3 lg:py-7 px-2 rounded-lg `}
       >
-        <Proportions className={`w-5 lg:w-7 h-5 lg:h-7 mb-2 ${allPostsStyle.textColor}`} />
+        <Proportions
+          className={`w-5 lg:w-7 h-5 lg:h-7 mb-2 ${allPostsStyle.textColor}`}
+        />
         <span className="text-sm font-semibold">{allPostsStyle.text}</span>
       </button>
       {categories?.map((category: any, index: number) => {
@@ -35,7 +37,13 @@ const FeedNavigation: React.FC<FeedNavigationProps> = ({
           <button
             key={category.id}
             onClick={() => onCategorySelect(category?.id)}
-            className={`cursor-pointer flex flex-col items-center justify-center w-full shadow ${style.bgColor} ${style.textColor} ${style.hoverBg} transition-all duration-300 py-3 lg:py-7 px-2 rounded-lg ${selectedCategory === category.id ? 'ring-2 ring-gray-400' : ''}`}
+            className={`cursor-pointer flex flex-col items-center justify-center w-full shadow ${
+              style.bgColor
+            } ${style.textColor} ${
+              style.hoverBg
+            } transition-all duration-300 py-3 lg:py-7 px-2 rounded-lg ${
+              selectedCategory === category.id ? "ring-2 ring-gray-400" : ""
+            }`}
           >
             {React.createElement(style.icon, {
               className: `w-5 lg:w-7 h-5 lg:h-7 mb-2 ${style.textColor}`,

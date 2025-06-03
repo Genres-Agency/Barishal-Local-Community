@@ -5,11 +5,11 @@ import {
   Calendar,
   Home,
   MessageSquare,
+  Proportions,
   Search,
   Settings,
   Store,
   XCircle,
-  Proportions
 } from "lucide-react";
 
 export const feedNavigationItems = [
@@ -158,7 +158,7 @@ export const getCategoryStyle = (slug: string): CategoryStyle => {
       return {
         icon: Calendar,
         text: "ইভেন্ট",
-        bgColor: "bg-yellow-50",
+        bgColor: "bg-purple-50",
         textColor: "text-purple-600",
         hoverBg: "hover:bg-purple-100",
         href: "/events",
@@ -190,5 +190,5 @@ export const getCategoryStyle = (slug: string): CategoryStyle => {
         hoverBg: "hover:bg-gray-100",
         href: "/",
       };
-  };
+  }
 };
