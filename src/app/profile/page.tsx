@@ -16,18 +16,21 @@ import { Loading } from "@/components/ui/loading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { mockUserProfile } from "@/lib/config/profile";
 import { useGetUserQuery } from "@/redux/features/auth/authApi";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
 import { useGetUserEventByIdQuery } from "@/redux/features/events/events.api";
 import {
   useGetUserDetailQuery,
   useGetUserPostByIdQuery,
 } from "@/redux/features/user/userDetail.api";
+import { useAppSelector } from "@/redux/hooks";
 import { Edit2, MapPin } from "lucide-react";
 import moment from "moment";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 
 function ProfileContent() {
+  const currentUser = useAppSelector(selectCurrentUser);
   const router = useRouter();
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab");
@@ -61,7 +64,9 @@ function ProfileContent() {
     const newUrl = value === "personal" ? "/profile" : `/profile?tab=${value}`;
     router.push(newUrl);
   };
-
+  if (!currentUser) {
+    router.push("/auth");
+  }
   return (
     <div className="container mx-auto py-8 px-4 mt-16">
       {/* Profile Header */}
@@ -95,51 +100,58 @@ function ProfileContent() {
       <Tabs
         defaultValue="personal"
         value={activeTab}
-        className="space-y-4"
+        className="space-y-4 relative"
         onValueChange={handleTabChange}
       >
-        <TabsList className="bg-white p-1 rounded-lg shadow-sm w-full flex flex-wrap justify-start gap-2">
-          <TabsTrigger value="personal" className="flex-1 md:flex-none">
-            ব্যক্তিগত তথ্য
-          </TabsTrigger>
-          <TabsTrigger value="community" className="flex-1 md:flex-none">
-            কমিউনিটি একটিভিটি
-          </TabsTrigger>
-          <TabsTrigger value="posts" className="flex-1 md:flex-none">
-            পোস্টসমূহ
-          </TabsTrigger>
-          
-          {isAdmin && (
-            <>
-            <TabsTrigger value="events" className="flex-1 md:flex-none">
-            ইভেন্টস সমূহ
-          </TabsTrigger>
-              <TabsTrigger value="category" className="flex-1 md:flex-none">
-                ক্যাটেগরি সমূহ
-              </TabsTrigger>
-              <TabsTrigger
-                value="helpline-category"
-                className="flex-1 md:flex-none"
-              >
-                হেল্পলাইন ক্যাটেগরি
-              </TabsTrigger>
-              <TabsTrigger
-                value="helpline-sub-category"
-                className="flex-1 md:flex-none"
-              >
-                হেল্পলাইন সাব ক্যাটেগরি
-              </TabsTrigger>
-              <TabsTrigger
-                value="helpline-service-item"
-                className="flex-1 md:flex-none"
-              >
-                হেল্পলাইন সার্ভিস আইটেম
-              </TabsTrigger>
-            </>
-          )}
-          <TabsTrigger value="settings" className="flex-1 md:flex-none">
-            সেটিংস
-          </TabsTrigger>
+        <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-white to-transparent z-20 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-white to-transparent z-20 pointer-events-none" />
+        <TabsList className="bg-white p-2 rounded-lg shadow-sm w-full flex overflow-x-auto overflow-y-hidden no-scrollbar sticky top-0 z-10 border-b scroll-smooth backdrop-blur-sm bg-white/80">
+          <div className="flex gap-2 px-2 pb-1 min-w-max">
+            <TabsTrigger value="personal" className="whitespace-nowrap px-4">
+              ব্যক্তিগত তথ্য
+            </TabsTrigger>
+            <TabsTrigger value="community" className="whitespace-nowrap px-4">
+              কমিউনিটি একটিভিটি
+            </TabsTrigger>
+            <TabsTrigger value="posts" className="whitespace-nowrap px-4">
+              পোস্টসমূহ
+            </TabsTrigger>
+
+            {isAdmin && (
+              <>
+                <TabsTrigger value="events" className="whitespace-nowrap px-4">
+                  ইভেন্টস সমূহ
+                </TabsTrigger>
+                <TabsTrigger
+                  value="category"
+                  className="whitespace-nowrap px-4 py-2 data-[state=active]:bg-primary/10 data-[state=active]:text-primary transition-colors rounded-md"
+                >
+                  ক্যাটেগরি সমূহ
+                </TabsTrigger>
+                <TabsTrigger
+                  value="helpline-category"
+                  className="whitespace-nowrap px-4"
+                >
+                  হেল্পলাইন ক্যাটেগরি
+                </TabsTrigger>
+                <TabsTrigger
+                  value="helpline-sub-category"
+                  className="whitespace-nowrap px-4"
+                >
+                  হেল্পলাইন সাব ক্যাটেগরি
+                </TabsTrigger>
+                <TabsTrigger
+                  value="helpline-service-item"
+                  className="whitespace-nowrap px-4"
+                >
+                  হেল্পলাইন সার্ভিস আইটেম
+                </TabsTrigger>
+              </>
+            )}
+            <TabsTrigger value="settings" className="whitespace-nowrap px-4">
+              সেটিংস
+            </TabsTrigger>
+          </div>
         </TabsList>
 
         <TabsContent value="personal">
@@ -147,7 +159,7 @@ function ProfileContent() {
         </TabsContent>
 
         <TabsContent value="community">
-          <CommunityActivity  />
+          <CommunityActivity />
         </TabsContent>
 
         <TabsContent value="posts">

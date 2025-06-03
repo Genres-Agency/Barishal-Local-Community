@@ -16,10 +16,11 @@ import { setUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { verifyToken } from "@/utils/verifyToken";
 // import Cookies from "js-cookie";
-import { Eye, EyeOff, Facebook } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function LoginForm() {
@@ -32,6 +33,28 @@ export default function LoginForm() {
 
   const [login] = useLoginMutation();
 
+  // google auth
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+
+    if (token) {
+      try {
+        const user = verifyToken(token); // decode user from token
+        // console.log("google user", user);
+        dispatch(setUser({ user, token })); // update Redux state
+        toast.success("Google Login Successful");
+        router.push("/profile");
+      } catch (err) {
+        console.error("Invalid token:", err);
+        toast.error("Invalid or expired token");
+        router.push("/auth");
+      }
+    }
+  }, [searchParams, dispatch, router]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
@@ -43,6 +66,7 @@ export default function LoginForm() {
       // console.log('result', result?.data?.accessToken)
       const user = verifyToken(result?.data?.accessToken);
       dispatch(setUser({ user: user, token: result?.data?.accessToken }));
+
       if (user) {
         navigate.push("/profile");
       }
@@ -124,14 +148,16 @@ export default function LoginForm() {
           <div className="w-full ">
             <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/auth/google`}>
               <Button variant="outline" className="w-full" type="button">
-                <Facebook className="mr-2 h-4 w-4" />
+                <Image
+                  src="/assets/google.svg"
+                  alt="google"
+                  width={24}
+                  height={24}
+                  className="mr-2 h-4 w-4"
+                />
                 Google
               </Button>
             </Link>
-            {/* <Button variant="outline" className="w-full" type="button">
-              <Github className="mr-2 h-4 w-4" />
-              Github
-            </Button> */}
           </div>
         </CardFooter>
       </form>

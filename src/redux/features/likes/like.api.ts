@@ -9,7 +9,7 @@ const likeApi = baseApi.injectEndpoints({
         method: "GET",
         params: postId,
       }),
-      providesTags: ["Like"],
+      providesTags: ["Like", "Activity"],
     }),
 
     // Update exesting post
@@ -19,7 +19,7 @@ const likeApi = baseApi.injectEndpoints({
         method: "PATCH",
         params: postId,
       }),
-      invalidatesTags: ["Like"],
+      invalidatesTags: ["Like", "Activity"],
     }),
   }),
 });

@@ -100,6 +100,7 @@ export default function PostCard({
   // console.log("user ==>", user);
   // Fix the handleLike function to ensure id is properly converted to a number
   const handleLike = async () => {
+    // console.log("current user id ==>", currentUser);
     try {
       if (!currentUser) {
         return router.push("/auth");
@@ -247,33 +248,32 @@ export default function PostCard({
             {isExpanded ? "Show Less" : "Show More"}
           </button>
         )}
+        {/* link  */}
+        {extractLink(content) && (
+          <div className="mt-4">
+            <Link
+              href={extractLink(content) as string}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-2"
+            >
+              {extractLink(content) as string}
+            </Link>
+          </div>
+        )}
+        {/* hashTag */}
+        {hashTag?.map((hashTag) => {
+          return (
+            <Link
+              href={`/category/${hashTag?.slug}`}
+              key={hashTag?.id}
+              className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-8"
+            >
+              #{hashTag?.slug}
+            </Link>
+          );
+        })}
       </div>
-
-      {/* link  */}
-      {extractLink(content) && (
-        <div className="mt-4">
-          <Link
-            href={extractLink(content) as string}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-2"
-          >
-            {extractLink(content) as string}
-          </Link>
-        </div>
-      )}
-      {/* hashTag */}
-      {hashTag?.map((hashTag) => {
-        return (
-          <Link
-            href={`/category/${hashTag?.slug}`}
-            key={hashTag?.id}
-            className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-8"
-          >
-            #{hashTag?.slug}
-          </Link>
-        );
-      })}
 
       {photo && (
         <Link href={`/post/${id}`}>
