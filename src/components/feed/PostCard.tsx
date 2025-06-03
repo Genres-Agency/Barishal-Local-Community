@@ -100,7 +100,7 @@ export default function PostCard({
   // console.log("user ==>", user);
   // Fix the handleLike function to ensure id is properly converted to a number
   const handleLike = async () => {
-    // console.log("current user id ==>", currentUser);
+    console.log("current user id ==>", currentUser);
     try {
       if (!currentUser) {
         return router.push("/auth");
@@ -203,7 +203,7 @@ export default function PostCard({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-3 lg:p-4 mb-4">
+    <div className="bg-white rounded-lg shadow-sm p-3 lg:p-4 mb-4 transition-all duration-300 hover:shadow-md">
       <div className="flex items-start gap-3 mb-4">
         <Avatar>
           <AvatarImage
@@ -228,13 +228,13 @@ export default function PostCard({
             </div>
           </div>
 
-          <button className="mt-2 h-7 px-3 rounded-md bg-[#ffeaea] text-[#af1e1e] text-xs font-bold">
+          <button className="mt-2 h-7 px-3 rounded-md bg-[#ffeaea] text-[#af1e1e] text-xs font-bold transition-colors hover:bg-[#af1e1e] hover:text-white">
             {category?.title}
           </button>
         </div>
       </div>
-      <div className="text-gray-700 prose prose-lg max-w-none mb-6">
-        <p className="whitespace-pre-wrap">
+      <div className="text-gray-700  mb-6">
+        <p className="">
           {isExpanded
             ? getCleanContent(content)
             : getCleanContent(content)?.slice(0, 70)}
@@ -243,7 +243,7 @@ export default function PostCard({
         {getCleanContent(content)?.length > 70 && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-2"
+            className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-2 transition-colors   py-1 pb-2"
           >
             {isExpanded ? "Show Less" : "Show More"}
           </button>
@@ -255,7 +255,7 @@ export default function PostCard({
               href={extractLink(content) as string}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-2"
+              className="text-blue-500 hover:text-blue-600 text-sm font-medium flex-wrap transition-colors inline-flex items-center gap-1   py-1"
             >
               {extractLink(content) as string}
             </Link>
@@ -267,7 +267,7 @@ export default function PostCard({
             <Link
               href={`/category/${hashTag?.slug}`}
               key={hashTag?.id}
-              className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-8"
+              className="text-blue-500  hover:text-blue-600 text-sm font-medium mt-2 flex-wrap transition-colors inline-flex items-center gap-1"
             >
               #{hashTag?.slug}
             </Link>
@@ -291,77 +291,91 @@ export default function PostCard({
       )}
       <div className="flex items-center gap-6 text-gray-500">
         <button
-          className={`flex items-center gap-2 ${
-            likes?.count ? "text-red-500" : "hover:text-red-500"
+          className={`flex items-center gap-2 p-2 rounded-full transition-all duration-200 ${
+            likes?.count
+              ? "text-red-500 bg-red-50"
+              : "hover:text-red-500 hover:bg-red-50"
           }`}
           onClick={handleLike}
         >
-          <Heart size={20} fill={likes?.count ? "currentColor" : "none"} />
-          <span>{likes?.count || 0}</span>
+          <Heart
+            size={20}
+            fill={likes?.count ? "currentColor" : "none"}
+            className="transition-transform group-hover:scale-110"
+          />
+          <span className="font-medium">{likes?.count || 0}</span>
         </button>
         <button
-          className={`flex items-center gap-2 ${
-            showComments ? "text-blue-500" : "hover:text-blue-500"
+          className={`flex items-center gap-2 p-2 rounded-full transition-all duration-200 ${
+            showComments
+              ? "text-blue-500 bg-blue-50"
+              : "hover:text-blue-500 hover:bg-blue-50"
           }`}
           onClick={handleCommentClick}
         >
           <MessageCircle
             size={20}
             fill={showComments ? "currentColor" : "none"}
+            className="transition-transform group-hover:scale-110"
           />
-          <span>{comment?.count}</span>
+          <span className="font-medium">{comment?.count}</span>
         </button>
         <button
-          className={`flex items-center gap-2 ${
-            showShareOptions ? "text-green-500" : "hover:text-green-500"
+          className={`flex items-center gap-2 p-2 rounded-full transition-all duration-200 ${
+            showShareOptions
+              ? "text-green-500 bg-green-50"
+              : "hover:text-green-500 hover:bg-green-50"
           }`}
           onClick={handleShareClick}
         >
-          <Share2 size={20} fill={showShareOptions ? "currentColor" : "none"} />
-          {/* <span>{"4"}</span> */}
+          <Share2
+            size={20}
+            fill={showShareOptions ? "currentColor" : "none"}
+            className="transition-transform group-hover:scale-110"
+          />
         </button>
       </div>
 
       {/* Share options */}
       {showShareOptions && (
-        <div className="mt-4 pt-4 border-t">
+        <div className="mt-4 pt-4 border-t animate-in fade-in slide-in-from-top-4 duration-200">
           <h4 className="font-medium mb-3">শেযার করুন</h4>
           <div className="flex flex-wrap gap-4">
             <button
               onClick={() => handleShare("copy")}
-              className="flex flex-col items-center gap-1 hover:text-green-500"
+              className="flex flex-col items-center gap-1 transition-all duration-200 hover:text-green-500 group"
             >
-              <div className="bg-gray-100 p-3 rounded-full">
-                <Copy size={20} />
+              <div className="bg-gray-100 p-3 rounded-full transition-transform group-hover:scale-110 group-hover:bg-green-50">
+                <Copy size={20} className="transition-colors" />
               </div>
-              <span className="text-xs">লিংক কপি</span>
+              <span className="text-xs font-medium">লিংক কপি</span>
             </button>
             <button
               onClick={() => handleShare("facebook")}
-              className="flex flex-col items-center gap-1 hover:text-blue-600"
+              className="flex flex-col items-center gap-1 transition-all duration-200 hover:text-blue-600 group"
             >
-              <div className="bg-gray-100 p-3 rounded-full">
-                <Facebook size={20} />
+              <div className="bg-gray-100 p-3 rounded-full transition-transform group-hover:scale-110 group-hover:bg-blue-50">
+                <Facebook size={20} className="transition-colors" />
               </div>
-              <span className="text-xs">ফেসবুক</span>
+              <span className="text-xs font-medium">ফেসবুক</span>
             </button>
             <button
               onClick={() => handleShare("twitter")}
-              className="flex flex-col items-center gap-1 hover:text-blue-400"
+              className="flex flex-col items-center gap-1 transition-all duration-200 hover:text-blue-400 group"
             >
-              <div className="bg-gray-100 p-3 rounded-full">
-                <Twitter size={20} />
+              <div className="bg-gray-100 p-3 rounded-full transition-transform group-hover:scale-110 group-hover:bg-blue-50">
+                <Twitter size={20} className="transition-colors" />
               </div>
-              <span className="text-xs">টুইটার</span>
+              <span className="text-xs font-medium">টুইটার</span>
             </button>
             <button
               onClick={() => handleShare("linkedin")}
-              className="flex flex-col items-center gap-1 hover:text-blue-700"
+              className="flex flex-col items-center gap-1 transition-all duration-200 hover:text-blue-700 group"
             >
-              <div className="bg-gray-100 p-3 rounded-full">
-                <Linkedin size={20} />
+              <div className="bg-gray-100 p-3 rounded-full transition-transform group-hover:scale-110 group-hover:bg-blue-50">
+                <Linkedin size={20} className="transition-colors" />
               </div>
-              <span className="text-xs">লিংকডইন</span>
+              <span className="text-xs font-medium">লিংকডইন</span>
             </button>
           </div>
         </div>
@@ -369,13 +383,13 @@ export default function PostCard({
 
       {/* Comments section */}
       {showComments && (
-        <div className="mt-6 pt-4 border-t border-gray-200">
+        <div className="mt-6 pt-4 border-t border-gray-200 animate-in fade-in slide-in-from-top-4 duration-200">
           <div className="flex items-center justify-between mb-4">
             <h4 className="font-semibold text-gray-900">
               মন্তব্য ({comment?.count || 0})
             </h4>
             {comment?.count > 0 && (
-              <button className="text-sm text-gray-500 hover:text-gray-700">
+              <button className="text-sm text-gray-500 hover:text-gray-700 transition-colors px-3 py-1 rounded-full hover:bg-gray-100">
                 সব দেখুন
               </button>
             )}
@@ -429,11 +443,11 @@ export default function PostCard({
               <AvatarFallback>ME</AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <div className="flex gap-2 bg-gray-50 rounded-lg px-4 py-2">
+              <div className="flex gap-2 bg-gray-50 rounded-lg px-4 py-2 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200">
                 <input
                   type="text"
                   placeholder="আপনার মন্তব্য লিখুন..."
-                  className="bg-transparent flex-1 outline-none text-sm"
+                  className="bg-transparent flex-1 outline-none text-sm placeholder:text-gray-400"
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   onKeyDown={(e) => {
@@ -444,15 +458,19 @@ export default function PostCard({
                 />
                 <button
                   onClick={handleAddComment}
-                  className={`text-blue-500 hover:text-blue-600 transition-colors ${
-                    !commentText.trim() && "opacity-50 cursor-not-allowed"
+                  className={`text-blue-500 hover:text-blue-600 transition-all duration-200 p-1.5 rounded-full hover:bg-blue-50 ${
+                    !commentText.trim() &&
+                    "opacity-50 cursor-not-allowed hover:bg-transparent"
                   }`}
                   disabled={!commentText.trim()}
                 >
-                  <Send size={16} />
+                  <Send
+                    size={16}
+                    className="transition-transform group-hover:scale-110"
+                  />
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mt-1 pl-3">
+              <p className="text-xs text-gray-500 mt-2 pl-3">
                 Press Enter to post
               </p>
             </div>
