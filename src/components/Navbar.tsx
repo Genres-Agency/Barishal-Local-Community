@@ -1,21 +1,20 @@
 "use client";
-import { navigationItemsLeftSite } from "@/lib/config/navigation";
-import { logoutMenuItem, profileMenuItems } from "@/lib/config/profileMenu";
-import { useLazyGetAllPostQuery } from "@/redux/features/post/post.api";
-
-import { logout, selectCurrentUser } from "@/redux/features/auth/authSlice";
-import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { ChevronDown, Menu, Search, User, X } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
-import {
-  useGetUserQuery,
-  useLogoutMutation,
-} from "@/redux/features/auth/authApi";
+import { useGetUserQuery } from "@/redux/features/auth/authApi";
+import { selectCurrentUser } from "@/redux/features/auth/authSlice";
+import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
+import { useAppSelector } from "@/redux/hooks";
+
+import { useAuthActions } from "@/hooks/useAuthActions";
+import { useSearchPosts } from "@/hooks/useSearchPosts";
+
+import { navigationItemsLeftSite } from "@/lib/config/navigation";
+import { logoutMenuItem, profileMenuItems } from "@/lib/config/profileMenu";
+
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,84 +22,40 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import UpcomingEvents from "./navigation/leftSide/events/UpcomingEvents";
-
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
 
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [showSearchDropdown, setShowSearchDropdown] = useState(false);
-  const [signOut] = useLogoutMutation();
-  const dispatch = useAppDispatch();
+  // const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   const userData = useAppSelector(selectCurrentUser);
   const { data: user } = useGetUserQuery(undefined, {
     skip: !userData?.userId,
   });
   const { data: categories } = useGetAllCategoryQuery([]);
-  // const { refetch: refetchPosts } = useGetAllPostQuery(
-  //   { categoryId: undefined, search: undefined },
-  //   { skip: true } // initially skip it
-  // );
-  const [triggerGetPosts] = useLazyGetAllPostQuery();
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const router = useRouter();
 
-  const handleLogout = () => {
-    dispatch(logout());
-    signOut({})
-      .unwrap()
-      .then(() => router.push("/auth"))
-      .catch((err) => console.error("Logout failed:", err));
-  };
+  const {
+    searchQuery,
+    setSearchQuery,
+    searchResults,
+    isLoading,
+    showSearchDropdown,
+    setShowSearchDropdown,
+    setCategoryId,
+  } = useSearchPosts();
 
-  const handleSearch = async (e: React.FormEvent) => {
+  const { handleLogout } = useAuthActions();
+
+  const onSubmitSearch = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Implement search logic here
-    console.log(
-      "Searching for:",
-      searchQuery,
-      "in category:",
-      selectedCategory
-    );
-    try {
-      const categoryIdNumber = selectedCategory
-        ? parseInt(selectedCategory)
-        : undefined;
-
-      const { data } = await triggerGetPosts({
-        categoryId: categoryIdNumber,
-        search: searchQuery,
-      });
-
-      setSearchResults(data);
-      console.log("Search Results:", data);
-    } catch (error) {
-      console.error("Search failed:", error);
-    }
+    // handleSearch(searchQuery, selectedCategory);
   };
 
-  const handleSearchFocus = () => {
-    setShowSearchDropdown(true);
-  };
-
-  const handleSearchBlur = () => {
+  const handleSearchFocus = () => setShowSearchDropdown(true);
+  const handleSearchBlur = () =>
     setTimeout(() => setShowSearchDropdown(false), 200);
-  };
-
-  const handleSearchPost = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Implement search logic here
-    console.log(
-      "Searching for:",
-      searchQuery,
-      "in category:",
-      selectedCategory
-    );
-  };
 
   return (
     <nav className="bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
@@ -112,14 +67,14 @@ const Navbar = () => {
             </Link>
             <div className="flex items-center gap-2 md:hidden">
               <button
-                className="p-2 hover:bg-gray-100 rounded-full"
                 onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
+                className="p-2 hover:bg-gray-100 rounded-full"
               >
                 <Search size={20} className="text-gray-600" />
               </button>
               <button
-                className="p-2 hover:bg-gray-100 rounded-full"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="p-2 hover:bg-gray-100 rounded-full"
               >
                 {isMobileMenuOpen ? (
                   <X size={20} className="text-gray-600" />
@@ -136,13 +91,16 @@ const Navbar = () => {
             } transition-all duration-300 ease-in-out`}
           >
             <form
-              onSubmit={handleSearch}
+              onSubmit={onSubmitSearch}
               className="relative flex items-center"
             >
               <div className="relative">
                 <select
                   value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  onChange={(e) => {
+                    setSelectedCategory(e.target.value);
+                    setCategoryId(e.target.value);
+                  }}
                   className="h-full px-4 py-2.5 text-sm border focus:outline-none focus:ring-2 focus:ring-green-500 appearance-none pr-8 bg-gray-50 border-r-0 rounded-l-lg"
                 >
                   <option value="">সব ক্যাটাগরি</option>
@@ -157,7 +115,7 @@ const Navbar = () => {
                   size={16}
                 />
               </div>
-              <form onSubmit={handleSearchPost} className="relative flex-grow">
+              <div className="relative flex-grow">
                 <input
                   type="search"
                   value={searchQuery}
@@ -168,9 +126,43 @@ const Navbar = () => {
                   className="w-full md:w-[400px] px-4 py-2.5 border text-sm focus:outline-none focus:ring-2 focus:ring-green-500 border-x-0"
                 />
 
-                {showSearchDropdown && searchResults.length > 0 && (
+                {showSearchDropdown && (
+                  <div className="absolute w-full bg-white border rounded-lg mt-1 shadow-lg z-50 max-h-[300px] overflow-auto">
+                    {isLoading ? (
+                      <div className="p-3 text-sm text-gray-500 text-center">
+                        লোড হচ্ছে...
+                      </div>
+                    ) : searchResults.length > 0 ? (
+                      searchResults.slice(0, 4).map((post) => (
+                        <Link
+                          key={post.id}
+                          href={`/post/${post.id}`}
+                          className="block p-3 hover:bg-gray-100 border-b last:border-b-0"
+                          onClick={() => setShowSearchDropdown(false)}
+                        >
+                          <p className="text-sm text-gray-600 line-clamp-2">
+                            {post?.content}
+                          </p>
+                          <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
+                            {post.category && (
+                              <>
+                                <span>•</span>
+                                <span>{post.category.title}</span>
+                              </>
+                            )}
+                          </div>
+                        </Link>
+                      ))
+                    ) : (
+                      <div className="p-3 text-sm text-gray-500 text-center">
+                        কোনো ফলাফল পাওয়া যায়নি
+                      </div>
+                    )}
+                  </div>
+                )}
+                {/* {showSearchDropdown && searchResults.length > 0 && (
                   <div className="absolute w-full bg-white border rounded-lg mt-1 shadow-lg z-50">
-                    {searchResults?.slice(0, 4)?.map((post) => (
+                    {searchResults.slice(0, 4).map((post) => (
                       <Link
                         key={post.id}
                         href={`/post/${post.id}`}
@@ -191,13 +183,13 @@ const Navbar = () => {
                       </Link>
                     ))}
                   </div>
-                )}
-              </form>
+                )} */}
+              </div>
               <button
                 type="submit"
                 className="px-6 py-2.5 text-sm text-white bg-green-600 rounded-r-lg font-medium hover:bg-green-700 transition-colors border border-green-600"
               >
-                {"অনুসন্ধান"}
+                অনুসন্ধান
               </button>
             </form>
           </div>
@@ -266,75 +258,6 @@ const Navbar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <div
-        className={`fixed inset-0 bg-black bg-opacity-50 z-50 transition-opacity duration-300 ${
-          isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-        onClick={() => setIsMobileMenuOpen(false)}
-      >
-        <div
-          className={`fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
-            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="h-full overflow-y-auto">
-            <div className="p-4 border-b">
-              {!userData?.userId ? (
-                <Link
-                  href="/auth"
-                  className="w-full px-4 py-2 text-sm text-green-600 font-medium hover:text-green-700 border border-green-600 rounded-md flex items-center justify-center gap-2"
-                >
-                  <User size={18} /> সাইন ইন
-                </Link>
-              ) : (
-                <>
-                  <div className="flex items-center justify-center gap-2 mb-4">
-                    <Avatar className="cursor-pointer">
-                      <AvatarImage src={user?.avatar || "/assets/user.png"} />
-                      <AvatarFallback>USER</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-sm font-medium text-gray-600">
-                        {user?.firstName} {user?.lastName}
-                      </p>
-                      <p className="text-xs text-gray-500">{user?.email}</p>
-                    </div>
-                  </div>
-                  <div className="space-y-1">
-
-                  {profileMenuItems.map((item, index) => (
-                    
-                      <div
-                        key={index}
-                        >
-                          <Link
-                        href={item.href}
-                        className="flex items-center gap-2 cursor-pointer"
-                      >
-                        <item.icon className="w-4 h-4" />
-                        <span>{item.label}</span>
-                      </Link>
-                          </div>
-                    
-                  ))}
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center py-2 gap-2 text-sm text-red-600 hover:bg-red-50 rounded-md w-full"
-                    >
-                      <logoutMenuItem.icon className="w-4 h-4" />
-                      <span>লগআউট</span>
-                    </button>
-                  </div>
-                </>
-              )}
-            </div>
-            <UpcomingEvents />
           </div>
         </div>
       </div>

@@ -20,7 +20,7 @@ export function EventSlider() {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
   const { data: eventsData } = useGetAllEventsQuery(undefined);
-  console.log("eventsData", eventsData);
+  // console.log("eventsData", eventsData);
 
   React.useEffect(() => {
     if (!api) return;
@@ -70,7 +70,7 @@ export function EventSlider() {
         event.computedStatus === "active" || event.computedStatus === "upcoming"
     ); // or include other statuses
   const activeEvents = filteredEvents;
-  console.log("activeEvents", activeEvents);
+  // console.log("activeEvents", activeEvents);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -120,7 +120,7 @@ export function EventSlider() {
                           <span
                             className={`inline-block ${getStatusColor(
                               event?.computedStatus
-                            )} text-white px-4 py-2 rounded text-xs md:text-sm mb-5`}
+                            )} text-white px-4 py-2 rounded text-xs md:text-sm my-3`}
                           >
                             {event?.computedStatus}
                           </span>
