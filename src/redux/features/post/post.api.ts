@@ -7,6 +7,7 @@ const postApi = baseApi.injectEndpoints({
         categoryId?: number;
         search?: string;
         hashTagId?: number;
+        status?: "ACCEPTED" | "PENDING" | "REJECTED";
       }) => {
         const urlParams = new URLSearchParams();
 
@@ -18,6 +19,9 @@ const postApi = baseApi.injectEndpoints({
         }
         if (params?.search) {
           urlParams.append("search", params?.search);
+        }
+        if (params?.status) {
+          urlParams.append("status", params?.status);
         }
 
         return {

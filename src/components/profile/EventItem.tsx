@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useDeleteEventMutation } from "@/redux/features/events/events.api";
 import { Event } from "@/types/global";
+import { getStatusColor } from "@/utils/globals";
 import { Edit2, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -44,20 +45,6 @@ export default function EventItem({
       day: "numeric",
     });
   };
-
-  const getStatusColor = (status: string) => {
-    switch (status?.toLowerCase()) {
-      case "active":
-        return "bg-green-100 text-green-800";
-      case "upcoming":
-        return "bg-yellow-100 text-yellow-800";
-      case "ended":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
   const handleDeletePost = async () => {
     try {
       await deletePost(id).unwrap();

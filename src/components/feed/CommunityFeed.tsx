@@ -6,6 +6,7 @@ import { useGetAllPostQuery } from "@/redux/features/post/post.api";
 import { useAppSelector } from "@/redux/hooks";
 import { useState } from "react";
 
+import { PostCardProps } from "@/types/global";
 import EventCreator from "./EventCreator";
 import FeedNavigation from "./FeedNavigation";
 import PostCard from "./PostCard";
@@ -41,14 +42,13 @@ const CommunityFeed = ({ selectedTrendTopic }: CommunityFeedProps) => {
     "latest"
   );
 
-  const [selectedCategory, setSelectedCategory] = useState<
-    number | null 
-  >(null);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
   // console.log("selectedTrendTopic", selectedTrendTopic);
   const { data: postData, isFetching } = useGetAllPostQuery({
     categoryId: selectedCategory ?? undefined,
     hashTagId: selectedTrendTopic,
+    status: "ACCEPTED",
   });
 
   // const handleCategorySelect = (categoryId: number | null) => {
@@ -66,12 +66,14 @@ const CommunityFeed = ({ selectedTrendTopic }: CommunityFeedProps) => {
   return (
     <div className="space-y-4">
       {/* Feed Navigation ---------------- */}
-      <FeedNavigation selectedCategory={selectedCategory}  onCategorySelect={handleCategorySelect} />
+      <FeedNavigation
+        selectedCategory={selectedCategory}
+        onCategorySelect={handleCategorySelect}
+      />
       {/* Post Creator Field --------------- */}
       {user?.userId && (
         <>
           <PostCreator />
-          
         </>
       )}
       {/* Event Creator Field --------------- */}
@@ -107,7 +109,7 @@ const CommunityFeed = ({ selectedTrendTopic }: CommunityFeedProps) => {
         </div>
       ) : (
         <div className=" md:px-2 sm:px-0">
-          {postData?.map((post: any, index: any) => (
+          {postData?.map((post: PostCardProps, index: any) => (
             <PostCard key={index} {...post} />
           ))}
         </div>

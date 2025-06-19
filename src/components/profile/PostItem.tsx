@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useDeletePostMutation } from "@/redux/features/post/post.api";
 import { PostItemProps } from "@/types/global";
+import { getStatusColor } from "@/utils/globals";
 import { Edit2, Hash, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -22,11 +23,12 @@ import EditPostModal from "./EditPostModal";
 export default function PostItem({
   id,
   content,
-  hashtag,
+  hashTag,
   photo,
   updatedAt,
   _count,
   categoryId,
+  status,
 }: PostItemProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -42,13 +44,23 @@ export default function PostItem({
       toast.error("পোস্টটি মুছে ফেলতে সমস্যা হয়েছে");
     }
   };
+
   return (
     <div className="bg-white p-4 rounded-lg border">
       <div className="flex items-start justify-between">
-        <div>
+        <div className="flex items-center gap-3">
           <p className="text-sm text-gray-600">
             {new Date(updatedAt).toLocaleDateString("bn-BD")}
           </p>
+          {status && (
+            <span
+              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
+                status
+              )}`}
+            >
+              {status}
+            </span>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -110,9 +122,9 @@ export default function PostItem({
           </button>
         )}
       </div>
-      {hashtag?.length > 0 && (
+      {hashTag?.length > 0 && (
         <div className="flex flex-wrap gap-2 mt-4">
-          {hashtag?.map((tag, index) => (
+          {hashTag?.map((tag, index) => (
             <span
               key={index}
               className="inline-flex items-center text-sm text-blue-600"

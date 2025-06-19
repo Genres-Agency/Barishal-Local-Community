@@ -40,13 +40,6 @@ export interface CategoryStyle {
   href: string;
 }
 
-export interface Hashtag {
-  title: string;
-  id: number;
-  createdAt: string;
-  slug: string;
-  authorId: number;
-}
 export interface Author {
   id: number;
   firstName: string;
@@ -72,15 +65,36 @@ export interface Comment {
 export interface Like {
   count: number;
 }
+interface IHashTag {
+  id: number;
+  title: string;
+  slug: string;
+  authorId: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface PostCardProps {
+  content: string;
+  photo?: string;
+  authorId: number;
+  status?: "ACCEPTED" | "PENDING" | "REJECTED";
+  id: number;
+  categoryId: number;
+  createdAt: string;
+  hashTag: IHashTag[];
+}
 
 export interface PostItemProps {
   id: string;
   authorId: number;
   categoryId: number;
   content: string;
-  hashtag: Hashtag[];
+  status?: "ACCEPTED" | "PENDING" | "REJECTED";
+  hashTag: IHashTag[];
   photo?: string;
   updatedAt: string;
+  createdAt: string;
 
   _count: {
     likes: number;
