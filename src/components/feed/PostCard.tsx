@@ -233,8 +233,8 @@ export default function PostCard({
           </button>
         </div>
       </div>
-      <div className="text-gray-700  mb-4">
-        <p className="whitespace-pre-wrap">
+      <div className="text-gray-700  mb-6">
+        <p className="">
           {isExpanded
             ? getCleanContent(content)
             : getCleanContent(content)?.slice(0, 70)}
@@ -243,38 +243,36 @@ export default function PostCard({
         {getCleanContent(content)?.length > 70 && (
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="text-blue-500 hover:text-blue-600 text-sm font-medium my-2 transition-colors   py-1 pb-2"
+            className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-2 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500/20 rounded px-2 py-1"
           >
             {isExpanded ? "Show Less" : "Show More"}
           </button>
         )}
         {/* link  */}
-        <div>
-          {extractLink(content) && (
+        {extractLink(content) && (
+          <div className="mt-4">
             <Link
               href={extractLink(content) as string}
               target="_blank"
-              // rel="noopener noreferrer"
-              className="text-blue-500  hover:text-blue-600 text-sm font-medium  flex-wrap transition-colors inline-flex items-start gap-1   py-1"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:text-blue-600 text-sm font-medium flex-wrap mt-2 transition-colors inline-flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-500/20 rounded px-2 py-1"
             >
               {extractLink(content) as string}
             </Link>
-          )}
-        </div>
+          </div>
+        )}
         {/* hashTag */}
-        <div>
-          {hashTag?.map((hashTag) => {
-            return (
-              <Link
-                href={`/category/${hashTag?.slug}`}
-                key={hashTag?.id}
-                className="text-blue-500  hover:text-blue-600 text-sm font-medium  flex-wrap transition-colors inline-flex items-center gap-1   py-1"
-              >
-                #{hashTag?.slug}
-              </Link>
-            );
-          })}
-        </div>
+        {hashTag?.map((hashTag) => {
+          return (
+            <Link
+              href={`/category/${hashTag?.slug}`}
+              key={hashTag?.id}
+              className="text-blue-500 hover:text-blue-600 text-sm font-medium mt-8 flex-wrap transition-colors inline-flex items-center gap-1 focus:outline-none focus:ring-2 focus:ring-blue-500/20 rounded px-2 py-1"
+            >
+              #{hashTag?.slug}
+            </Link>
+          );
+        })}
       </div>
 
       {photo && (
@@ -385,13 +383,13 @@ export default function PostCard({
 
       {/* Comments section */}
       {showComments && (
-        <div className="mt-6 pt-4 border-t border-gray-200 animate-in fade-in slide-in-from-top-4 duration-200">
+        <div className="mt-6 pt-4 border-t border-gray-200">
           <div className="flex items-center justify-between mb-4">
             <h4 className="font-semibold text-gray-900">
               মন্তব্য ({comment?.count || 0})
             </h4>
             {comment?.count > 0 && (
-              <button className="text-sm text-gray-500 hover:text-gray-700 transition-colors px-3 py-1 rounded-full hover:bg-gray-100">
+              <button className="text-sm text-gray-500 hover:text-gray-700">
                 সব দেখুন
               </button>
             )}
@@ -445,11 +443,11 @@ export default function PostCard({
               <AvatarFallback>ME</AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <div className="flex gap-2 bg-gray-50 rounded-lg px-4 py-2 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200">
+              <div className="flex gap-2 bg-gray-50 rounded-lg px-4 py-2">
                 <input
                   type="text"
                   placeholder="আপনার মন্তব্য লিখুন..."
-                  className="bg-transparent flex-1 outline-none text-sm placeholder:text-gray-400"
+                  className="bg-transparent flex-1 outline-none text-sm"
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   onKeyDown={(e) => {
@@ -460,19 +458,17 @@ export default function PostCard({
                 />
                 <button
                   onClick={handleAddComment}
-                  className={`text-blue-500 hover:text-blue-600 transition-all duration-200 p-1.5 rounded-full hover:bg-blue-50 ${
-                    !commentText.trim() &&
-                    "opacity-50 cursor-not-allowed hover:bg-transparent"
+                  className={`text-blue-500 hover:text-blue-600 transition-colors ${
+                    !commentText.trim() && "opacity-50 cursor-not-allowed"
                   }`}
                   disabled={!commentText.trim()}
                 >
-                  <Send
-                    size={16}
-                    className="transition-transform group-hover:scale-110"
-                  />
+                  <Send size={16} />
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mt-2 pl-3">
+              <p className="text-xs text-gray-50
+                   
+                   0 mt-1 pl-3">
                 Press Enter to post
               </p>
             </div>
@@ -480,5 +476,6 @@ export default function PostCard({
         </div>
       )}
     </div>
-  );
+ 
+                    );
 }

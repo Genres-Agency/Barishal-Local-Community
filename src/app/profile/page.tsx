@@ -14,11 +14,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/ui/loading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { mockUserProfile } from "@/lib/config/profile";
 import { useGetUserQuery } from "@/redux/features/auth/authApi";
 import { selectCurrentUser } from "@/redux/features/auth/authSlice";
 import { useGetAllCategoryQuery } from "@/redux/features/category/category.api";
 import { useGetUserEventByIdQuery } from "@/redux/features/events/events.api";
+import { useGetAllPostQuery } from "@/redux/features/post/post.api";
 import {
   useGetUserDetailQuery,
   useGetUserPostByIdQuery,
@@ -39,6 +39,7 @@ function ProfileContent() {
 
   // console.log("User ==>", user);
   const { data: userPosts } = useGetUserPostByIdQuery(user?.id);
+  const { data: pendingPosts } = useGetAllPostQuery({ status: "PENDING" });
 
   const isAdmin = user?.role === "ADMIN" || user?.role === "SUPER_ADMIN";
 
@@ -76,13 +77,15 @@ function ProfileContent() {
             <AvatarImage
               src={user?.avatar ? user?.avatar : "/assets/user.png"}
             />
-            <AvatarFallback>{mockUserProfile.name.slice(0, 2)}</AvatarFallback>
+            <AvatarFallback>{user.firstName.slice(0, 2)}</AvatarFallback>
           </Avatar>
           <div className="flex-1 text-center md:text-left">
             <h1 className="text-2xl font-bold">{`${user?.firstName}  ${user?.lastName}`}</h1>
-            <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-2">
-              <MapPin className="w-4 h-4" /> {mockUserProfile?.location}
-            </p>
+            {userDetails.location && (
+              <p className="text-gray-600 flex items-center justify-center md:justify-start gap-2 mt-2">
+                <MapPin className="w-4 h-4" /> {userDetails?.location}
+              </p>
+            )}
             <p className="text-gray-600 mt-2">
               কমিউনিটি মেম্বার সিনস {moment(userDetails?.createdAt).fromNow()}
             </p>
@@ -121,6 +124,12 @@ function ProfileContent() {
               <>
                 <TabsTrigger value="events" className="whitespace-nowrap px-4">
                   ইভেন্টস সমূহ
+                </TabsTrigger>
+                <TabsTrigger
+                  value="pending-post"
+                  className="whitespace-nowrap px-4"
+                >
+                  পেন্ডিং পোস্টসমূহ
                 </TabsTrigger>
                 <TabsTrigger
                   value="category"
@@ -170,6 +179,10 @@ function ProfileContent() {
         </TabsContent>
         {isAdmin && (
           <>
+            {/* get all pending posts */}
+            <TabsContent value="pending-post">
+              <Posts posts={pendingPosts} />
+            </TabsContent>
             <TabsContent value="category">
               <CategoryList categories={category} isAdmin={isAdmin} />
             </TabsContent>

@@ -21,6 +21,7 @@ export const useSearchPosts = () => {
         const { data } = await triggerGetPosts({
           search: searchQuery,
           categoryId: categoryIdNumber,
+          status: "ACCEPTED",
         });
         setSearchResults(data || []);
         setShowSearchDropdown(true);
